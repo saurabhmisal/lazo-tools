@@ -18,7 +18,7 @@
 .story-clock {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 1.65fr) minmax(0, 1fr);
-  grid-template-rows: 44px 280px 72px 64px;
+  grid-template-rows: 44px 280px 72px 80px;
   gap: 8px 28px;
   padding: 8px 20px 0;
 }

@@ -297,4 +297,6 @@ test("transport paths occupy their own grid row below the artwork on desktop and
     assert.ok(css.includes(`@keyframes story-output-${stage}`));
   }
   assert.match(css, /grid-template-rows: repeat\(2, 64px\)/);
+  assert.match(css, /grid-template-rows: 44px 280px 72px 80px/);
+  assert.match(css, /grid-template-rows: 44px 80px 176px 64px 160px 112px/);
 });
