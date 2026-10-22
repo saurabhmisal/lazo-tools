@@ -10,6 +10,7 @@ import {
   SCENE_HEIGHT,
   SCENE_RENDER_SCALE,
   PHONE_SCREENS,
+  SCENE_LAYOUT,
 } from "../src/thinking-scene.js";
 import { STORY_DURATION_MS } from "../src/story-state.js";
 
@@ -85,7 +86,7 @@ test("every transition frame draws one opaque character in front of the desk", (
     draws.push({
       image,
       alpha: ctx.globalAlpha,
-      desk: [...ctx.getImageData(500, 281, 1, 1).data],
+      desk: [...ctx.getImageData(500, SCENE_LAYOUT.desk.top + 6, 1, 1).data],
     });
   for (const time of [
     0, 6500, 7000, 7300, 7600, 7900, 8200, 8600, 10500, 11200, 11500, 11800,
@@ -104,10 +105,15 @@ test("every transition frame draws one opaque character in front of the desk", (
   }
 });
 
-test("the phone alternates fictional ride-hailing and fintech 2-by-2 product grids", () => {
-  assert.equal(thinkingSceneAt(4000).phoneMode, "ride");
-  assert.equal(thinkingSceneAt(9000).phoneMode, "fintech");
-  assert.equal(thinkingSceneAt(0, true).phoneMode, "fintech");
+test("the phone cycles six fictional product categories in stable 2-by-2 grids", () => {
+  const modes = ["ride", "fintech", "healthcare", "rentals", "ott", "product"];
+  assert.deepEqual(Object.keys(PHONE_SCREENS), modes);
+  for (const [index, mode] of modes.entries()) {
+    assert.equal(thinkingSceneAt(index * 2000).phoneMode, mode);
+    assert.equal(thinkingSceneAt(index * 2000 + 1999).phoneMode, mode);
+    assert.equal(PHONE_SCREENS[mode].length, 4);
+  }
+  assert.equal(thinkingSceneAt(0, true).phoneMode, "product");
   assert.deepEqual(
     PHONE_SCREENS.ride.map((item) => item.label),
     ["Bike", "Car", "Parcel", "Saved"],
@@ -125,6 +131,69 @@ test("the phone alternates fictional ride-hailing and fintech 2-by-2 product gri
         ),
       );
     }
+});
+
+test("the lower desk and smaller devices keep the character visually dominant", () => {
+  const { character, desk, laptop, tablet, phone } = SCENE_LAYOUT;
+  assert.ok(
+    desk.top > 275,
+    "The tabletop must be lower than the previous scene",
+  );
+  assert.ok(desk.floor - desk.top < character.height * 0.45);
+  assert.ok(208 * phone.scale < character.height * 0.2);
+  assert.ok(237 * laptop.scale < character.height * 0.25);
+  assert.ok(140 * tablet.scale < character.height * 0.15);
+  assert.equal(
+    phone.y + 104 * phone.scale,
+    desk.top,
+    "Phone must rest on the desk",
+  );
+  assert.ok(Math.abs(laptop.y + 442 * laptop.scale - desk.top) < 0.01);
+  const phoneLeft = phone.x - 54 * phone.scale;
+  const phoneRight = phone.x + 54 * phone.scale;
+  const laptopLeft = laptop.x + 306 * laptop.scale;
+  const laptopRight = laptop.x + 690 * laptop.scale;
+  const tabletLeft = tablet.x + (418 - 115) * tablet.scale;
+  const tabletRight = tablet.x + (418 + 115) * tablet.scale;
+  assert.ok(desk.left < laptopLeft && laptopRight < tabletLeft);
+  assert.ok(tabletRight < phoneLeft && phoneRight < desk.right);
+  for (const [x, y] of [
+    [character.x + (330 * character.width) / 1024, character.y + 20],
+    [phoneRight, desk.floor],
+  ]) {
+    assert.ok(x >= 0 && x <= SCENE_WIDTH && y >= 0 && y <= SCENE_HEIGHT);
+  }
+});
+
+test("serious thinking changes to a smile only after supporting work has progressed", async () => {
+  assert.equal(thinkingSceneAt(4000).pose, "pressure");
+  assert.equal(thinkingSceneAt(8200).pose, "composed");
+  assert.ok(thinkingSceneAt(8200).progress > 0.95);
+  const portraits = [];
+  for (const file of Object.values(SCENE_ASSETS)) {
+    const image = await loadImage(
+      new URL(`../public/assets/${file}`, import.meta.url).pathname,
+    );
+    const ctx = createCanvas(image.width, image.height).getContext("2d");
+    ctx.drawImage(image, 0, 0);
+    portraits.push(ctx.getImageData(400, 110, 140, 135).data);
+    // Sample the solid black swoosh interiors, away from white shoe outlines.
+    for (const [x, y] of [
+      [503, 1370],
+      [690, 1420],
+    ]) {
+      const [r, g, b, a] = ctx.getImageData(x, y, 1, 1).data;
+      assert.ok(
+        Math.max(r, g, b) < 85 && a > 240,
+        `${file}: black shoe tick missing`,
+      );
+    }
+  }
+  assert.notDeepEqual(
+    portraits[0],
+    portraits[1],
+    "The facial expressions must differ",
+  );
 });
 
 test("both poses keep the same yellow strap and black Apple Watch on the left wrist", async () => {
@@ -163,7 +232,7 @@ test("both poses keep the same yellow strap and black Apple Watch on the left wr
 test("the live scene and poster preserve a two-times resolution without changing layout ratio", () => {
   assert.equal(SCENE_RENDER_SCALE, 2);
   const poster = readFileSync(
-    new URL("../public/assets/thinker-scene-poster-v6.png", import.meta.url),
+    new URL("../public/assets/thinker-scene-poster-v7.png", import.meta.url),
   );
   assert.equal(poster.readUInt32BE(16), SCENE_WIDTH * SCENE_RENDER_SCALE);
   assert.equal(poster.readUInt32BE(20), SCENE_HEIGHT * SCENE_RENDER_SCALE);
@@ -180,7 +249,7 @@ test("the live scene and poster preserve a two-times resolution without changing
 
 test("a real looping GIF is downloadable without autoplaying it for reduced motion", () => {
   const gif = readFileSync(
-    new URL("../public/assets/thinker-scene-v6.gif", import.meta.url),
+    new URL("../public/assets/thinker-scene-v7.gif", import.meta.url),
   );
   assert.equal(gif.subarray(0, 6).toString(), "GIF89a");
   assert.equal(gif.readUInt16LE(6), 800);
@@ -191,7 +260,7 @@ test("a real looping GIF is downloadable without autoplaying it for reduced moti
     new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  assert.match(component, /thinker-scene-poster-v6\.png/);
+  assert.match(component, /thinker-scene-poster-v7\.png/);
   assert.doesNotMatch(component, /<img[^>]*\.gif/);
   assert.match(component, /cancelAnimationFrame/);
   assert.match(component, /playback === "still"/);

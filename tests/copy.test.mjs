@@ -170,14 +170,19 @@ test("the illustrated story has a stable static fallback and no live-product cla
   assert.match(page, /data-motion="still"/);
   assert.match(page, /data-static-art="composed"/);
   assert.match(page, /--story-duration:12000ms/);
-  assert.match(page, /More inputs\. Same deadline\./);
+  assert.match(page, /You, but amplified\./);
+  assert.doesNotMatch(page, /More inputs\. Same deadline\./);
   assert.match(page, /You set the direction/);
   assert.match(page, /You keep the final say/);
   assert.match(page, /Illustrated concept\. Lazo is in development\./);
   assert.match(page, /aria-label="Download animation as GIF"/);
-  assert.match(page, /assets\/thinker-scene-poster-v6\.png/);
+  assert.match(page, /assets\/thinker-scene-poster-v7\.png/);
   assert.match(page, /height-adjustable desk behind him/);
-  assert.match(page, /fictional ride-hailing and fintech product grids/);
+  assert.match(
+    page,
+    /fictional ride-hailing, fintech, healthcare, rentals, OTT and product app grids/,
+  );
+  assert.match(page, /thinks seriously.*then smiles/);
   assert.doesNotMatch(page, /New_DP\.png/);
   const heroEnd = page.indexOf("</section>");
   assert.ok(page.indexOf('class="pressure-story"') > heroEnd);
@@ -190,12 +195,12 @@ test("the story separates incoming artifacts from reviewable work and routes flo
     "Product ideas",
     "Metrics",
     "Requests",
-    "Prototype",
-    "MVP",
-    "Live survey",
-    "Leadership updates",
-    "People in the loop",
-    "Stakeholders unblocked",
+    "Decisions published",
+    "Stakeholder unblocked",
+    "Multiple launches",
+    "Clear strategy",
+    "Aligned teams",
+    "Measurable impact",
     "Outputs",
   ])
     assert.ok(page.includes(`>${label}</span>`), label);

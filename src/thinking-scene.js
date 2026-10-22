@@ -7,13 +7,33 @@ import { __iconData as pay } from "lucide-react/dist/esm/icons/arrow-up-right.mj
 import { __iconData as wallet } from "lucide-react/dist/esm/icons/wallet.mjs";
 import { __iconData as card } from "lucide-react/dist/esm/icons/credit-card.mjs";
 import { __iconData as scan } from "lucide-react/dist/esm/icons/scan-line.mjs";
+import { __iconData as heart } from "lucide-react/dist/esm/icons/heart-pulse.mjs";
+import { __iconData as activity } from "lucide-react/dist/esm/icons/activity.mjs";
+import { __iconData as pill } from "lucide-react/dist/esm/icons/pill.mjs";
+import { __iconData as calendar } from "lucide-react/dist/esm/icons/calendar-days.mjs";
+import { __iconData as house } from "lucide-react/dist/esm/icons/house.mjs";
+import { __iconData as key } from "lucide-react/dist/esm/icons/key-round.mjs";
+import { __iconData as film } from "lucide-react/dist/esm/icons/film.mjs";
+import { __iconData as tv } from "lucide-react/dist/esm/icons/tv-minimal-play.mjs";
+import { __iconData as grid } from "lucide-react/dist/esm/icons/layout-grid.mjs";
+import { __iconData as tasks } from "lucide-react/dist/esm/icons/list-checks.mjs";
+import { __iconData as rocket } from "lucide-react/dist/esm/icons/rocket.mjs";
+import { __iconData as compass } from "lucide-react/dist/esm/icons/compass.mjs";
 
 export const SCENE_WIDTH = 800;
 export const SCENE_HEIGHT = 600;
 export const SCENE_RENDER_SCALE = 2;
 export const SCENE_ASSETS = {
-  pressure: "pm-thinking-v4.png",
-  composed: "pm-contented-v4.png",
+  pressure: "pm-thinking-v5.png",
+  composed: "pm-contented-v5.png",
+};
+// Logical canvas positions shared by rendering and proportion/registration checks.
+export const SCENE_LAYOUT = {
+  character: { x: -40, y: 4, width: 400, height: 600 },
+  desk: { top: 326, left: 312, right: 785, floor: 567 },
+  laptop: { x: 164, y: 69.64, scale: 0.58 },
+  tablet: { x: 415, y: 30, scale: 0.5 },
+  phone: { x: 736, y: 274, scale: 0.5 },
 };
 export const PHONE_SCREENS = {
   ride: [
@@ -28,6 +48,37 @@ export const PHONE_SCREENS = {
     { label: "Cards", icon: card, color: "#c5adff" },
     { label: "Scan", icon: scan, color: "#ffd07a" },
   ],
+  healthcare: [
+    { label: "Care", icon: heart, color: "#f5a8c9" },
+    { label: "Vitals", icon: activity, color: "#8dc4ff" },
+    { label: "Meds", icon: pill, color: "#c5adff" },
+    { label: "Visits", icon: calendar, color: "#8edfc0" },
+  ],
+  rentals: [
+    { label: "Homes", icon: house, color: "#ffd07a" },
+    { label: "Saved", icon: pin, color: "#f5a8c9" },
+    { label: "Tours", icon: calendar, color: "#8dc4ff" },
+    { label: "Keys", icon: key, color: "#8edfc0" },
+  ],
+  ott: [
+    { label: "Films", icon: film, color: "#c5adff" },
+    { label: "Series", icon: tv, color: "#8dc4ff" },
+    { label: "Live", icon: activity, color: "#f5a8c9" },
+    { label: "Saved", icon: grid, color: "#ffd07a" },
+  ],
+  product: [
+    { label: "Plan", icon: compass, color: "#8dc4ff" },
+    { label: "Tasks", icon: tasks, color: "#c5adff" },
+    { label: "Launch", icon: rocket, color: "#ffd07a" },
+    { label: "Learn", icon: activity, color: "#8edfc0" },
+  ],
+};
+const phoneModes = Object.keys(PHONE_SCREENS);
+const phoneHeaders = {
+  healthcare: ["Health", "Care plan", "Your wellbeing"],
+  rentals: ["Rentals", "Your next place", "Find your fit"],
+  ott: ["Watch", "Your watchlist", "Tonight's pick"],
+  product: ["Product", "Next release", "Ready to review"],
 };
 
 const clamp = (n) => Math.min(1, Math.max(0, n));
@@ -47,7 +98,8 @@ export function thinkingSceneAt(elapsed, still = false) {
     contented,
     pose: contented >= 0.5 ? "composed" : "pressure",
     nod: still ? 0 : Math.sin(contented * Math.PI) * 1.4,
-    phoneMode: seconds >= 6.4 && seconds < 11 ? "fintech" : "ride",
+    phoneMode:
+      phoneModes[Math.min(phoneModes.length - 1, Math.floor(seconds / 2))],
     progress: ease((seconds - 1.4) / 6.6) * reset,
     listening: still ? 0 : 1 - ease((seconds - 7.2) / 1.2),
     breath: still ? 0 : Math.sin((seconds * Math.PI) / 3) * 0.9,
@@ -99,25 +151,26 @@ function productIcon(ctx, icon, x, y, size, PathType) {
 
 function standingDesk(ctx) {
   // The rear desk is painted first; the foreground character naturally occludes it.
-  roundBox(ctx, 278, 293, 24, 267, "#788a81", "#a8b5ad", 3);
-  roundBox(ctx, 714, 293, 24, 267, "#788a81", "#a8b5ad", 3);
-  roundBox(ctx, 284, 360, 12, 199, "#b8c6bc", null, 2);
-  roundBox(ctx, 720, 360, 12, 199, "#b8c6bc", null, 2);
-  roundBox(ctx, 250, 557, 78, 10, "#c8d1cb", null, 4);
-  roundBox(ctx, 686, 557, 78, 10, "#c8d1cb", null, 4);
-  roundBox(ctx, 290, 301, 436, 12, "#677d70", null, 3);
+  const { top, left, right, floor } = SCENE_LAYOUT.desk;
+  const width = right - left;
+  for (const x of [360, 744]) {
+    roundBox(ctx, x, top + 18, 24, floor - top - 25, "#788a81", "#a8b5ad", 3);
+    roundBox(ctx, x + 6, top + 74, 12, floor - top - 81, "#b8c6bc", null, 2);
+    roundBox(ctx, x - 27, floor - 10, 78, 10, "#c8d1cb", null, 4);
+  }
+  roundBox(ctx, 372, top + 26, 384, 12, "#677d70", null, 3);
   ctx.beginPath();
-  ctx.moveTo(214, 275);
-  ctx.lineTo(777, 275);
-  ctx.lineTo(795, 287);
-  ctx.lineTo(196, 287);
+  ctx.moveTo(left + 18, top);
+  ctx.lineTo(right - 18, top);
+  ctx.lineTo(right, top + 12);
+  ctx.lineTo(left, top + 12);
   ctx.closePath();
   ctx.fillStyle = "#e2e8e2";
   ctx.fill();
-  roundBox(ctx, 196, 287, 599, 10, "#a3b4a8", null, 2);
-  roundBox(ctx, 628, 297, 51, 16, "#263d31", null, 3);
-  text(ctx, "108", 634, 308, 9, "#89d0b2", "monospace");
-  text(ctx, "+  -", 657, 308, 8, "#c3d3c8", "monospace");
+  roundBox(ctx, left, top + 12, width, 10, "#a3b4a8", null, 2);
+  roundBox(ctx, 650, top + 22, 51, 16, "#263d31", null, 3);
+  text(ctx, "96", 656, top + 33, 9, "#89d0b2", "monospace");
+  text(ctx, "+  -", 679, top + 33, 8, "#c3d3c8", "monospace");
 }
 
 function roundBox(ctx, x, y, w, h, fill, stroke, radius = 8) {
@@ -300,12 +353,20 @@ function tablet(ctx, frame, handwriting) {
 
 function phone(ctx, frame, PathType) {
   ctx.save();
-  ctx.translate(738, 169);
   roundBox(ctx, -54, -104, 108, 208, "#aebbb2", "#d9dfda", 15);
   roundBox(ctx, -48, -98, 96, 196, "#f4f5f0", null, 10);
   roundBox(ctx, -18, -94, 36, 4, "#223a2d", null, 2);
   const ride = frame.phoneMode === "ride";
-  text(ctx, ride ? "Ride" : "Money", -40, -72, 13, "#174f3e");
+  const fintech = frame.phoneMode === "fintech";
+  const header = phoneHeaders[frame.phoneMode];
+  text(
+    ctx,
+    ride ? "Ride" : fintech ? "Money" : header[0],
+    -40,
+    -72,
+    13,
+    "#174f3e",
+  );
   roundBox(ctx, -40, -62, 80, 49, ride ? "#dcebe6" : "#174f3e", null, 4);
   if (ride) {
     ctx.save();
@@ -334,9 +395,12 @@ function phone(ctx, frame, PathType) {
     ctx.stroke();
     ctx.restore();
     productIcon(ctx, pin, 19, -59, 16, PathType);
-  } else {
+  } else if (fintech) {
     text(ctx, "Balance", -32, -47, 8, "#b9dac8");
     text(ctx, "12,480", -32, -28, 17, "#f4f5f0", "monospace");
+  } else {
+    text(ctx, header[1], -34, -47, 9, "#b9dac8");
+    text(ctx, header[2], -34, -28, 9, "#f4f5f0");
   }
   PHONE_SCREENS[frame.phoneMode].forEach(({ label, icon, color }, i) => {
     const x = -40 + (i % 2) * 43;
@@ -370,30 +434,35 @@ export function drawThinkingScene(
   ctx.fillRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
   standingDesk(ctx);
   ctx.save();
-  ctx.translate(24, -79);
-  ctx.scale(0.8, 0.8);
+  ctx.translate(SCENE_LAYOUT.laptop.x, SCENE_LAYOUT.laptop.y);
+  ctx.scale(SCENE_LAYOUT.laptop.scale, SCENE_LAYOUT.laptop.scale);
   laptop(ctx, frame);
   ctx.restore();
   ctx.strokeStyle = "#8c9f92";
   ctx.lineWidth = 4;
   ctx.beginPath();
-  ctx.moveTo(600, 256);
-  ctx.lineTo(619, 275);
-  ctx.lineTo(649, 275);
+  ctx.moveTo(651, 309);
+  ctx.lineTo(668, SCENE_LAYOUT.desk.top);
+  ctx.lineTo(691, SCENE_LAYOUT.desk.top);
   ctx.stroke();
   ctx.save();
-  ctx.translate(333, -128);
-  ctx.scale(0.66, 0.66);
+  ctx.translate(SCENE_LAYOUT.tablet.x, SCENE_LAYOUT.tablet.y);
+  ctx.scale(SCENE_LAYOUT.tablet.scale, SCENE_LAYOUT.tablet.scale);
   tablet(ctx, frame, handwriting);
   ctx.restore();
+  ctx.save();
+  ctx.translate(SCENE_LAYOUT.phone.x, SCENE_LAYOUT.phone.y);
+  ctx.scale(SCENE_LAYOUT.phone.scale, SCENE_LAYOUT.phone.scale);
   phone(ctx, frame, PathType);
+  ctx.restore();
   // Exactly one full-opacity sprite is painted per frame: never blend two silhouettes.
   const image = artwork[frame.pose] || artwork.pressure || artwork.composed;
   ctx.save();
   ctx.globalAlpha = 1;
   ctx.translate(0, frame.breath + frame.nod);
   if (image) {
-    ctx.drawImage(image, -40, 4, 400, 600);
+    const { x, y, width, height } = SCENE_LAYOUT.character;
+    ctx.drawImage(image, x, y, width, height);
     appleWatch(ctx, frame);
   }
   ctx.restore();

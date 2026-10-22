@@ -11,10 +11,10 @@ test("static assets support a GitHub project path and a custom domain", () => {
   );
   assert.ok(component.includes("import.meta.env.BASE_URL}assets/"));
   for (const name of [
-    "pm-thinking-v4.png",
-    "pm-contented-v4.png",
-    "thinker-scene-poster-v6.png",
-    "thinker-scene-v6.gif",
+    "pm-thinking-v5.png",
+    "pm-contented-v5.png",
+    "thinker-scene-poster-v7.png",
+    "thinker-scene-v7.gif",
   ]) {
     for (const base of [
       "https://saurabhmisal.github.io/lazo-tools/",
