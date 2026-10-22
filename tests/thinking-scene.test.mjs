@@ -105,6 +105,17 @@ test("every transition frame draws one opaque character in front of the desk", (
   }
 });
 
+test("the scene renderer never repeats the top-level tagline in the GIF", () => {
+  const ctx = createCanvas(SCENE_WIDTH, SCENE_HEIGHT).getContext("2d");
+  const labels = [];
+  ctx.fillText = (label) => labels.push(label);
+  for (const time of [0, 4000, 8000, 10500, 11999])
+    drawThinkingScene(ctx, {}, time, { PathType: Path2D });
+  assert.doesNotMatch(labels.join(" "), /amplified|A doer for a thinker/i);
+  assert.ok(labels.includes("Thinking out loud"));
+  assert.ok(labels.includes("Still your call"));
+});
+
 test("the phone cycles six fictional product categories in stable 2-by-2 grids", () => {
   const modes = ["ride", "fintech", "healthcare", "rentals", "ott", "product"];
   assert.deepEqual(Object.keys(PHONE_SCREENS), modes);
@@ -133,15 +144,18 @@ test("the phone cycles six fictional product categories in stable 2-by-2 grids",
     }
 });
 
-test("the lower desk and smaller devices keep the character visually dominant", () => {
+test("the desk and devices grow while preserving the lower tabletop and prominent character", () => {
   const { character, desk, laptop, tablet, phone } = SCENE_LAYOUT;
   assert.ok(
     desk.top > 275,
     "The tabletop must be lower than the previous scene",
   );
   assert.ok(desk.floor - desk.top < character.height * 0.45);
-  assert.ok(208 * phone.scale < character.height * 0.2);
-  assert.ok(237 * laptop.scale < character.height * 0.25);
+  assert.ok(desk.right - desk.left >= 473 * 1.19);
+  assert.ok(laptop.scale >= 0.58 * 1.19);
+  assert.ok(tablet.scale >= 0.5 * 1.19 && phone.scale >= 0.5 * 1.19);
+  assert.ok(208 * phone.scale < character.height * 0.23);
+  assert.ok(237 * laptop.scale < character.height * 0.3);
   assert.ok(140 * tablet.scale < character.height * 0.15);
   assert.equal(
     phone.y + 104 * phone.scale,
@@ -258,7 +272,7 @@ test("the small gold earring stays on the anatomical left ear in both expression
 test("the live scene and poster preserve a two-times resolution without changing layout ratio", () => {
   assert.equal(SCENE_RENDER_SCALE, 2);
   const poster = readFileSync(
-    new URL("../public/assets/thinker-scene-poster-v8.png", import.meta.url),
+    new URL("../public/assets/thinker-scene-poster-v9.png", import.meta.url),
   );
   assert.equal(poster.readUInt32BE(16), SCENE_WIDTH * SCENE_RENDER_SCALE);
   assert.equal(poster.readUInt32BE(20), SCENE_HEIGHT * SCENE_RENDER_SCALE);
@@ -275,7 +289,7 @@ test("the live scene and poster preserve a two-times resolution without changing
 
 test("a real looping GIF is downloadable without autoplaying it for reduced motion", () => {
   const gif = readFileSync(
-    new URL("../public/assets/thinker-scene-v8.gif", import.meta.url),
+    new URL("../public/assets/thinker-scene-v9.gif", import.meta.url),
   );
   assert.equal(gif.subarray(0, 6).toString(), "GIF89a");
   assert.equal(gif.readUInt16LE(6), 800);
@@ -286,7 +300,7 @@ test("a real looping GIF is downloadable without autoplaying it for reduced moti
     new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  assert.match(component, /thinker-scene-poster-v8\.png/);
+  assert.match(component, /thinker-scene-poster-v9\.png/);
   assert.doesNotMatch(component, /<img[^>]*\.gif/);
   assert.match(component, /cancelAnimationFrame/);
   assert.match(component, /playback === "still"/);

@@ -704,8 +704,8 @@ export function App() {
                 soon
               </p>
               <h1 id="hero-title" className="hero-subtitle">
-                <span className="hero-title-word">A doer</span>{" "}
-                <em className="hero-title-word">for a thinker!</em>
+                <span className="hero-title-word">You, but</span>{" "}
+                <em className="hero-title-word">amplified!</em>
               </h1>
             </div>
             <div className="hero-invitation">

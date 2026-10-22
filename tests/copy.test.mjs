@@ -48,19 +48,27 @@ after(async () => {
 test("hero and metadata use the same punctuated tagline without repeating it in the footer", async () => {
   const headline = page.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g) || [];
   assert.equal(headline.length, 1);
-  assert.equal(plainText(headline[0]), "A doer for a thinker!");
+  assert.equal(plainText(headline[0]), "You, but amplified!");
   const footer = page.match(/<footer\b[\s\S]*?<\/footer>/)[0];
-  assert.doesNotMatch(plainText(footer), /A doer for a thinker!/);
+  assert.doesNotMatch(plainText(footer), /You, but amplified!/);
+  const main = page.match(/<main\b[\s\S]*?<\/main>/)[0];
+  assert.equal((plainText(main).match(/You, but amplified!/g) || []).length, 1);
+  const story = page.match(/<figure\b[\s\S]*?<\/figure>/)[0];
+  assert.doesNotMatch(plainText(story), /amplified/i);
+  assert.doesNotMatch(page, /story-pressure-heading|A doer for a thinker!/);
   const metadata = await readFile(
     new URL("../index.html", import.meta.url),
     "utf8",
   );
-  assert.match(metadata, /<title>Lazo \| A doer for a thinker!<\/title>/);
+  assert.match(metadata, /<title>Lazo \| You, but amplified!<\/title>/);
   assert.match(
     metadata,
-    /property="og:title"\s+content="Lazo \| A doer for a thinker!"/,
+    /property="og:title"\s+content="Lazo \| You, but amplified!"/,
   );
-  assert.doesNotMatch(metadata, /Imagination,? executed!/);
+  assert.doesNotMatch(
+    metadata,
+    /Imagination,? executed!|A doer for a thinker!/,
+  );
 });
 
 test("navigation stays minimal and supporting resources remain available on demand", () => {
@@ -85,7 +93,7 @@ test("the opening section has one reading flow and a single signup action", asyn
   assert.match(hero, /aria-describedby="hero-description"/);
   assert.match(
     plainText(hero),
-    /Launching soon.*A doer for a thinker!.*Lazo is being built as your PM extension/,
+    /Launching soon.*You, but amplified!.*Lazo is being built as your PM extension/,
   );
   assert.equal((hero.match(/href="#release"/g) || []).length, 1);
   assert.equal((hero.match(/class="hero-title-word"/g) || []).length, 2);
@@ -170,13 +178,12 @@ test("the illustrated story has a stable static fallback and no live-product cla
   assert.match(page, /data-motion="still"/);
   assert.match(page, /data-static-art="composed"/);
   assert.match(page, /--story-duration:12000ms/);
-  assert.match(page, /You, but amplified\./);
   assert.doesNotMatch(page, /More inputs\. Same deadline\./);
   assert.match(page, /You set the direction/);
   assert.match(page, /You keep the final say/);
   assert.match(page, /Illustrated concept\. Lazo is in development\./);
   assert.match(page, /aria-label="Download animation as GIF"/);
-  assert.match(page, /assets\/thinker-scene-poster-v8\.png/);
+  assert.match(page, /assets\/thinker-scene-poster-v9\.png/);
   assert.match(page, /height-adjustable desk behind him/);
   assert.match(
     page,
@@ -201,6 +208,8 @@ test("the story separates incoming artifacts from reviewable work and routes flo
     "Clear strategy",
     "Aligned teams",
     "Measurable impact",
+    "Prototypes",
+    "MVPs",
     "Outputs",
   ])
     assert.ok(page.includes(`>${label}</span>`), label);
@@ -211,7 +220,7 @@ test("the story separates incoming artifacts from reviewable work and routes flo
   assert.equal(
     (page.match(/class="story-output story-output-\d story-motion"/g) || [])
       .length,
-    6,
+    8,
   );
   assert.equal(
     (page.match(/class="flow-token flow-token-in-\d story-motion"/g) || [])
@@ -221,7 +230,7 @@ test("the story separates incoming artifacts from reviewable work and routes flo
   assert.equal(
     (page.match(/class="flow-token flow-token-out-\d story-motion"/g) || [])
       .length,
-    6,
+    8,
   );
   assert.match(page, /Less chasing\. Clearer next moves\./);
   assert.doesNotMatch(page, /story-connection/);
@@ -230,8 +239,8 @@ test("the story separates incoming artifacts from reviewable work and routes flo
 
 test("input and output icons keep their colours in the moving stream", () => {
   const expectedCounts = {
-    blue: 4,
-    violet: 4,
+    blue: 6,
+    violet: 6,
     cyan: 4,
     amber: 4,
     rose: 4,
@@ -250,7 +259,7 @@ test("input and output icons keep their colours in the moving stream", () => {
   );
   assert.equal(
     (page.match(/class="story-output-icon story-color-/g) || []).length,
-    6,
+    8,
   );
 });
 

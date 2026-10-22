@@ -80,7 +80,7 @@ export function ThinkingScene({ playback, revision, dispatch }) {
   return (
     <div className="thinking-scene" data-rendered={drawn}>
       <img
-        src={`${import.meta.env.BASE_URL}assets/thinker-scene-poster-v8.png`}
+        src={`${import.meta.env.BASE_URL}assets/thinker-scene-poster-v9.png`}
         alt=""
         width={SCENE_WIDTH}
         height={SCENE_HEIGHT}

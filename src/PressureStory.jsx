@@ -4,6 +4,7 @@ import {
   AppWindow,
   ArrowRight,
   ChartNoAxesCombined,
+  Box,
   Compass,
   Download,
   Handshake,
@@ -12,6 +13,7 @@ import {
   MessageSquareText,
   NotebookPen,
   Pause,
+  PanelTop,
   Play,
   Rocket,
   RotateCcw,
@@ -40,6 +42,8 @@ const outputs = [
   { label: "Clear strategy", Icon: Compass, tone: "amber" },
   { label: "Aligned teams", Icon: Users, tone: "rose" },
   { label: "Measurable impact", Icon: ChartNoAxesCombined, tone: "mint" },
+  { label: "Prototypes", Icon: PanelTop, tone: "blue" },
+  { label: "MVPs", Icon: Box, tone: "violet" },
 ];
 
 export function PressureStory({ onExplore }) {
@@ -57,7 +61,7 @@ export function PressureStory({ onExplore }) {
         ref={ref}
         className="story-canvas"
         role="img"
-        aria-label="An illustrated concept for the upcoming product: a standing PM thinks seriously with an Apple Pencil, then smiles as work progresses on smaller devices on a lower height-adjustable desk behind him. His yellow-strap Apple Watch visualises voice dictation, the laptop writes code, the iPad adds handwritten notes, and the phone cycles fictional ride-hailing, fintech, healthcare, rentals, OTT and product app grids. Meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the character and devices. Outcomes include decisions published, a stakeholder unblocked, multiple launches, clear strategy, aligned teams and measurable impact. The PM keeps direction, review, and final say."
+        aria-label="An illustrated concept for the upcoming product: a standing PM thinks seriously with an Apple Pencil, then smiles as work progresses on devices on a lower height-adjustable desk behind him. His yellow-strap Apple Watch visualises voice dictation, the laptop writes code, the iPad adds handwritten notes, and the phone cycles fictional ride-hailing, fintech, healthcare, rentals, OTT and product app grids. Meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the character and devices. Outcomes include decisions published, a stakeholder unblocked, multiple launches, clear strategy, aligned teams, measurable impact, prototypes and MVPs. The PM keeps direction, review, and final say."
         data-motion={animated ? "full" : "still"}
         data-playback={playback}
         data-static-art={
@@ -72,9 +76,6 @@ export function PressureStory({ onExplore }) {
         }}
       >
         <div key={state.revision} className="story-clock" aria-hidden="true">
-          <p className="story-pressure-heading story-motion">
-            You, but amplified.
-          </p>
           <div className="story-inputs">
             <span className="story-rail-label">Inputs</span>
             <div className="story-input-list">
@@ -194,8 +195,8 @@ export function PressureStory({ onExplore }) {
           )}
           <a
             className="icon-button"
-            href={`${import.meta.env.BASE_URL}assets/thinker-scene-v8.gif`}
-            download="lazo-a-doer-for-a-thinker.gif"
+            href={`${import.meta.env.BASE_URL}assets/thinker-scene-v9.gif`}
+            download="lazo-preview.gif"
             aria-label="Download animation as GIF"
             title="Download animation as GIF"
           >

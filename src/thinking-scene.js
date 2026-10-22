@@ -30,10 +30,10 @@ export const SCENE_ASSETS = {
 // Logical canvas positions shared by rendering and proportion/registration checks.
 export const SCENE_LAYOUT = {
   character: { x: -40, y: 4, width: 400, height: 600 },
-  desk: { top: 326, left: 312, right: 785, floor: 567 },
-  laptop: { x: 164, y: 69.64, scale: 0.58 },
-  tablet: { x: 415, y: 30, scale: 0.5 },
-  phone: { x: 736, y: 274, scale: 0.5 },
+  desk: { top: 326, left: 218, right: 786, floor: 567 },
+  laptop: { x: 41, y: 18.368, scale: 0.696 },
+  tablet: { x: 342, y: -29.2, scale: 0.6 },
+  phone: { x: 727.2, y: 263.6, scale: 0.6 },
 };
 export const PHONE_SCREENS = {
   ride: [
@@ -153,12 +153,12 @@ function standingDesk(ctx) {
   // The rear desk is painted first; the foreground character naturally occludes it.
   const { top, left, right, floor } = SCENE_LAYOUT.desk;
   const width = right - left;
-  for (const x of [360, 744]) {
-    roundBox(ctx, x, top + 18, 24, floor - top - 25, "#788a81", "#a8b5ad", 3);
-    roundBox(ctx, x + 6, top + 74, 12, floor - top - 81, "#b8c6bc", null, 2);
-    roundBox(ctx, x - 27, floor - 10, 78, 10, "#c8d1cb", null, 4);
+  for (const x of [left + 48, right - 48]) {
+    roundBox(ctx, x, top + 18, 26, floor - top - 25, "#788a81", "#a8b5ad", 3);
+    roundBox(ctx, x + 6, top + 74, 14, floor - top - 81, "#b8c6bc", null, 2);
+    roundBox(ctx, x - 30, floor - 10, 90, 10, "#c8d1cb", null, 4);
   }
-  roundBox(ctx, 372, top + 26, 384, 12, "#677d70", null, 3);
+  roundBox(ctx, left + 60, top + 26, width - 96, 12, "#677d70", null, 3);
   ctx.beginPath();
   ctx.moveTo(left + 18, top);
   ctx.lineTo(right - 18, top);
@@ -456,9 +456,9 @@ export function drawThinkingScene(
   ctx.strokeStyle = "#8c9f92";
   ctx.lineWidth = 4;
   ctx.beginPath();
-  ctx.moveTo(651, 309);
-  ctx.lineTo(668, SCENE_LAYOUT.desk.top);
-  ctx.lineTo(691, SCENE_LAYOUT.desk.top);
+  ctx.moveTo(625, 306);
+  ctx.lineTo(646, SCENE_LAYOUT.desk.top);
+  ctx.lineTo(673, SCENE_LAYOUT.desk.top);
   ctx.stroke();
   ctx.save();
   ctx.translate(SCENE_LAYOUT.tablet.x, SCENE_LAYOUT.tablet.y);

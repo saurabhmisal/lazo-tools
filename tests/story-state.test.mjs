@@ -253,7 +253,7 @@ test("the CSS loop uses the shared 12-second clock and reduced-motion final stat
     "utf8",
   );
   assert.ok(component.includes("import.meta.env.BASE_URL}assets/"));
-  for (const name of ["pm-thinking-v4.png", "pm-contented-v4.png"]) {
+  for (const name of ["pm-thinking-v5.png", "pm-contented-v5.png"]) {
     const png = readFileSync(
       new URL(`../public/assets/${name}`, import.meta.url),
     );
@@ -269,15 +269,16 @@ test("transport paths occupy their own grid row below the artwork on desktop and
     new URL("../src/pressure-story.css", import.meta.url),
     "utf8",
   );
-  assert.match(css, /\.story-person\s*\{\s*grid-area: 2 \/ 2;/);
+  assert.match(css, /\.story-person\s*\{\s*grid-area: 1 \/ 2;/);
+  assert.match(css, /\.story-flow\s*\{\s*grid-area: 2 \/ 1 \/ 3 \/ 4;/);
+  assert.match(css, /\.story-person\s*\{\s*grid-area: 2 \/ 1 \/ 3 \/ 4;/);
   assert.match(css, /\.story-flow\s*\{\s*grid-area: 3 \/ 1 \/ 4 \/ 4;/);
-  assert.match(css, /\.story-person\s*\{\s*grid-area: 3 \/ 1 \/ 4 \/ 4;/);
-  assert.match(css, /\.story-flow\s*\{\s*grid-area: 4 \/ 1 \/ 5 \/ 4;/);
+  assert.doesNotMatch(css, /story-pressure-heading/);
   assert.match(css, /border-bottom-left-radius: 22px/);
   assert.match(css, /border-bottom-right-radius: 22px/);
   assert.match(css, /\.flow-track\s*\{[^}]*overflow: hidden;/);
   for (const direction of ["input", "output"]) {
-    const count = direction === "input" ? 5 : 6;
+    const count = direction === "input" ? 5 : 8;
     for (let i = 1; i <= count; i++) {
       assert.ok(css.includes(`@keyframes flow-${direction}-${i}`));
     }
@@ -289,10 +290,12 @@ test("transport paths occupy their own grid row below the artwork on desktop and
     "fourth",
     "fifth",
     "sixth",
+    "seventh",
+    "eighth",
   ]) {
     assert.ok(css.includes(`@keyframes story-output-${stage}`));
   }
-  assert.match(css, /grid-template-rows: repeat\(2, 64px\)/);
-  assert.match(css, /grid-template-rows: 44px 360px 72px 80px/);
-  assert.match(css, /grid-template-rows: 44px 80px 280px 64px 160px 112px/);
+  assert.match(css, /grid-template-rows: repeat\(3, 64px\)/);
+  assert.match(css, /grid-template-rows: 360px 72px 80px/);
+  assert.match(css, /grid-template-rows: 80px 280px 64px 240px 112px/);
 });
