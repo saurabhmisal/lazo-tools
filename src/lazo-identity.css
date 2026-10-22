@@ -899,12 +899,16 @@ summary:focus-visible,
 }
 .simple-site .hero {
   max-width: 1280px;
-  padding: 44px 32px 0;
+  padding: 40px 32px 0;
 }
 .simple-site .hero-intro {
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-  gap: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 880px;
+  gap: 22px;
   padding-bottom: 32px;
+  text-align: left;
 }
 .simple-site .hero-heading,
 .simple-site .hero-invitation {
@@ -923,17 +927,45 @@ summary:focus-visible,
   height: 6px;
 }
 .simple-site .hero .hero-subtitle {
-  font-size: 64px;
+  font-size: 76px;
   line-height: 1.04;
+  margin: 0;
+  text-wrap: balance;
+}
+.simple-site .hero-title-word {
+  display: inline-block;
 }
 .simple-site .hero-description {
-  font-size: 16px;
+  max-width: 560px;
+  font-size: 17px;
   line-height: 1.65;
-  margin-bottom: 18px;
+  margin: 0 0 22px;
+}
+.simple-site .hero-actions {
+  justify-content: flex-start;
+  margin: 0;
+}
+.simple-site .hero-actions .button {
+  min-height: 48px;
+  padding-inline: 22px;
+  font-size: 14px;
 }
 .simple-site .hero-product-note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 16px 0 0;
   font-size: 12px;
+  line-height: 1.5;
   padding: 0;
+}
+.simple-site .hero-product-note > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.simple-site .hero-product-note svg {
+  color: var(--emerald-light);
 }
 .simple-preview {
   margin: 0;
@@ -1151,7 +1183,7 @@ summary:focus-visible,
     padding-bottom: 24px;
   }
   .simple-site .hero .hero-subtitle {
-    font-size: 56px;
+    font-size: 64px;
   }
   .simple-preview {
     max-width: 900px;
@@ -1179,18 +1211,22 @@ summary:focus-visible,
   .simple-site .hero {
     padding: 28px 20px 0;
   }
-  .simple-site .hero-intro,
   .simple-mission,
   .simple-site .release-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
+  }
+  .simple-site .hero-intro {
+    gap: 20px;
+    padding-bottom: 24px;
   }
   .simple-site .hero .hero-subtitle {
     font-size: 46px;
   }
   .simple-site .hero-description {
     font-size: 15px;
-    max-width: none;
+    max-width: 520px;
+    margin-bottom: 20px;
   }
   .simple-mission {
     padding: 32px 20px;

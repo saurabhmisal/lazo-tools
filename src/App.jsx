@@ -26,6 +26,7 @@ import {
   FlaskConical,
   Folder,
   Layers3,
+  LaptopMinimal,
   Lightbulb,
   Link2,
   LockKeyhole,
@@ -691,30 +692,40 @@ export function App() {
         </nav>
       </header>
       <main id="main">
-        <section className="hero" aria-labelledby="hero-title">
+        <section
+          className="hero"
+          aria-labelledby="hero-title"
+          aria-describedby="hero-description"
+        >
           <div className="hero-intro">
             <div className="hero-heading">
               <p className="simple-launch">
-                <span className="tiny-dot coral" /> Launching soon
+                <span className="tiny-dot coral" aria-hidden="true" /> Launching
+                soon
               </p>
               <h1 id="hero-title" className="hero-subtitle">
-                Imagination,
-                <br />
-                <em>executed!</em>
+                <span className="hero-title-word">Imagination,</span>{" "}
+                <em className="hero-title-word">executed!</em>
               </h1>
             </div>
             <div className="hero-invitation">
-              <p className="hero-description">
-                Lazo is being built for PMs: less legwork, more focus on the
-                decisions and strategy that matter.
+              <p className="hero-description" id="hero-description">
+                Lazo is being built as your PM extension, carrying the legwork
+                so you can focus on the decisions and strategy that matter.
               </p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#release">
-                  Get launch updates <ArrowRight size={17} />
+                  Get launch updates <ArrowRight size={17} aria-hidden="true" />
                 </a>
               </div>
               <p className="hero-product-note">
-                Free forever. Runs on your own system.
+                <span>
+                  <Check size={14} aria-hidden="true" /> Free forever
+                </span>
+                <span>
+                  <LaptopMinimal size={14} aria-hidden="true" /> Runs on your
+                  own system
+                </span>
               </p>
             </div>
           </div>
@@ -891,8 +902,8 @@ export function App() {
               It is separate from the local playbook editor.
             </p>
             <p>
-              The illustrative workspace is not a released version of Lazo or
-              a promise of final functionality. The early-interest form records
+              The illustrative workspace is not a released version of Lazo or a
+              promise of final functionality. The early-interest form records
               your interest; it does not create a Lazo account or guarantee
               early access.
             </p>

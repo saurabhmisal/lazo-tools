@@ -80,6 +80,35 @@ test("navigation stays minimal and supporting resources remain available on dema
   assert.match(resources.playbooks, /id="playbooks"/);
 });
 
+test("the opening section has one reading flow and a single signup action", async () => {
+  const hero = page.match(/<section\b[^>]*class="hero"[\s\S]*?<\/section>/)[0];
+  assert.match(hero, /aria-describedby="hero-description"/);
+  assert.match(
+    plainText(hero),
+    /Launching soon.*Imagination, executed!.*Lazo is being built as your PM extension/,
+  );
+  assert.equal((hero.match(/href="#release"/g) || []).length, 1);
+  assert.equal((hero.match(/class="hero-title-word"/g) || []).length, 2);
+  assert.doesNotMatch(hero, /<br\s*\/?\s*>/);
+  assert.match(plainText(hero), /Free forever Runs on your own system/);
+  const css = await readFile(
+    new URL("../src/lazo-identity.css", import.meta.url),
+    "utf8",
+  );
+  assert.match(
+    css,
+    /\.simple-site \.hero-intro\s*\{[^}]*display: flex;[^}]*flex-direction: column;/,
+  );
+  assert.match(
+    css,
+    /\.simple-site \.hero-actions \.button\s*\{[^}]*min-height: 48px;/,
+  );
+  assert.match(
+    css,
+    /\.simple-site \.hero-product-note\s*\{[^}]*flex-wrap: wrap;/,
+  );
+});
+
 test("launch copy preserves free software, external costs, and human ownership", () => {
   assert.match(plainText(page), /Lazo is launching soon/);
   assert.doesNotMatch(
