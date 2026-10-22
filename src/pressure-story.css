@@ -746,7 +746,7 @@
 @media (max-width: 700px) {
   .story-clock {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: 44px 80px 176px 64px 160px 96px;
+    grid-template-rows: 44px 80px 176px 64px 160px 112px;
     gap: 8px;
     padding: 4px 0 0;
   }

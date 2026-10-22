@@ -737,9 +737,7 @@ export function App() {
         >
           <PressureStory onExplore={() => setDetail("workspace")} />
           <h2 id="mission-title">
-            An extension of you,
-            <br />
-            not another thing to manage
+            An extension of you, not another thing to manage
           </h2>
           <div className="mission-summary">
             <div>
