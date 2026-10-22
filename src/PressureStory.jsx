@@ -1,10 +1,12 @@
 import { useEffect, useReducer, useRef } from "react";
+import { ThinkingScene } from "./ThinkingScene.jsx";
 import {
   AppWindow,
   ArrowRight,
   ChartNoAxesCombined,
   Box,
   ClipboardList,
+  Download,
   Handshake,
   Lightbulb,
   Link2,
@@ -50,16 +52,13 @@ export function PressureStory({ onExplore }) {
     () => observeStoryEnvironment(ref.current, dispatch, window, document),
     [],
   );
-  function assetStatus(name, status) {
-    dispatch({ type: "asset", name, status });
-  }
   return (
     <figure className="pressure-story" id="workspace">
       <div
         ref={ref}
         className="story-canvas"
         role="img"
-        aria-label="An illustrated concept for the upcoming product: meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the PM and laptop. Outputs include a prototype, an MVP, a live survey, leadership updates, people in the loop, and stakeholders unblocked. The PM keeps direction, review, and final say."
+        aria-label="An illustrated concept for the upcoming product: a standing PM thinks with an Apple Pencil, then looks contentedly toward his devices. His yellow-strap Apple Watch visualises voice dictation, the laptop writes code, the iPad adds handwritten notes, and the phone assembles app blocks. Meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the character and devices. Outputs include a prototype, an MVP, a live survey, leadership updates, people in the loop, and stakeholders unblocked. The PM keeps direction, review, and final say."
         data-motion={animated ? "full" : "still"}
         data-playback={playback}
         data-static-art={
@@ -98,28 +97,10 @@ export function PressureStory({ onExplore }) {
             </div>
           </div>
           <div className="story-person">
-            <img
-              className="story-pressure-art story-motion"
-              src={`${import.meta.env.BASE_URL}assets/pm-pressure-v2.png`}
-              alt=""
-              width="1536"
-              height="1024"
-              decoding="async"
-              hidden={state.assets.pressure === "failed"}
-              fetchPriority="high"
-              onLoad={() => assetStatus("pressure", "loaded")}
-              onError={() => assetStatus("pressure", "failed")}
-            />
-            <img
-              className="story-composed-art story-motion"
-              src={`${import.meta.env.BASE_URL}assets/pm-composed-v2.png`}
-              alt=""
-              width="1536"
-              height="1024"
-              decoding="async"
-              hidden={state.assets.composed === "failed"}
-              onLoad={() => assetStatus("composed", "loaded")}
-              onError={() => assetStatus("composed", "failed")}
+            <ThinkingScene
+              playback={playback}
+              revision={state.revision}
+              dispatch={dispatch}
             />
           </div>
           <div className="story-outputs">
@@ -212,6 +193,15 @@ export function PressureStory({ onExplore }) {
               </button>
             </>
           )}
+          <a
+            className="icon-button"
+            href={`${import.meta.env.BASE_URL}assets/thinker-scene.gif`}
+            download="lazo-a-doer-for-a-thinker.gif"
+            aria-label="Download animation as GIF"
+            title="Download animation as GIF"
+          >
+            <Download size={17} />
+          </a>
         </div>
       </figcaption>
     </figure>

@@ -18,7 +18,7 @@
 .story-clock {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 1.65fr) minmax(0, 1fr);
-  grid-template-rows: 44px 280px 72px 80px;
+  grid-template-rows: 44px 360px 72px 80px;
   gap: 8px 28px;
   padding: 8px 20px 0;
 }
@@ -40,22 +40,31 @@
   position: relative;
   min-width: 0;
   min-height: 0;
+  display: grid;
+  place-items: center;
 }
-.story-person img {
+.thinking-scene {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4 / 3;
+}
+.thinking-scene img,
+.thinking-scene canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
-.story-person img[hidden] {
-  display: none;
+.thinking-scene canvas {
+  visibility: hidden;
 }
-.story-pressure-art {
-  opacity: 0;
+.thinking-scene[data-rendered="true"] canvas {
+  visibility: visible;
 }
-.story-composed-art {
-  opacity: 1;
+.thinking-scene[data-rendered="true"] img {
+  visibility: hidden;
 }
 .story-inputs,
 .story-outputs {
@@ -254,7 +263,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  width: 88px;
+  width: 128px;
   min-height: 44px;
   margin-left: auto;
 }
@@ -304,12 +313,6 @@
 .story-canvas[data-motion="full"] .story-output-6 {
   animation-name: story-output-sixth;
 }
-.story-canvas[data-motion="full"] .story-pressure-art {
-  animation-name: story-pressure-art;
-}
-.story-canvas[data-motion="full"] .story-composed-art {
-  animation-name: story-composed-art;
-}
 .story-canvas[data-motion="full"] .flow-token-in-1 {
   animation-name: flow-input-1;
 }
@@ -348,10 +351,6 @@
 }
 .story-canvas[data-motion="full"] .story-resolution {
   animation-name: story-resolution;
-}
-.story-canvas[data-motion="still"][data-static-art="pressure"]
-  .story-pressure-art {
-  opacity: 1;
 }
 
 @keyframes story-pressure-heading {
@@ -676,28 +675,6 @@
     transform: translateX(100%);
   }
 }
-@keyframes story-pressure-art {
-  0%,
-  66.667%,
-  100% {
-    opacity: 1;
-  }
-  73%,
-  92% {
-    opacity: 0;
-  }
-}
-@keyframes story-composed-art {
-  0%,
-  66.667%,
-  100% {
-    opacity: 0;
-  }
-  73%,
-  92% {
-    opacity: 1;
-  }
-}
 @keyframes story-direction {
   0%,
   35%,
@@ -743,10 +720,10 @@
     gap: 8px;
   }
 }
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .story-clock {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: 44px 80px 176px 64px 160px 112px;
+    grid-template-rows: 44px 80px 280px 64px 160px 112px;
     gap: 8px;
     padding: 4px 0 0;
   }
@@ -785,6 +762,9 @@
   }
   .story-person {
     grid-area: 3 / 1 / 4 / 4;
+  }
+  .thinking-scene {
+    max-width: 373px;
   }
   .story-flow {
     grid-area: 4 / 1 / 5 / 4;
@@ -840,21 +820,16 @@
   .story-canvas .story-motion {
     animation: none !important;
   }
-  .story-pressure-art,
   .story-pressure-heading,
   .story-direction,
   .flow-token {
     opacity: 0 !important;
   }
-  .story-composed-art,
   .story-input,
   .story-output,
   .story-resolution {
     opacity: 1 !important;
     transform: none !important;
-  }
-  .story-canvas[data-static-art="pressure"] .story-pressure-art {
-    opacity: 1 !important;
   }
   .simple-site .button:hover svg,
   .simple-site .button:focus-visible svg,

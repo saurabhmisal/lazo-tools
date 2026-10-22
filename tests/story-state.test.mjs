@@ -246,24 +246,20 @@ test("the CSS loop uses the shared 12-second clock and reduced-motion final stat
   assert.match(css, /animation-duration: var\(--story-duration\)/);
   assert.match(css, /animation-play-state: var\(--story-play-state\)/);
   assert.match(css, /animation-iteration-count: infinite/);
-  assert.match(
-    css,
-    /@keyframes story-composed-art\s*\{\s*0%,\s*66\.667%,\s*100%\s*\{\s*opacity: 0;/,
-  );
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(css, /animation: none !important/);
   const component = readFileSync(
-    new URL("../src/PressureStory.jsx", import.meta.url),
+    new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  for (const name of ["pm-pressure-v2.png", "pm-composed-v2.png"]) {
-    assert.ok(component.includes("import.meta.env.BASE_URL}assets/" + name));
+  assert.ok(component.includes("import.meta.env.BASE_URL}assets/"));
+  for (const name of ["pm-thinking-v3.png", "pm-contented-v3.png"]) {
     const png = readFileSync(
       new URL(`../public/assets/${name}`, import.meta.url),
     );
     assert.equal(png.subarray(1, 4).toString(), "PNG");
-    assert.equal(png.readUInt32BE(16), 1536);
-    assert.equal(png.readUInt32BE(20), 1024);
+    assert.equal(png.readUInt32BE(16), 1024);
+    assert.equal(png.readUInt32BE(20), 1536);
     assert.equal(png[25], 6, "RGBA artwork must preserve its transparency");
   }
 });
@@ -297,6 +293,6 @@ test("transport paths occupy their own grid row below the artwork on desktop and
     assert.ok(css.includes(`@keyframes story-output-${stage}`));
   }
   assert.match(css, /grid-template-rows: repeat\(2, 64px\)/);
-  assert.match(css, /grid-template-rows: 44px 280px 72px 80px/);
-  assert.match(css, /grid-template-rows: 44px 80px 176px 64px 160px 112px/);
+  assert.match(css, /grid-template-rows: 44px 360px 72px 80px/);
+  assert.match(css, /grid-template-rows: 44px 80px 280px 64px 160px 112px/);
 });

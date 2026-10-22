@@ -48,19 +48,19 @@ after(async () => {
 test("hero and metadata use the same punctuated tagline without repeating it in the footer", async () => {
   const headline = page.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g) || [];
   assert.equal(headline.length, 1);
-  assert.equal(plainText(headline[0]), "Imagination, executed!");
+  assert.equal(plainText(headline[0]), "A doer for a thinker!");
   const footer = page.match(/<footer\b[\s\S]*?<\/footer>/)[0];
-  assert.doesNotMatch(plainText(footer), /Imagination, executed!/);
+  assert.doesNotMatch(plainText(footer), /A doer for a thinker!/);
   const metadata = await readFile(
     new URL("../index.html", import.meta.url),
     "utf8",
   );
-  assert.match(metadata, /<title>Lazo \| Imagination, executed!<\/title>/);
+  assert.match(metadata, /<title>Lazo \| A doer for a thinker!<\/title>/);
   assert.match(
     metadata,
-    /property="og:title"\s+content="Lazo \| Imagination, executed!"/,
+    /property="og:title"\s+content="Lazo \| A doer for a thinker!"/,
   );
-  assert.doesNotMatch(metadata, /Imagination executed!/);
+  assert.doesNotMatch(metadata, /Imagination,? executed!/);
 });
 
 test("navigation stays minimal and supporting resources remain available on demand", () => {
@@ -85,7 +85,7 @@ test("the opening section has one reading flow and a single signup action", asyn
   assert.match(hero, /aria-describedby="hero-description"/);
   assert.match(
     plainText(hero),
-    /Launching soon.*Imagination, executed!.*Lazo is being built as your PM extension/,
+    /Launching soon.*A doer for a thinker!.*Lazo is being built as your PM extension/,
   );
   assert.equal((hero.match(/href="#release"/g) || []).length, 1);
   assert.equal((hero.match(/class="hero-title-word"/g) || []).length, 2);
@@ -174,7 +174,8 @@ test("the illustrated story has a stable static fallback and no live-product cla
   assert.match(page, /You set the direction/);
   assert.match(page, /You keep the final say/);
   assert.match(page, /Illustrated concept\. Lazo is in development\./);
-  assert.match(page, /class="story-controls"><\/div>/);
+  assert.match(page, /aria-label="Download animation as GIF"/);
+  assert.match(page, /assets\/thinker-scene-poster\.png/);
   assert.doesNotMatch(page, /New_DP\.png/);
   const heroEnd = page.indexOf("</section>");
   assert.ok(page.indexOf('class="pressure-story"') > heroEnd);

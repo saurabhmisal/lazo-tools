@@ -6,11 +6,16 @@ import config from "../vite.config.mjs";
 test("static assets support a GitHub project path and a custom domain", () => {
   assert.equal(config.base, "./");
   const component = readFileSync(
-    new URL("../src/PressureStory.jsx", import.meta.url),
+    new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  for (const name of ["pm-pressure-v2.png", "pm-composed-v2.png"]) {
-    assert.ok(component.includes("import.meta.env.BASE_URL}assets/" + name));
+  assert.ok(component.includes("import.meta.env.BASE_URL}assets/"));
+  for (const name of [
+    "pm-thinking-v3.png",
+    "pm-contented-v3.png",
+    "thinker-scene-poster.png",
+    "thinker-scene.gif",
+  ]) {
     for (const base of [
       "https://saurabhmisal.github.io/lazo-tools/",
       "https://lazo.tools/",
