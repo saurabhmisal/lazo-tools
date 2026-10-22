@@ -175,7 +175,7 @@ test("the illustrated story has a stable static fallback and no live-product cla
   assert.match(page, /You keep the final say/);
   assert.match(page, /Illustrated concept\. Lazo is in development\./);
   assert.match(page, /aria-label="Download animation as GIF"/);
-  assert.match(page, /assets\/thinker-scene-poster-v5\.png/);
+  assert.match(page, /assets\/thinker-scene-poster-v6\.png/);
   assert.match(page, /height-adjustable desk behind him/);
   assert.match(page, /fictional ride-hailing and fintech product grids/);
   assert.doesNotMatch(page, /New_DP\.png/);

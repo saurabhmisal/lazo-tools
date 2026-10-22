@@ -27,7 +27,7 @@ const ctx = canvas.getContext("2d");
 ctx.scale(SCENE_RENDER_SCALE, SCENE_RENDER_SCALE);
 drawThinkingScene(ctx, artwork, 10500, { ...options, still: true });
 await writeFile(
-  new URL("thinker-scene-poster-v5.png", root),
+  new URL("thinker-scene-poster-v6.png", root),
   canvas.toBuffer("image/png"),
 );
 
@@ -57,7 +57,7 @@ for (let frame = 0; frame < (STORY_DURATION_MS / 1000) * fps; frame++) {
   });
 }
 gif.finish();
-await writeFile(new URL("thinker-scene-v5.gif", root), gif.bytes());
+await writeFile(new URL("thinker-scene-v6.gif", root), gif.bytes());
 console.log(
   `Rendered ${STORY_DURATION_MS / 1000}s loop at ${fps}fps (${(gif.bytes().length / 1024 / 1024).toFixed(1)} MiB).`,
 );

@@ -127,10 +127,43 @@ test("the phone alternates fictional ride-hailing and fintech 2-by-2 product gri
     }
 });
 
+test("both poses keep the same yellow strap and black Apple Watch on the left wrist", async () => {
+  const artwork = {};
+  for (const [pose, file] of Object.entries(SCENE_ASSETS))
+    artwork[pose] = await loadImage(
+      new URL(`../public/assets/${file}`, import.meta.url).pathname,
+    );
+  const ctx = createCanvas(SCENE_WIDTH, SCENE_HEIGHT).getContext("2d");
+  let baseline;
+  const poses = new Set();
+  for (const time of [0, 4000, 7300, 7900, 8600, 10500, 11500, 11999]) {
+    const frame = thinkingSceneAt(time);
+    poses.add(frame.pose);
+    // Cancel body movement so the same anatomical wrist pixels can be compared.
+    ctx.setTransform(1, 0, 0, 1, 0, -frame.breath - frame.nod);
+    drawThinkingScene(ctx, artwork, time, { PathType: Path2D });
+    const samples = [
+      [153, 220],
+      [153, 202],
+      [146, 207],
+      [159, 204],
+    ].map(([x, y]) => [...ctx.getImageData(x, y, 1, 1).data]);
+    assert.deepEqual(samples[0], [245, 207, 50, 255], "Strap must stay yellow");
+    assert.deepEqual(
+      samples[1],
+      [9, 14, 12, 255],
+      "Watch face must stay black",
+    );
+    baseline ??= samples;
+    assert.deepEqual(samples, baseline, `Watch changed at ${time}ms`);
+  }
+  assert.deepEqual([...poses].sort(), ["composed", "pressure"]);
+});
+
 test("the live scene and poster preserve a two-times resolution without changing layout ratio", () => {
   assert.equal(SCENE_RENDER_SCALE, 2);
   const poster = readFileSync(
-    new URL("../public/assets/thinker-scene-poster-v5.png", import.meta.url),
+    new URL("../public/assets/thinker-scene-poster-v6.png", import.meta.url),
   );
   assert.equal(poster.readUInt32BE(16), SCENE_WIDTH * SCENE_RENDER_SCALE);
   assert.equal(poster.readUInt32BE(20), SCENE_HEIGHT * SCENE_RENDER_SCALE);
@@ -147,7 +180,7 @@ test("the live scene and poster preserve a two-times resolution without changing
 
 test("a real looping GIF is downloadable without autoplaying it for reduced motion", () => {
   const gif = readFileSync(
-    new URL("../public/assets/thinker-scene-v5.gif", import.meta.url),
+    new URL("../public/assets/thinker-scene-v6.gif", import.meta.url),
   );
   assert.equal(gif.subarray(0, 6).toString(), "GIF89a");
   assert.equal(gif.readUInt16LE(6), 800);
@@ -158,7 +191,7 @@ test("a real looping GIF is downloadable without autoplaying it for reduced moti
     new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  assert.match(component, /thinker-scene-poster-v5\.png/);
+  assert.match(component, /thinker-scene-poster-v6\.png/);
   assert.doesNotMatch(component, /<img[^>]*\.gif/);
   assert.match(component, /cancelAnimationFrame/);
   assert.match(component, /playback === "still"/);

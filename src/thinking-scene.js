@@ -165,6 +165,38 @@ function wave(ctx, x, y, seconds, listening, scale = 1) {
   ctx.restore();
 }
 
+function appleWatch(ctx, frame) {
+  // One registered watch replaces the small accessory variations in both poses.
+  ctx.save();
+  ctx.translate(153, 207);
+  ctx.rotate(0.07);
+  ctx.lineWidth = 0.9;
+  ctx.strokeStyle = "#765d12";
+  ctx.fillStyle = "#f5cf32";
+  ctx.beginPath();
+  ctx.roundRect(-5.8, -12, 11.6, 29.5, 2.4);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = "#ffe56b";
+  ctx.fillRect(-4.5, 7.5, 1.2, 8);
+  ctx.fillStyle = "#404643";
+  ctx.beginPath();
+  ctx.roundRect(7.3, -4.8, 2, 4, 0.8);
+  ctx.fill();
+  ctx.fillStyle = "#252b28";
+  ctx.strokeStyle = "#ccd3ce";
+  ctx.beginPath();
+  ctx.roundRect(-8.4, -9, 16.8, 16.5, 4);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = "#090e0c";
+  ctx.beginPath();
+  ctx.roundRect(-6.9, -7.5, 13.8, 13.5, 3);
+  ctx.fill();
+  wave(ctx, -4.8, -0.7, frame.seconds, frame.listening > 0.1, 0.32);
+  ctx.restore();
+}
+
 function laptop(ctx, frame) {
   roundBox(ctx, 330, 205, 360, 223, "#a2ada9", "#d1dad4", 12);
   roundBox(ctx, 338, 213, 344, 206, "#172321", null, 6);
@@ -360,17 +392,11 @@ export function drawThinkingScene(
   ctx.save();
   ctx.globalAlpha = 1;
   ctx.translate(0, frame.breath + frame.nod);
-  if (image) ctx.drawImage(image, -40, 4, 400, 600);
+  if (image) {
+    ctx.drawImage(image, -40, 4, 400, 600);
+    appleWatch(ctx, frame);
+  }
   ctx.restore();
-  // The watch face is at this fixed point in the registered character artwork.
-  wave(
-    ctx,
-    147,
-    206 + frame.breath + frame.nod,
-    frame.seconds,
-    frame.listening > 0.1,
-    0.32,
-  );
   wave(ctx, 355, 28, frame.seconds, frame.listening > 0.1, 0.9);
   text(
     ctx,

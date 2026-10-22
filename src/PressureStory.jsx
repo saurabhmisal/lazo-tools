@@ -195,7 +195,7 @@ export function PressureStory({ onExplore }) {
           )}
           <a
             className="icon-button"
-            href={`${import.meta.env.BASE_URL}assets/thinker-scene-v5.gif`}
+            href={`${import.meta.env.BASE_URL}assets/thinker-scene-v6.gif`}
             download="lazo-a-doer-for-a-thinker.gif"
             aria-label="Download animation as GIF"
             title="Download animation as GIF"
