@@ -250,6 +250,21 @@ function appleWatch(ctx, frame) {
   ctx.restore();
 }
 
+function goldEarring(ctx) {
+  // Anatomical left: the partly hidden ear at the viewer's right edge of the face.
+  ctx.beginPath();
+  ctx.arc(172.3, 71, 1.9, 0, Math.PI * 2);
+  ctx.fillStyle = "#e7b83e";
+  ctx.fill();
+  ctx.strokeStyle = "#725013";
+  ctx.lineWidth = 0.6;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(171.8, 70.5, 0.45, 0, Math.PI * 2);
+  ctx.fillStyle = "#fff0a6";
+  ctx.fill();
+}
+
 function laptop(ctx, frame) {
   roundBox(ctx, 330, 205, 360, 223, "#a2ada9", "#d1dad4", 12);
   roundBox(ctx, 338, 213, 344, 206, "#172321", null, 6);
@@ -464,6 +479,7 @@ export function drawThinkingScene(
     const { x, y, width, height } = SCENE_LAYOUT.character;
     ctx.drawImage(image, x, y, width, height);
     appleWatch(ctx, frame);
+    goldEarring(ctx);
   }
   ctx.restore();
   wave(ctx, 355, 28, frame.seconds, frame.listening > 0.1, 0.9);

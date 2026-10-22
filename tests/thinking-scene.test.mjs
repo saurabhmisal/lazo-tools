@@ -229,10 +229,36 @@ test("both poses keep the same yellow strap and black Apple Watch on the left wr
   assert.deepEqual([...poses].sort(), ["composed", "pressure"]);
 });
 
+test("the small gold earring stays on the anatomical left ear in both expressions", async () => {
+  const artwork = {};
+  for (const [pose, file] of Object.entries(SCENE_ASSETS))
+    artwork[pose] = await loadImage(
+      new URL(`../public/assets/${file}`, import.meta.url).pathname,
+    );
+  const ctx = createCanvas(SCENE_WIDTH, SCENE_HEIGHT).getContext("2d");
+  let baseline;
+  for (const time of [0, 4000, 7900, 10500, 11500]) {
+    const frame = thinkingSceneAt(time);
+    ctx.setTransform(1, 0, 0, 1, 0, -frame.breath - frame.nod);
+    drawThinkingScene(ctx, artwork, time, { PathType: Path2D });
+    const gold = [...ctx.getImageData(172, 71, 1, 1).data];
+    assert.deepEqual(
+      gold,
+      [231, 184, 62, 255],
+      `Left-ear stud changed at ${time}ms`,
+    );
+    baseline ??= gold;
+    assert.deepEqual(gold, baseline);
+    // The opposite visible ear must retain skin, not a second gold stud.
+    const [r, g, b] = ctx.getImageData(114, 86, 1, 1).data;
+    assert.ok(b > 70 && r > g && g > b);
+  }
+});
+
 test("the live scene and poster preserve a two-times resolution without changing layout ratio", () => {
   assert.equal(SCENE_RENDER_SCALE, 2);
   const poster = readFileSync(
-    new URL("../public/assets/thinker-scene-poster-v7.png", import.meta.url),
+    new URL("../public/assets/thinker-scene-poster-v8.png", import.meta.url),
   );
   assert.equal(poster.readUInt32BE(16), SCENE_WIDTH * SCENE_RENDER_SCALE);
   assert.equal(poster.readUInt32BE(20), SCENE_HEIGHT * SCENE_RENDER_SCALE);
@@ -249,7 +275,7 @@ test("the live scene and poster preserve a two-times resolution without changing
 
 test("a real looping GIF is downloadable without autoplaying it for reduced motion", () => {
   const gif = readFileSync(
-    new URL("../public/assets/thinker-scene-v7.gif", import.meta.url),
+    new URL("../public/assets/thinker-scene-v8.gif", import.meta.url),
   );
   assert.equal(gif.subarray(0, 6).toString(), "GIF89a");
   assert.equal(gif.readUInt16LE(6), 800);
@@ -260,7 +286,7 @@ test("a real looping GIF is downloadable without autoplaying it for reduced moti
     new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  assert.match(component, /thinker-scene-poster-v7\.png/);
+  assert.match(component, /thinker-scene-poster-v8\.png/);
   assert.doesNotMatch(component, /<img[^>]*\.gif/);
   assert.match(component, /cancelAnimationFrame/);
   assert.match(component, /playback === "still"/);
