@@ -18,7 +18,7 @@
 .story-clock {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 1.65fr) minmax(0, 1fr);
-  grid-template-rows: 44px 240px 72px 64px;
+  grid-template-rows: 44px 280px 72px 64px;
   gap: 8px 28px;
   padding: 8px 20px 0;
 }
@@ -95,6 +95,13 @@
 }
 .story-output {
   color: var(--pearl);
+}
+.story-output-list {
+  gap: 6px;
+}
+.story-output > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .story-source-icon,
 .story-output-icon {
@@ -276,6 +283,15 @@
 .story-canvas[data-motion="full"] .story-output-3 {
   animation-name: story-output-third;
 }
+.story-canvas[data-motion="full"] .story-output-4 {
+  animation-name: story-output-fourth;
+}
+.story-canvas[data-motion="full"] .story-output-5 {
+  animation-name: story-output-fifth;
+}
+.story-canvas[data-motion="full"] .story-output-6 {
+  animation-name: story-output-sixth;
+}
 .story-canvas[data-motion="full"] .story-pressure-art {
   animation-name: story-pressure-art;
 }
@@ -305,6 +321,15 @@
 }
 .story-canvas[data-motion="full"] .flow-token-out-3 {
   animation-name: flow-output-3;
+}
+.story-canvas[data-motion="full"] .flow-token-out-4 {
+  animation-name: flow-output-4;
+}
+.story-canvas[data-motion="full"] .flow-token-out-5 {
+  animation-name: flow-output-5;
+}
+.story-canvas[data-motion="full"] .flow-token-out-6 {
+  animation-name: flow-output-6;
 }
 .story-canvas[data-motion="full"] .story-direction {
   animation-name: story-direction;
@@ -343,12 +368,12 @@
 }
 @keyframes story-output-first {
   0%,
-  58%,
+  59%,
   100% {
     opacity: 0;
     transform: translateX(-6px);
   }
-  70%,
+  64%,
   92% {
     opacity: 1;
     transform: none;
@@ -356,12 +381,12 @@
 }
 @keyframes story-output-second {
   0%,
-  66%,
+  63%,
   100% {
     opacity: 0;
     transform: translateX(-6px);
   }
-  78%,
+  68%,
   92% {
     opacity: 1;
     transform: none;
@@ -369,7 +394,46 @@
 }
 @keyframes story-output-third {
   0%,
-  70%,
+  67%,
+  100% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  72%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes story-output-fourth {
+  0%,
+  71%,
+  100% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  76%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes story-output-fifth {
+  0%,
+  75%,
+  100% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  80%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes story-output-sixth {
+  0%,
+  79%,
   100% {
     opacity: 0;
     transform: translateX(-6px);
@@ -482,19 +546,19 @@
 }
 @keyframes flow-output-1 {
   0%,
-  53% {
+  47% {
     opacity: 0;
     transform: translateX(0);
   }
-  56% {
+  50% {
     opacity: 1;
     transform: translateX(0);
   }
-  70% {
+  64% {
     opacity: 1;
     transform: translateX(100%);
   }
-  73%,
+  67%,
   100% {
     opacity: 0;
     transform: translateX(100%);
@@ -502,25 +566,85 @@
 }
 @keyframes flow-output-2 {
   0%,
-  61% {
+  51% {
     opacity: 0;
     transform: translateX(0);
   }
-  64% {
+  54% {
     opacity: 1;
     transform: translateX(0);
   }
-  78% {
+  68% {
     opacity: 1;
     transform: translateX(100%);
   }
-  81%,
+  71%,
   100% {
     opacity: 0;
     transform: translateX(100%);
   }
 }
 @keyframes flow-output-3 {
+  0%,
+  55% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  58% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  72% {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+  75%,
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+@keyframes flow-output-4 {
+  0%,
+  59% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  62% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  76% {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+  79%,
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+@keyframes flow-output-5 {
+  0%,
+  63% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  66% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+  83%,
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+@keyframes flow-output-6 {
   0%,
   67% {
     opacity: 0;
@@ -610,7 +734,7 @@
 @media (max-width: 700px) {
   .story-clock {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: 44px 80px 176px 64px 76px 60px;
+    grid-template-rows: 44px 80px 176px 64px 160px 60px;
     gap: 8px;
     padding: 4px 0 0;
   }
@@ -633,6 +757,7 @@
   }
   .story-output-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, 64px);
     gap: 8px;
   }
   .story-input,

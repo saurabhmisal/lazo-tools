@@ -158,10 +158,13 @@ test("the story separates incoming artifacts from reviewable work and routes flo
     "Product ideas",
     "Metrics",
     "Requests",
-    "Evidence brief",
-    "Draft for review",
-    "Next steps",
-    "Ready for review",
+    "Prototype",
+    "MVP",
+    "Live survey",
+    "Leadership updates",
+    "People in the loop",
+    "Stakeholders unblocked",
+    "Outputs",
   ])
     assert.ok(page.includes(`>${label}</span>`), label);
   assert.equal(
@@ -171,7 +174,7 @@ test("the story separates incoming artifacts from reviewable work and routes flo
   assert.equal(
     (page.match(/class="story-output story-output-\d story-motion"/g) || [])
       .length,
-    3,
+    6,
   );
   assert.equal(
     (page.match(/class="flow-token flow-token-in-\d story-motion"/g) || [])
@@ -181,10 +184,11 @@ test("the story separates incoming artifacts from reviewable work and routes flo
   assert.equal(
     (page.match(/class="flow-token flow-token-out-\d story-motion"/g) || [])
       .length,
-    3,
+    6,
   );
   assert.match(page, /Less chasing\. Clearer next moves\./);
   assert.doesNotMatch(page, /story-connection/);
+  assert.doesNotMatch(page, />Evidence brief<|>Draft for review<|>Next steps</);
 });
 
 test("the PM problem, mission, and vision are distinct and brief", () => {

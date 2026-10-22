@@ -281,9 +281,20 @@ test("transport paths occupy their own grid row below the artwork on desktop and
   assert.match(css, /border-bottom-right-radius: 22px/);
   assert.match(css, /\.flow-track\s*\{[^}]*overflow: hidden;/);
   for (const direction of ["input", "output"]) {
-    const count = direction === "input" ? 5 : 3;
+    const count = direction === "input" ? 5 : 6;
     for (let i = 1; i <= count; i++) {
       assert.ok(css.includes(`@keyframes flow-${direction}-${i}`));
     }
   }
+  for (const stage of [
+    "first",
+    "second",
+    "third",
+    "fourth",
+    "fifth",
+    "sixth",
+  ]) {
+    assert.ok(css.includes(`@keyframes story-output-${stage}`));
+  }
+  assert.match(css, /grid-template-rows: repeat\(2, 64px\)/);
 });

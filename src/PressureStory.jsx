@@ -3,16 +3,19 @@ import {
   AppWindow,
   ArrowRight,
   ChartNoAxesCombined,
-  FileSearch,
-  FileText,
+  Box,
+  ClipboardList,
+  Handshake,
   Lightbulb,
   Link2,
-  ListChecks,
   MessageSquareText,
   NotebookPen,
   Pause,
+  PanelTop,
   Play,
+  Presentation,
   RotateCcw,
+  Users,
 } from "lucide-react";
 import {
   STORY_DURATION_MS,
@@ -30,9 +33,12 @@ const inputs = [
   { label: "Requests", Icon: AppWindow, tone: "sage" },
 ];
 const outputs = [
-  { label: "Evidence brief", Icon: FileSearch },
-  { label: "Draft for review", Icon: FileText },
-  { label: "Next steps", Icon: ListChecks },
+  { label: "Prototype", Icon: PanelTop },
+  { label: "MVP", Icon: Box },
+  { label: "Live survey", Icon: ClipboardList },
+  { label: "Leadership updates", Icon: Presentation },
+  { label: "People in the loop", Icon: Users },
+  { label: "Stakeholders unblocked", Icon: Handshake },
 ];
 
 export function PressureStory({ onExplore }) {
@@ -53,7 +59,7 @@ export function PressureStory({ onExplore }) {
         ref={ref}
         className="story-canvas"
         role="img"
-        aria-label="An illustrated concept for the upcoming product: meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the PM and laptop. Evidence briefs, drafts, and next steps emerge for human review. The PM keeps direction and final say."
+        aria-label="An illustrated concept for the upcoming product: meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the PM and laptop. Outputs include a prototype, an MVP, a live survey, leadership updates, people in the loop, and stakeholders unblocked. The PM keeps direction, review, and final say."
         data-motion={animated ? "full" : "still"}
         data-playback={playback}
         data-static-art={
@@ -117,7 +123,7 @@ export function PressureStory({ onExplore }) {
             />
           </div>
           <div className="story-outputs">
-            <span className="story-rail-label">Ready for review</span>
+            <span className="story-rail-label">Outputs</span>
             <div className="story-output-list">
               {outputs.map(({ label, Icon }, index) => (
                 <div
