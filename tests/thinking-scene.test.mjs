@@ -46,6 +46,22 @@ test("both character states and device progress produce different nonblank frame
     artwork[name] = await loadImage(
       new URL(`../public/assets/${file}`, import.meta.url).pathname,
     );
+  for (const [name, image] of Object.entries(artwork)) {
+    const sprite = createCanvas(image.width, image.height).getContext("2d");
+    sprite.drawImage(image, 0, 0);
+    for (const [x, y] of [
+      [100, 200],
+      [200, 400],
+      [20, 600],
+      [500, 1500],
+    ]) {
+      assert.equal(
+        sprite.getImageData(x, y, 1, 1).data[3],
+        0,
+        `${name}: background haze at ${x},${y}`,
+      );
+    }
+  }
   const canvas = createCanvas(SCENE_WIDTH, SCENE_HEIGHT),
     ctx = canvas.getContext("2d");
   drawThinkingScene(ctx, artwork, 0);
@@ -61,7 +77,7 @@ test("both character states and device progress produce different nonblank frame
 
 test("a real looping GIF is downloadable without autoplaying it for reduced motion", () => {
   const gif = readFileSync(
-    new URL("../public/assets/thinker-scene.gif", import.meta.url),
+    new URL("../public/assets/thinker-scene-v4.gif", import.meta.url),
   );
   assert.equal(gif.subarray(0, 6).toString(), "GIF89a");
   assert.equal(gif.readUInt16LE(6), 640);
@@ -72,7 +88,7 @@ test("a real looping GIF is downloadable without autoplaying it for reduced moti
     new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  assert.match(component, /thinker-scene-poster\.png/);
+  assert.match(component, /thinker-scene-poster-v4\.png/);
   assert.doesNotMatch(component, /<img[^>]*\.gif/);
   assert.match(component, /cancelAnimationFrame/);
   assert.match(component, /playback === "still"/);

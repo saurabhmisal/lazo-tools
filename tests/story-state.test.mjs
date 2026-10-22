@@ -253,7 +253,7 @@ test("the CSS loop uses the shared 12-second clock and reduced-motion final stat
     "utf8",
   );
   assert.ok(component.includes("import.meta.env.BASE_URL}assets/"));
-  for (const name of ["pm-thinking-v3.png", "pm-contented-v3.png"]) {
+  for (const name of ["pm-thinking-v4.png", "pm-contented-v4.png"]) {
     const png = readFileSync(
       new URL(`../public/assets/${name}`, import.meta.url),
     );

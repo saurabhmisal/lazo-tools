@@ -3,8 +3,8 @@ import { STORY_DURATION_MS } from "./story-state.js";
 export const SCENE_WIDTH = 800;
 export const SCENE_HEIGHT = 600;
 export const SCENE_ASSETS = {
-  pressure: "pm-thinking-v3.png",
-  composed: "pm-contented-v3.png",
+  pressure: "pm-thinking-v4.png",
+  composed: "pm-contented-v4.png",
 };
 
 const clamp = (n) => Math.min(1, Math.max(0, n));
