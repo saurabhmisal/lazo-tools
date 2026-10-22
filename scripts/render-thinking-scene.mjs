@@ -1,12 +1,13 @@
 import { writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
-import { createCanvas, loadImage, GlobalFonts } from "@napi-rs/canvas";
+import { createCanvas, loadImage, GlobalFonts, Path2D } from "@napi-rs/canvas";
 import gifenc from "gifenc";
 import {
   drawThinkingScene,
   SCENE_ASSETS,
   SCENE_WIDTH,
   SCENE_HEIGHT,
+  SCENE_RENDER_SCALE,
 } from "../src/thinking-scene.js";
 import { STORY_DURATION_MS } from "../src/story-state.js";
 
@@ -17,17 +18,21 @@ for (const [name, filename] of Object.entries(SCENE_ASSETS))
   artwork[name] = await loadImage(new URL(filename, root).pathname);
 const font = "/System/Library/Fonts/Supplemental/Chalkboard.ttc";
 if (existsSync(font)) GlobalFonts.registerFromPath(font, "LazoHand");
-const options = { handwriting: '"LazoHand", cursive' };
-const canvas = createCanvas(SCENE_WIDTH, SCENE_HEIGHT);
+const options = { handwriting: '"LazoHand", cursive', PathType: Path2D };
+const canvas = createCanvas(
+  SCENE_WIDTH * SCENE_RENDER_SCALE,
+  SCENE_HEIGHT * SCENE_RENDER_SCALE,
+);
 const ctx = canvas.getContext("2d");
+ctx.scale(SCENE_RENDER_SCALE, SCENE_RENDER_SCALE);
 drawThinkingScene(ctx, artwork, 10500, { ...options, still: true });
 await writeFile(
-  new URL("thinker-scene-poster-v4.png", root),
+  new URL("thinker-scene-poster-v5.png", root),
   canvas.toBuffer("image/png"),
 );
 
-const width = 640,
-  height = 480,
+const width = 800,
+  height = 600,
   fps = 20;
 const scaled = createCanvas(width, height),
   surface = scaled.getContext("2d");
@@ -52,7 +57,7 @@ for (let frame = 0; frame < (STORY_DURATION_MS / 1000) * fps; frame++) {
   });
 }
 gif.finish();
-await writeFile(new URL("thinker-scene-v4.gif", root), gif.bytes());
+await writeFile(new URL("thinker-scene-v5.gif", root), gif.bytes());
 console.log(
   `Rendered ${STORY_DURATION_MS / 1000}s loop at ${fps}fps (${(gif.bytes().length / 1024 / 1024).toFixed(1)} MiB).`,
 );

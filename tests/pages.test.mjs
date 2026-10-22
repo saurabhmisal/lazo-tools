@@ -13,8 +13,8 @@ test("static assets support a GitHub project path and a custom domain", () => {
   for (const name of [
     "pm-thinking-v4.png",
     "pm-contented-v4.png",
-    "thinker-scene-poster-v4.png",
-    "thinker-scene-v4.gif",
+    "thinker-scene-poster-v5.png",
+    "thinker-scene-v5.gif",
   ]) {
     for (const base of [
       "https://saurabhmisal.github.io/lazo-tools/",

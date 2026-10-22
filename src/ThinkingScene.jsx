@@ -4,6 +4,7 @@ import {
   SCENE_ASSETS,
   SCENE_WIDTH,
   SCENE_HEIGHT,
+  SCENE_RENDER_SCALE,
 } from "./thinking-scene.js";
 
 export function ThinkingScene({ playback, revision, dispatch }) {
@@ -50,6 +51,7 @@ export function ThinkingScene({ playback, revision, dispatch }) {
       return;
     }
     if (!context || !loaded) return;
+    context.setTransform(SCENE_RENDER_SCALE, 0, 0, SCENE_RENDER_SCALE, 0, 0);
     if (playback === "still") elapsed.current = 0;
     let request;
     let previous;
@@ -78,7 +80,7 @@ export function ThinkingScene({ playback, revision, dispatch }) {
   return (
     <div className="thinking-scene" data-rendered={drawn}>
       <img
-        src={`${import.meta.env.BASE_URL}assets/thinker-scene-poster-v4.png`}
+        src={`${import.meta.env.BASE_URL}assets/thinker-scene-poster-v5.png`}
         alt=""
         width={SCENE_WIDTH}
         height={SCENE_HEIGHT}
@@ -86,8 +88,8 @@ export function ThinkingScene({ playback, revision, dispatch }) {
       />
       <canvas
         ref={canvas}
-        width={SCENE_WIDTH}
-        height={SCENE_HEIGHT}
+        width={SCENE_WIDTH * SCENE_RENDER_SCALE}
+        height={SCENE_HEIGHT * SCENE_RENDER_SCALE}
         aria-hidden="true"
       />
     </div>

@@ -58,7 +58,7 @@ export function PressureStory({ onExplore }) {
         ref={ref}
         className="story-canvas"
         role="img"
-        aria-label="An illustrated concept for the upcoming product: a standing PM thinks with an Apple Pencil, then looks contentedly toward his devices. His yellow-strap Apple Watch visualises voice dictation, the laptop writes code, the iPad adds handwritten notes, and the phone assembles app blocks. Meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the character and devices. Outputs include a prototype, an MVP, a live survey, leadership updates, people in the loop, and stakeholders unblocked. The PM keeps direction, review, and final say."
+        aria-label="An illustrated concept for the upcoming product: a standing PM thinks with an Apple Pencil, then looks contentedly toward devices on a height-adjustable desk behind him. His yellow-strap Apple Watch visualises voice dictation, the laptop writes code, the iPad adds handwritten notes, and the phone shows fictional ride-hailing and fintech product grids. Meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the character and devices. Outputs include a prototype, an MVP, a live survey, leadership updates, people in the loop, and stakeholders unblocked. The PM keeps direction, review, and final say."
         data-motion={animated ? "full" : "still"}
         data-playback={playback}
         data-static-art={
@@ -195,7 +195,7 @@ export function PressureStory({ onExplore }) {
           )}
           <a
             className="icon-button"
-            href={`${import.meta.env.BASE_URL}assets/thinker-scene-v4.gif`}
+            href={`${import.meta.env.BASE_URL}assets/thinker-scene-v5.gif`}
             download="lazo-a-doer-for-a-thinker.gif"
             aria-label="Download animation as GIF"
             title="Download animation as GIF"

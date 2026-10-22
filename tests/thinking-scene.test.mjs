@@ -1,13 +1,15 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { createCanvas, loadImage } from "@napi-rs/canvas";
+import { createCanvas, loadImage, Path2D } from "@napi-rs/canvas";
 import {
   drawThinkingScene,
   thinkingSceneAt,
   SCENE_ASSETS,
   SCENE_WIDTH,
   SCENE_HEIGHT,
+  SCENE_RENDER_SCALE,
+  PHONE_SCREENS,
 } from "../src/thinking-scene.js";
 import { STORY_DURATION_MS } from "../src/story-state.js";
 
@@ -64,31 +66,99 @@ test("both character states and device progress produce different nonblank frame
   }
   const canvas = createCanvas(SCENE_WIDTH, SCENE_HEIGHT),
     ctx = canvas.getContext("2d");
-  drawThinkingScene(ctx, artwork, 0);
+  drawThinkingScene(ctx, artwork, 0, { PathType: Path2D });
   const start = canvas.toBuffer("image/png");
-  const codeStart = ctx.getImageData(330, 205, 360, 223).data;
-  drawThinkingScene(ctx, artwork, 10500);
+  const codeStart = ctx.getImageData(300, 110, 260, 140).data;
+  drawThinkingScene(ctx, artwork, 10500, { PathType: Path2D });
   const end = canvas.toBuffer("image/png");
   assert.notDeepEqual(start, end);
-  assert.notDeepEqual(codeStart, ctx.getImageData(330, 205, 360, 223).data);
+  assert.notDeepEqual(codeStart, ctx.getImageData(300, 110, 260, 140).data);
   assert.ok(end.length > 20000);
   assert.doesNotThrow(() => drawThinkingScene(ctx, {}, 0, { still: true }));
 });
 
+test("every transition frame draws one opaque character in front of the desk", () => {
+  const ctx = createCanvas(SCENE_WIDTH, SCENE_HEIGHT).getContext("2d");
+  const artwork = { pressure: {}, composed: {} };
+  let draws = [];
+  ctx.drawImage = (image) =>
+    draws.push({
+      image,
+      alpha: ctx.globalAlpha,
+      desk: [...ctx.getImageData(500, 281, 1, 1).data],
+    });
+  for (const time of [
+    0, 6500, 7000, 7300, 7600, 7900, 8200, 8600, 10500, 11200, 11500, 11800,
+    11999,
+  ]) {
+    draws = [];
+    const frame = drawThinkingScene(ctx, artwork, time, { PathType: Path2D });
+    assert.equal(draws.length, 1, `Double silhouette at ${time}ms`);
+    assert.equal(draws[0].alpha, 1, `Translucent character at ${time}ms`);
+    assert.equal(draws[0].image, artwork[frame.pose]);
+    assert.deepEqual(
+      draws[0].desk,
+      [226, 232, 226, 255],
+      "Desk must already be behind the character",
+    );
+  }
+});
+
+test("the phone alternates fictional ride-hailing and fintech 2-by-2 product grids", () => {
+  assert.equal(thinkingSceneAt(4000).phoneMode, "ride");
+  assert.equal(thinkingSceneAt(9000).phoneMode, "fintech");
+  assert.equal(thinkingSceneAt(0, true).phoneMode, "fintech");
+  assert.deepEqual(
+    PHONE_SCREENS.ride.map((item) => item.label),
+    ["Bike", "Car", "Parcel", "Saved"],
+  );
+  assert.deepEqual(
+    PHONE_SCREENS.fintech.map((item) => item.label),
+    ["Pay", "Wallet", "Cards", "Scan"],
+  );
+  for (const items of Object.values(PHONE_SCREENS))
+    for (const item of items) {
+      assert.equal(item.icon.size, 24);
+      assert.ok(
+        item.icon.node.every(([tag]) =>
+          ["path", "circle", "rect", "line", "polyline"].includes(tag),
+        ),
+      );
+    }
+});
+
+test("the live scene and poster preserve a two-times resolution without changing layout ratio", () => {
+  assert.equal(SCENE_RENDER_SCALE, 2);
+  const poster = readFileSync(
+    new URL("../public/assets/thinker-scene-poster-v5.png", import.meta.url),
+  );
+  assert.equal(poster.readUInt32BE(16), SCENE_WIDTH * SCENE_RENDER_SCALE);
+  assert.equal(poster.readUInt32BE(20), SCENE_HEIGHT * SCENE_RENDER_SCALE);
+  const component = readFileSync(
+    new URL("../src/ThinkingScene.jsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(component, /width=\{SCENE_WIDTH \* SCENE_RENDER_SCALE\}/);
+  assert.match(
+    component,
+    /context\.setTransform\(SCENE_RENDER_SCALE, 0, 0, SCENE_RENDER_SCALE, 0, 0\)/,
+  );
+});
+
 test("a real looping GIF is downloadable without autoplaying it for reduced motion", () => {
   const gif = readFileSync(
-    new URL("../public/assets/thinker-scene-v4.gif", import.meta.url),
+    new URL("../public/assets/thinker-scene-v5.gif", import.meta.url),
   );
   assert.equal(gif.subarray(0, 6).toString(), "GIF89a");
-  assert.equal(gif.readUInt16LE(6), 640);
-  assert.equal(gif.readUInt16LE(8), 480);
+  assert.equal(gif.readUInt16LE(6), 800);
+  assert.equal(gif.readUInt16LE(8), 600);
   assert.ok(gif.includes(Buffer.from("NETSCAPE2.0")));
   assert.equal(gif.at(-1), 0x3b);
   const component = readFileSync(
     new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  assert.match(component, /thinker-scene-poster-v4\.png/);
+  assert.match(component, /thinker-scene-poster-v5\.png/);
   assert.doesNotMatch(component, /<img[^>]*\.gif/);
   assert.match(component, /cancelAnimationFrame/);
   assert.match(component, /playback === "still"/);

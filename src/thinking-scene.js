@@ -1,10 +1,33 @@
 import { STORY_DURATION_MS } from "./story-state.js";
+import { __iconData as bike } from "lucide-react/dist/esm/icons/bike.mjs";
+import { __iconData as car } from "lucide-react/dist/esm/icons/car-front.mjs";
+import { __iconData as parcel } from "lucide-react/dist/esm/icons/package.mjs";
+import { __iconData as pin } from "lucide-react/dist/esm/icons/map-pin.mjs";
+import { __iconData as pay } from "lucide-react/dist/esm/icons/arrow-up-right.mjs";
+import { __iconData as wallet } from "lucide-react/dist/esm/icons/wallet.mjs";
+import { __iconData as card } from "lucide-react/dist/esm/icons/credit-card.mjs";
+import { __iconData as scan } from "lucide-react/dist/esm/icons/scan-line.mjs";
 
 export const SCENE_WIDTH = 800;
 export const SCENE_HEIGHT = 600;
+export const SCENE_RENDER_SCALE = 2;
 export const SCENE_ASSETS = {
   pressure: "pm-thinking-v4.png",
   composed: "pm-contented-v4.png",
+};
+export const PHONE_SCREENS = {
+  ride: [
+    { label: "Bike", icon: bike, color: "#ffd07a" },
+    { label: "Car", icon: car, color: "#8dc4ff" },
+    { label: "Parcel", icon: parcel, color: "#c5adff" },
+    { label: "Saved", icon: pin, color: "#8edfc0" },
+  ],
+  fintech: [
+    { label: "Pay", icon: pay, color: "#8edfc0" },
+    { label: "Wallet", icon: wallet, color: "#8dc4ff" },
+    { label: "Cards", icon: card, color: "#c5adff" },
+    { label: "Scan", icon: scan, color: "#ffd07a" },
+  ],
 };
 
 const clamp = (n) => Math.min(1, Math.max(0, n));
@@ -18,14 +41,83 @@ export function thinkingSceneAt(elapsed, still = false) {
     ? 10.5
     : (Math.max(0, elapsed) % STORY_DURATION_MS) / 1000;
   const reset = 1 - ease((seconds - 11) / 1);
+  const contented = ease((seconds - 6.8) / 1.8) * reset;
   return {
     seconds,
-    contented: ease((seconds - 6.8) / 1.8) * reset,
+    contented,
+    pose: contented >= 0.5 ? "composed" : "pressure",
+    nod: still ? 0 : Math.sin(contented * Math.PI) * 1.4,
+    phoneMode: seconds >= 6.4 && seconds < 11 ? "fintech" : "ride",
     progress: ease((seconds - 1.4) / 6.6) * reset,
     listening: still ? 0 : 1 - ease((seconds - 7.2) / 1.2),
     breath: still ? 0 : Math.sin((seconds * Math.PI) / 3) * 0.9,
     still,
   };
+}
+
+function productIcon(ctx, icon, x, y, size, PathType) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(size / icon.size, size / icon.size);
+  ctx.strokeStyle = "#174f3e";
+  ctx.lineWidth = 1.8;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  for (const [tag, attrs] of icon.node) {
+    if (tag === "path" && PathType) ctx.stroke(new PathType(attrs.d));
+    else if (tag === "circle") {
+      ctx.beginPath();
+      ctx.arc(
+        Number(attrs.cx),
+        Number(attrs.cy),
+        Number(attrs.r),
+        0,
+        Math.PI * 2,
+      );
+      ctx.stroke();
+    } else if (tag === "rect") {
+      ctx.beginPath();
+      ctx.roundRect(
+        Number(attrs.x || 0),
+        Number(attrs.y || 0),
+        Number(attrs.width),
+        Number(attrs.height),
+        Number(attrs.rx || 0),
+      );
+      ctx.stroke();
+    } else if (tag === "line") {
+      ctx.beginPath();
+      ctx.moveTo(Number(attrs.x1), Number(attrs.y1));
+      ctx.lineTo(Number(attrs.x2), Number(attrs.y2));
+      ctx.stroke();
+    } else if (tag === "polyline" && PathType) {
+      ctx.stroke(new PathType(`M ${attrs.points}`));
+    }
+  }
+  ctx.restore();
+}
+
+function standingDesk(ctx) {
+  // The rear desk is painted first; the foreground character naturally occludes it.
+  roundBox(ctx, 278, 293, 24, 267, "#788a81", "#a8b5ad", 3);
+  roundBox(ctx, 714, 293, 24, 267, "#788a81", "#a8b5ad", 3);
+  roundBox(ctx, 284, 360, 12, 199, "#b8c6bc", null, 2);
+  roundBox(ctx, 720, 360, 12, 199, "#b8c6bc", null, 2);
+  roundBox(ctx, 250, 557, 78, 10, "#c8d1cb", null, 4);
+  roundBox(ctx, 686, 557, 78, 10, "#c8d1cb", null, 4);
+  roundBox(ctx, 290, 301, 436, 12, "#677d70", null, 3);
+  ctx.beginPath();
+  ctx.moveTo(214, 275);
+  ctx.lineTo(777, 275);
+  ctx.lineTo(795, 287);
+  ctx.lineTo(196, 287);
+  ctx.closePath();
+  ctx.fillStyle = "#e2e8e2";
+  ctx.fill();
+  roundBox(ctx, 196, 287, 599, 10, "#a3b4a8", null, 2);
+  roundBox(ctx, 628, 297, 51, 16, "#263d31", null, 3);
+  text(ctx, "108", 634, 308, 9, "#89d0b2", "monospace");
+  text(ctx, "+  -", 657, 308, 8, "#c3d3c8", "monospace");
 }
 
 function roundBox(ctx, x, y, w, h, fill, stroke, radius = 8) {
@@ -174,28 +266,58 @@ function tablet(ctx, frame, handwriting) {
   ctx.restore();
 }
 
-function phone(ctx, frame) {
+function phone(ctx, frame, PathType) {
   ctx.save();
-  ctx.translate(716, 484);
-  ctx.rotate(0.065);
-  roundBox(ctx, -42, -95, 88, 180, "#aebbb2", "#d9dfda", 16);
-  roundBox(ctx, -36, -89, 76, 168, "#f4f5f0", null, 11);
-  roundBox(ctx, -16, -85, 36, 5, "#223a2d", null, 3);
-  text(ctx, "Your app", -26, -60, 12, "#174f3e");
-  const colours = ["#8dc4ff", "#c5adff", "#8edfc0", "#ffd07a"];
-  for (let i = 0; i < 4; i++) {
-    const amount = ease((frame.progress - i * 0.16) * 4);
+  ctx.translate(738, 169);
+  roundBox(ctx, -54, -104, 108, 208, "#aebbb2", "#d9dfda", 15);
+  roundBox(ctx, -48, -98, 96, 196, "#f4f5f0", null, 10);
+  roundBox(ctx, -18, -94, 36, 4, "#223a2d", null, 2);
+  const ride = frame.phoneMode === "ride";
+  text(ctx, ride ? "Ride" : "Money", -40, -72, 13, "#174f3e");
+  roundBox(ctx, -40, -62, 80, 49, ride ? "#dcebe6" : "#174f3e", null, 4);
+  if (ride) {
     ctx.save();
-    ctx.globalAlpha = 0.12 + amount * 0.88;
-    ctx.translate(0, (1 - amount) * 8);
-    roundBox(ctx, -26, -47 + i * 27, 56, 21, colours[i], null, 4);
-    ctx.fillStyle = "#174f3e";
-    ctx.globalAlpha *= 0.4;
-    ctx.fillRect(-20, -41 + i * 27, 20 + i * 4, 2);
-    ctx.fillRect(-20, -36 + i * 27, 34, 2);
+    ctx.beginPath();
+    ctx.rect(-38, -60, 76, 45);
+    ctx.clip();
+    ctx.strokeStyle = "#b3c9bf";
+    ctx.lineWidth = 3;
+    for (let i = 0; i < 4; i++) {
+      ctx.beginPath();
+      ctx.moveTo(-46, -58 + i * 15);
+      ctx.lineTo(45, -40 + i * 15);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-30 + i * 25, -64);
+      ctx.lineTo(-45 + i * 25, -8);
+      ctx.stroke();
+    }
+    ctx.strokeStyle = "#2e7d63";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-24, -26);
+    ctx.lineTo(-12, -43);
+    ctx.lineTo(14, -39);
+    ctx.lineTo(27, -49);
+    ctx.stroke();
     ctx.restore();
+    productIcon(ctx, pin, 19, -59, 16, PathType);
+  } else {
+    text(ctx, "Balance", -32, -47, 8, "#b9dac8");
+    text(ctx, "12,480", -32, -28, 17, "#f4f5f0", "monospace");
   }
-  if (frame.progress > 0.95) check(ctx, -3, 65, "#2e7d63");
+  PHONE_SCREENS[frame.phoneMode].forEach(({ label, icon, color }, i) => {
+    const x = -40 + (i % 2) * 43;
+    const y = -5 + Math.floor(i / 2) * 42;
+    const amount = ease((frame.progress - i * 0.1) * 5);
+    ctx.save();
+    ctx.globalAlpha = 0.4 + amount * 0.6;
+    roundBox(ctx, x, y, 37, 36, color, null, 4);
+    productIcon(ctx, icon, x + 11, y + 4, 15, PathType);
+    text(ctx, label, x + 5, y + 30, 8, "#174f3e");
+    ctx.restore();
+  });
+  roundBox(ctx, -17, 90, 34, 3, "#718d7e", null, 2);
   ctx.restore();
 }
 
@@ -204,42 +326,60 @@ export function drawThinkingScene(
   ctx,
   artwork,
   elapsed,
-  { still = false, handwriting = '"Kalam", cursive' } = {},
+  {
+    still = false,
+    handwriting = '"Kalam", cursive',
+    PathType = globalThis.Path2D,
+  } = {},
 ) {
   const frame = thinkingSceneAt(elapsed, still);
   ctx.clearRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
   ctx.fillStyle = "#181b19";
   ctx.fillRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
-  const image = artwork.pressure || artwork.composed;
+  standingDesk(ctx);
   ctx.save();
-  ctx.translate(0, frame.breath);
+  ctx.translate(24, -79);
+  ctx.scale(0.8, 0.8);
+  laptop(ctx, frame);
+  ctx.restore();
+  ctx.strokeStyle = "#8c9f92";
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(600, 256);
+  ctx.lineTo(619, 275);
+  ctx.lineTo(649, 275);
+  ctx.stroke();
+  ctx.save();
+  ctx.translate(333, -128);
+  ctx.scale(0.66, 0.66);
+  tablet(ctx, frame, handwriting);
+  ctx.restore();
+  phone(ctx, frame, PathType);
+  // Exactly one full-opacity sprite is painted per frame: never blend two silhouettes.
+  const image = artwork[frame.pose] || artwork.pressure || artwork.composed;
+  ctx.save();
+  ctx.globalAlpha = 1;
+  ctx.translate(0, frame.breath + frame.nod);
   if (image) ctx.drawImage(image, -40, 4, 400, 600);
-  if (artwork.composed && frame.contented > 0) {
-    ctx.globalAlpha = frame.contented;
-    ctx.drawImage(artwork.composed, -40, 4, 400, 600);
-  }
   ctx.restore();
   // The watch face is at this fixed point in the registered character artwork.
   wave(
     ctx,
     147,
-    206 + frame.breath,
+    206 + frame.breath + frame.nod,
     frame.seconds,
     frame.listening > 0.1,
     0.32,
   );
-  wave(ctx, 350, 143, frame.seconds, frame.listening > 0.1, 0.9);
+  wave(ctx, 355, 28, frame.seconds, frame.listening > 0.1, 0.9);
   text(
     ctx,
     frame.contented > 0.7 ? "Still your call" : "Thinking out loud",
     399,
-    149,
+    34,
     18,
     "#b8c9bf",
     handwriting,
   );
-  laptop(ctx, frame);
-  tablet(ctx, frame, handwriting);
-  phone(ctx, frame);
   return frame;
 }
