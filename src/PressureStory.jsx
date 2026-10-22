@@ -26,19 +26,19 @@ import {
 } from "./story-state.js";
 
 const inputs = [
-  { label: "Meeting notes", Icon: NotebookPen, tone: "sage" },
-  { label: "Feedback", Icon: MessageSquareText, tone: "sky" },
-  { label: "Product ideas", Icon: Lightbulb, tone: "gold" },
-  { label: "Metrics", Icon: ChartNoAxesCombined, tone: "sky" },
-  { label: "Requests", Icon: AppWindow, tone: "sage" },
+  { label: "Meeting notes", Icon: NotebookPen, tone: "blue" },
+  { label: "Feedback", Icon: MessageSquareText, tone: "violet" },
+  { label: "Product ideas", Icon: Lightbulb, tone: "amber" },
+  { label: "Metrics", Icon: ChartNoAxesCombined, tone: "cyan" },
+  { label: "Requests", Icon: AppWindow, tone: "rose" },
 ];
 const outputs = [
-  { label: "Prototype", Icon: PanelTop },
-  { label: "MVP", Icon: Box },
-  { label: "Live survey", Icon: ClipboardList },
-  { label: "Leadership updates", Icon: Presentation },
-  { label: "People in the loop", Icon: Users },
-  { label: "Stakeholders unblocked", Icon: Handshake },
+  { label: "Prototype", Icon: PanelTop, tone: "blue" },
+  { label: "MVP", Icon: Box, tone: "violet" },
+  { label: "Live survey", Icon: ClipboardList, tone: "cyan" },
+  { label: "Leadership updates", Icon: Presentation, tone: "amber" },
+  { label: "People in the loop", Icon: Users, tone: "rose" },
+  { label: "Stakeholders unblocked", Icon: Handshake, tone: "mint" },
 ];
 
 export function PressureStory({ onExplore }) {
@@ -89,7 +89,7 @@ export function PressureStory({ onExplore }) {
                     "--input-shift": `${[-3, 5, 0, -4, 3][index]}px`,
                   }}
                 >
-                  <span className={`story-source-icon source-${tone}`}>
+                  <span className={`story-source-icon story-color-${tone}`}>
                     <Icon size={16} strokeWidth={1.7} />
                   </span>
                   <span>{label}</span>
@@ -125,12 +125,12 @@ export function PressureStory({ onExplore }) {
           <div className="story-outputs">
             <span className="story-rail-label">Outputs</span>
             <div className="story-output-list">
-              {outputs.map(({ label, Icon }, index) => (
+              {outputs.map(({ label, Icon, tone }, index) => (
                 <div
                   className={`story-output story-output-${index + 1} story-motion`}
                   key={label}
                 >
-                  <span className="story-output-icon">
+                  <span className={`story-output-icon story-color-${tone}`}>
                     <Icon size={17} strokeWidth={1.7} />
                   </span>
                   <span>{label}</span>
@@ -145,7 +145,7 @@ export function PressureStory({ onExplore }) {
                   key={label}
                   className={`flow-token flow-token-in-${index + 1} story-motion`}
                 >
-                  <span className={`source-${tone}`}>
+                  <span className={`story-color-${tone}`}>
                     <Icon size={18} />
                   </span>
                 </span>
@@ -156,12 +156,12 @@ export function PressureStory({ onExplore }) {
               <span>Lazo</span>
             </div>
             <div className="flow-track flow-track-out">
-              {outputs.map(({ Icon, label }, index) => (
+              {outputs.map(({ Icon, label, tone }, index) => (
                 <span
                   key={label}
                   className={`flow-token flow-token-out-${index + 1} story-motion`}
                 >
-                  <span>
+                  <span className={`story-color-${tone}`}>
                     <Icon size={18} />
                   </span>
                 </span>

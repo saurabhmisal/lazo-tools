@@ -112,19 +112,32 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  background: var(--panel);
+  color: var(--story-icon);
+  background: var(--story-icon-bg);
 }
-.source-sage {
-  color: var(--lime);
+.story-color-blue {
+  --story-icon: #8dc4ff;
+  --story-icon-bg: #1e3042;
 }
-.source-sky {
-  color: var(--blue);
+.story-color-violet {
+  --story-icon: #c5adff;
+  --story-icon-bg: #30253f;
 }
-.source-gold {
-  color: var(--violet);
+.story-color-cyan {
+  --story-icon: #73dce3;
+  --story-icon-bg: #193539;
 }
-.story-output-icon {
-  color: var(--emerald-light);
+.story-color-amber {
+  --story-icon: #ffd07a;
+  --story-icon-bg: #3b3020;
+}
+.story-color-rose {
+  --story-icon: #f5a8c9;
+  --story-icon-bg: #3b2632;
+}
+.story-color-mint {
+  --story-icon: #8edfc0;
+  --story-icon-bg: #1d362e;
 }
 
 /* The entire transport lane is a separate row below the portrait footprint. */
@@ -188,10 +201,8 @@
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  background: var(--charcoal);
-}
-.flow-track-out .flow-token {
-  color: var(--emerald-light);
+  color: var(--story-icon);
+  background: var(--story-icon-bg);
 }
 .story-clock .story-direction {
   grid-area: 4 / 1 / 5 / 4;
@@ -210,6 +221,7 @@
   min-width: 0;
 }
 .story-resolution p {
+  text-wrap: balance;
   font:
     400 25px/1.35 "Kalam",
     cursive;
@@ -734,7 +746,7 @@
 @media (max-width: 700px) {
   .story-clock {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: 44px 80px 176px 64px 160px 60px;
+    grid-template-rows: 44px 80px 176px 64px 160px 96px;
     gap: 8px;
     padding: 4px 0 0;
   }

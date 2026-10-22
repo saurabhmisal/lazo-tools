@@ -220,6 +220,32 @@ test("the story separates incoming artifacts from reviewable work and routes flo
   assert.doesNotMatch(page, />Evidence brief<|>Draft for review<|>Next steps</);
 });
 
+test("input and output icons keep their colours in the moving stream", () => {
+  const expectedCounts = {
+    blue: 4,
+    violet: 4,
+    cyan: 4,
+    amber: 4,
+    rose: 4,
+    mint: 2,
+  };
+  for (const [tone, count] of Object.entries(expectedCounts)) {
+    assert.equal(
+      (page.match(new RegExp("story-color-" + tone + '"', "g")) || []).length,
+      count,
+      tone,
+    );
+  }
+  assert.equal(
+    (page.match(/class="story-source-icon story-color-/g) || []).length,
+    5,
+  );
+  assert.equal(
+    (page.match(/class="story-output-icon story-color-/g) || []).length,
+    6,
+  );
+});
+
 test("the PM problem, mission, and vision are distinct and brief", () => {
   const mission = page.match(
     /<section\b[^>]*id="mission"[\s\S]*?<\/section>/,

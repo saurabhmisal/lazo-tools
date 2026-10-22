@@ -31,6 +31,26 @@ function contrast(a, b) {
   return (values[0] + 0.05) / (values[1] + 0.05);
 }
 
+test("story icon accents have readable tinted backplates", () => {
+  const storyCss = readFileSync(
+    new URL("../src/pressure-story.css", import.meta.url),
+    "utf8",
+  );
+  const accents = [
+    ...storyCss.matchAll(
+      /\.story-color-(\w+)\s*\{\s*--story-icon: (#[a-f0-9]{6});\s*--story-icon-bg: (#[a-f0-9]{6});/g,
+    ),
+  ];
+  assert.equal(accents.length, 6);
+  for (const [, name, foreground, background] of accents) {
+    assert.ok(contrast(foreground, background) >= 4.5, name);
+  }
+  assert.match(
+    storyCss,
+    /\.flow-token > span\s*\{[^}]*color: var\(--story-icon\);[^}]*background: var\(--story-icon-bg\);/,
+  );
+});
+
 test("the user-selected emerald palette is defined in the active identity stylesheet", () => {
   for (const [name, color] of Object.entries(palette)) {
     assert.ok(css.includes(`--${name}: ${color};`), `Missing ${name} token`);
