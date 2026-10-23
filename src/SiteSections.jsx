@@ -359,8 +359,8 @@ export function ReleaseSection() {
     >
       <div className="release-layout">
         <div>
-          <h2 id="release-title">Be part of what's next</h2>
-          <p>Lazo is launching soon. Get launch and early-access updates.</p>
+          <h2 id="release-title">Be among the first</h2>
+          <p>Help shape the PM extension you wish you already had.</p>
           <p className="release-cost">
             Lazo is free forever. External AI services may charge separately.
           </p>

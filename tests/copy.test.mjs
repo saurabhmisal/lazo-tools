@@ -118,7 +118,8 @@ test("the opening section has one reading flow and a single signup action", asyn
 });
 
 test("launch copy preserves free software, external costs, and human ownership", () => {
-  assert.match(plainText(page), /Lazo is launching soon/);
+  assert.match(plainText(page), /Launching soon/);
+  assert.match(plainText(page), /You own the decisions/);
   assert.doesNotMatch(
     plainText(page),
     /Free, forever|desktop direction|local-first/,
@@ -160,7 +161,12 @@ test("privacy and release answers distinguish local work from external services"
 test("the launch page has only three main sections and a short reading path", () => {
   const main = page.match(/<main\b[\s\S]*?<\/main>/)[0];
   assert.equal((main.match(/<section\b/g) || []).length, 3);
-  assert.ok(plainText(main).split(/\s+/).length < 250);
+  const initialReadingPath = main.replace(
+    /<details\b[\s\S]*?<\/details>/g,
+    (details) => details.match(/<summary\b[\s\S]*?<\/summary>/)[0],
+  );
+  const wordCount = plainText(initialReadingPath).split(/\s+/).length;
+  assert.ok(wordCount < 250, `${wordCount} words in the initial reading path`);
   assert.doesNotMatch(
     main,
     /principles-grid|extension-outcomes|closing-section/,
@@ -263,37 +269,27 @@ test("input and output icons keep their colours in the moving stream", () => {
   );
 });
 
-test("the PM problem, mission, and vision are distinct and brief", () => {
+test("PM capabilities are concise, expandable, and framed as upcoming work", () => {
   const mission = page.match(
     /<section\b[^>]*id="mission"[\s\S]*?<\/section>/,
   )[0];
-  const headings = [...mission.matchAll(/<h3>(.*?)<\/h3>/g)].map(
-    (match) => match[1],
+  const details = [...mission.matchAll(/<details\b[\s\S]*?<\/details>/g)];
+  assert.equal(details.length, 5);
+  assert.deepEqual(
+    details.map(([html]) => plainText(html.match(/<summary\b[\s\S]*?<\/summary>/)[0])),
+    ["Find the signal", "Strengthen your thinking", "Make it tangible", "Bring people with you", "Keep momentum"],
   );
-  assert.deepEqual(headings, ["The problem", "Our mission", "Our vision"]);
-  const paragraphs = [
-    ...mission.matchAll(/<h3>[^<]+<\/h3>\s*<p>([\s\S]*?)<\/p>/g),
-  ];
-  assert.equal(paragraphs.length, 3);
-  for (const [, paragraph] of paragraphs) {
-    assert.ok(plainText(paragraph).split(/\s+/).length < 35);
+  for (const [html] of details) {
+    assert.doesNotMatch(html, /\bopen(?:=|\s|>)/);
+    assert.ok(plainText(html.match(/<p>[\s\S]*?<\/p>/)[0]).split(/\s+/).length < 20);
   }
-  const problemText = plainText(paragraphs[0][1]);
-  assert.match(problemText, /expected to deliver more, faster/);
-  assert.match(problemText, /stakeholder follow-ups/);
-  assert.match(problemText, /Lazo is being built to carry that legwork/);
-  assert.ok(problemText.split(/\s+/).length <= 30);
-  const missionText = plainText(paragraphs[1][1]);
-  const visionText = plainText(paragraphs[2][1]);
-  assert.match(missionText, /Be the extension that turns/);
-  assert.match(missionText, /direction into progress/);
-  assert.match(missionText, /legwork while they keep the final say/);
-  assert.match(visionText, /ambition should never be limited/);
-  assert.match(visionText, /what they can carry alone/);
-  for (const text of [missionText, visionText]) {
-    assert.ok(text.split(/\s+/).length <= 25);
-    assert.equal((text.match(/[.!?](?:\s|$)/g) || []).length, 1);
-  }
+  assert.match(plainText(mission), /PMs lose time piecing together context/);
+  assert.match(plainText(mission), /Lazo is being built to close that gap/);
+  assert.match(plainText(mission), /Your judgment stays yours/);
+  assert.match(plainText(mission), /Product thinking, woven into the work/);
+  assert.doesNotMatch(plainText(page), /Power Chords|Product Sense Engine|skills engine|github\.com|52 capabilities/i);
+  assert.match(plainText(page), /Be among the first/);
+  assert.match(plainText(page), /Help shape the PM extension you wish you already had/);
 });
 
 test("the compact form preserves Google fields, required consent, and optional context", () => {

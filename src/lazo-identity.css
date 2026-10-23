@@ -942,6 +942,13 @@ summary:focus-visible,
   line-height: 1.65;
   margin: 0 0 22px;
 }
+.simple-site .hero-promise {
+  margin: 0 0 10px;
+  color: var(--pearl);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.6;
+}
 .simple-site .hero-actions {
   justify-content: flex-start;
   margin: 0;
@@ -1021,18 +1028,64 @@ summary:focus-visible,
   color: var(--muted);
   margin: 0;
 }
-.mission-summary {
+.mission-intro {
   display: grid;
-  gap: 24px;
+  gap: 20px;
   min-width: 0;
+  align-self: start;
 }
-.mission-summary h3 {
-  margin: 0 0 6px;
-  font-family: "DM Sans", sans-serif;
+.mission-ambition strong {
+  color: var(--pearl);
+  font-weight: 500;
+}
+.mission-capabilities {
+  min-width: 0;
+  align-self: start;
+}
+.capability {
+  border-bottom: 1px solid var(--line);
+}
+.capability:first-child {
+  border-top: 1px solid var(--line);
+}
+.capability summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  padding: 14px 0;
+  list-style: none;
+  cursor: pointer;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.5;
   color: var(--pearl);
+}
+.capability summary::-webkit-details-marker {
+  display: none;
+}
+.capability summary svg {
+  flex-shrink: 0;
+  color: var(--emerald-light);
+}
+.capability[open] summary svg {
+  transform: rotate(180deg);
+}
+.capability summary:hover {
+  color: var(--emerald-light);
+}
+.capability summary:focus-visible {
+  outline: 2px solid var(--emerald-light);
+  outline-offset: 4px;
+}
+.simple-mission .capability p {
+  padding: 0 28px 18px 0;
+  font-size: 14px;
+}
+.simple-mission .capability-principle {
+  margin-top: 20px;
+  font-size: 13px;
 }
 .simple-site .release-section {
   padding: 56px max(32px, calc((100% - 1216px) / 2));

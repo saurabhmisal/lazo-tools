@@ -709,9 +709,13 @@ export function App() {
               </h1>
             </div>
             <div className="hero-invitation">
+              <p className="hero-promise">
+                Your direction. More possibilities brought to life.
+              </p>
               <p className="hero-description" id="hero-description">
-                Lazo is being built as your PM extension, carrying the legwork
-                so you can focus on the decisions and strategy that matter.
+                Lazo is being built as your PM extension, turning scattered
+                context into work you can move forward with. You own the
+                decisions. Lazo helps carry the legwork.
               </p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#release">
@@ -736,32 +740,56 @@ export function App() {
           aria-labelledby="mission-title"
         >
           <PressureStory onExplore={() => setDetail("workspace")} />
-          <h2 id="mission-title">
-            An extension of you, not another thing to manage
-          </h2>
-          <div className="mission-summary">
-            <div>
-              <h3>The problem</h3>
-              <p>
-                PMs are expected to deliver more, faster, while chasing context
-                and stakeholder follow-ups. Lazo is being built to carry that
-                legwork.
-              </p>
+          <div className="mission-intro">
+            <h2 id="mission-title">
+              From what's on your mind to what moves things forward
+            </h2>
+            <p>
+              PMs lose time piecing together context, preparing deliverables and
+              chasing alignment. Lazo is being built to close that gap.
+            </p>
+            <p className="mission-ambition">
+              <strong>Our ambition:</strong> Your capacity should keep up with
+              your ideas. Your judgment stays yours.
+            </p>
+          </div>
+          <div className="mission-capabilities">
+            <div className="capability-list" aria-label="Planned PM capabilities">
+              {[
+                [
+                  "Find the signal",
+                  "Bring notes, feedback and evidence together into a clear picture of the problem.",
+                ],
+                [
+                  "Strengthen your thinking",
+                  "Explore alternatives, uncover assumptions and weigh trade-offs in your context.",
+                ],
+                [
+                  "Make it tangible",
+                  "Turn your direction into product briefs, prototypes and scoped MVPs.",
+                ],
+                [
+                  "Bring people with you",
+                  "Prepare leadership updates, decision notes and clear asks that help unblock stakeholders.",
+                ],
+                [
+                  "Keep momentum",
+                  "Turn decisions into next steps, experiments and launch plans.",
+                ],
+              ].map(([title, description]) => (
+                <details className="capability" key={title}>
+                  <summary>
+                    <span>{title}</span>
+                    <ChevronDown size={18} aria-hidden="true" />
+                  </summary>
+                  <p>{description}</p>
+                </details>
+              ))}
             </div>
-            <div>
-              <h3>Our mission</h3>
-              <p>
-                Be the extension that turns a PM's direction into progress,
-                handling the legwork while they keep the final say.
-              </p>
-            </div>
-            <div>
-              <h3>Our vision</h3>
-              <p>
-                A PM's ambition should never be limited by what they can carry
-                alone.
-              </p>
-            </div>
+            <p className="capability-principle">
+              Product thinking, woven into the work. Not another framework to
+              fill out.
+            </p>
           </div>
         </section>
         <ReleaseSection />
