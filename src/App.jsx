@@ -786,9 +786,12 @@ export function App() {
                 </details>
               ))}
             </div>
-            <p className="capability-principle">
-              Product thinking, woven into the work. Not another framework to
-              fill out.
+            <p className="capability-example">
+              <strong>Planned example</strong>
+              Meeting notes + onboarding ideas{" "}
+              <ArrowRight size={14} role="img" aria-label="become" />{" "}
+              clickable prototype, scoped MVP and stakeholder update.
+              <span>You review everything.</span>
             </p>
           </div>
         </section>

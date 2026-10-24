@@ -286,7 +286,12 @@ test("PM capabilities are concise, expandable, and framed as upcoming work", () 
   assert.match(plainText(mission), /PMs lose time piecing together context/);
   assert.match(plainText(mission), /Lazo is being built to close that gap/);
   assert.match(plainText(mission), /Your judgment stays yours/);
-  assert.match(plainText(mission), /Product thinking, woven into the work/);
+  const example = mission.match(/<p class="capability-example">[\s\S]*?<\/p>/)[0];
+  assert.match(plainText(example), /Planned example/);
+  assert.match(plainText(example), /Meeting notes \+ onboarding ideas/);
+  assert.match(plainText(example), /clickable prototype, scoped MVP and stakeholder update/);
+  assert.match(plainText(example), /You review everything/);
+  assert.ok(plainText(example).split(/\s+/).length < 30);
   assert.doesNotMatch(plainText(page), /Power Chords|Product Sense Engine|skills engine|github\.com|52 capabilities/i);
   assert.match(plainText(page), /Be among the first/);
   assert.match(plainText(page), /Help shape the PM extension you wish you already had/);

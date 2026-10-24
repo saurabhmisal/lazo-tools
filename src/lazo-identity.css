@@ -1083,9 +1083,25 @@ summary:focus-visible,
   padding: 0 28px 18px 0;
   font-size: 14px;
 }
-.simple-mission .capability-principle {
+.simple-mission .capability-example {
   margin-top: 20px;
   font-size: 13px;
+}
+.capability-example strong,
+.capability-example > span {
+  display: block;
+}
+.capability-example strong {
+  margin-bottom: 6px;
+  color: var(--pearl);
+  font-size: 12px;
+  font-weight: 500;
+}
+.capability-example svg {
+  display: inline;
+  vertical-align: middle;
+  margin-inline: 5px;
+  color: var(--emerald-light);
 }
 .simple-site .release-section {
   padding: 56px max(32px, calc((100% - 1216px) / 2));
