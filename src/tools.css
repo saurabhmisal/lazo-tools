@@ -61,7 +61,12 @@
   border-radius: 6px;
   color: var(--pearl);
 }
-.home-tool-link h3 { margin: 0 0 8px; font-size: 16px; font-weight: 500; line-height: 1.4; }
+.home-tool-copy { min-width: 0; }
+.home-tool-identity { display: flex; align-items: center; gap: 10px; }
+.home-tool-logo { display: block; width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; }
+.home-tool-mark { display: grid; place-items: center; font-size: 30px; line-height: 1; background: #263c30; border-radius: 10px; }
+.home-tool-link h3 { margin: 0; font-size: 16px; font-weight: 500; line-height: 1.4; }
+.home-tool-link p { margin: 12px 0 10px; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .home-tool-link small { display: block; color: var(--muted); font-size: 12px; line-height: 1.5; }
 .home-tool-link svg { flex-shrink: 0; color: var(--emerald-light); }
 .home-tool-link:hover { border-color: var(--emerald-light); background: #202a24; }
@@ -82,6 +87,9 @@
 .tool-footer summary { cursor: pointer; }
 .tool-footer details p { margin: 12px 0; line-height: 1.7; }
 .tool-footer details a { color: var(--emerald-light); text-decoration: underline; }
+@media (max-width: 1000px) {
+  .home-tools { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+}
 @media (max-width: 700px) {
   .home-tools { grid-template-columns: minmax(0, 1fr); padding: 28px 20px 36px; gap: 20px; }
   .tool-placeholder { padding: 56px 20px 72px; }

@@ -807,8 +807,17 @@ export function App() {
           <div className="home-tools-links">
             {tools.map((tool) => (
               <a className="home-tool-link" key={tool.slug} href={`./${tool.slug}/`}>
-                <div>
-                  <h3>{tool.name}</h3>
+                <div className="home-tool-copy">
+                  <div className="home-tool-identity">
+                    {tool.logo ? (
+                      <img className="home-tool-logo" src={`${import.meta.env.BASE_URL}${tool.logo}`}
+                        alt="" width="44" height="44" loading="lazy" decoding="async" />
+                    ) : (
+                      <span className="home-tool-logo home-tool-mark" aria-hidden="true">{tool.mark}</span>
+                    )}
+                    <h3>{tool.name}</h3>
+                  </div>
+                  <p>{tool.description}</p>
                   <small>Page coming soon</small>
                 </div>
                 <ArrowRight size={20} aria-hidden="true" />

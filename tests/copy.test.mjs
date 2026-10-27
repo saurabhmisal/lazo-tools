@@ -169,7 +169,7 @@ test("the launch page adds only a compact tool introduction to its short reading
     (details) => details.match(/<summary\b[\s\S]*?<\/summary>/)[0],
   );
   const toolIntroduction = main.match(/<section class="home-tools"[\s\S]*?<\/section>/)[0];
-  assert.ok(plainText(toolIntroduction).split(/\s+/).length <= 25);
+  assert.ok(plainText(toolIntroduction).split(/\s+/).length <= 45);
   assert.match(toolIntroduction, /href="\.\/everyday\/"/);
   assert.match(toolIntroduction, /href="\.\/power-chords\/"/);
   assert.doesNotMatch(toolIntroduction, /<form\b|Download now|github\.com/i);
