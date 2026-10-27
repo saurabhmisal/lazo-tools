@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createAnalytics } from "../src/analytics.js";
+import { analyticsPageForPath, createAnalytics } from "../src/analytics.js";
 
 function fixture({ host = "lazo.tools", id = "G-TEST123456", stored = null, excluded = false,
   automated = false, href = "https://lazo.tools/?email=private@example.com#secret", storageBlocked = false } = {}) {
@@ -8,7 +8,7 @@ function fixture({ host = "lazo.tools", id = "G-TEST123456", stored = null, excl
   let cookies = "_ga=old; _ga_TEST123456=old; unrelated=keep";
   const storage = new Map(stored ? [["lazo.analytics-consent.v1", JSON.stringify(stored)]] : []);
   if (excluded) storage.set("lazo.analytics-excluded.v1", "true");
-  const win = { location: { protocol: "https:", hostname: host, href }, navigator: { webdriver: automated },
+  const win = { location: { protocol: "https:", hostname: host, href, pathname: new URL(href).pathname }, navigator: { webdriver: automated },
     localStorage: {
       getItem: k => { if (storageBlocked) throw Error("unavailable"); return storage.get(k); },
       setItem: (k,v) => { if (storageBlocked) throw Error("unavailable"); storage.set(k,v); },
@@ -158,4 +158,19 @@ test("clearing preferences in another tab revokes collection", () => {
   f.storageEvents.storage({ key: null, newValue: null });
   assert.equal(f.analytics.snapshot().choice, "denied");
   assert.equal(f.analytics.trackCta("header_launch_updates"), false);
+});
+
+test("tool pages use approved canonical URLs without private URL parameters", () => {
+  for (const [slug, name] of [["everyday", "Everyday"], ["power-chords", "Power Chords"]]) {
+    const f = fixture({ href: `https://lazo.tools/${slug}/?email=private@example.com#secret` });
+    f.analytics.setConsent("granted");
+    const pageView = f.calls().find(c => c[0] === "event" && c[1] === "page_view")[2];
+    assert.equal(pageView.page_location, `https://lazo.tools/${slug}/`);
+    assert.equal(pageView.page_title, `${name} | Lazo`);
+    assert.equal(pageView.page_referrer, "");
+    assert.doesNotMatch(JSON.stringify(f.calls()), /private|secret|email=/);
+    assert.equal(analyticsPageForPath(`/${slug}/index.html`).page_title, `${name} | Lazo`);
+    assert.equal(fixture({ excluded: true, href: `https://lazo.tools/${slug}/` }).scripts.length, 0);
+  }
+  assert.equal(analyticsPageForPath('/unknown/private').page_location, 'https://lazo.tools/');
 });

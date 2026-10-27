@@ -5,6 +5,7 @@ import "./styles.css";
 import "./site-sections.css";
 import "./lazo-identity.css";
 import "./pressure-story.css";
+import "./tools.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

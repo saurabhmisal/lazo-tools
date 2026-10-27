@@ -77,8 +77,11 @@ test("navigation stays minimal and supporting resources remain available on dema
   assert.match(header, /href="#mission">Why Lazo<\/a>/);
   assert.equal(
     (header.match(/<nav\b[\s\S]*?<\/nav>/)[0].match(/<a\b/g) || []).length,
-    2,
+    4,
   );
+  assert.match(header, /aria-label="Lazo tools" aria-expanded="false"/);
+  assert.match(header, /href="\.\/everyday\/"/);
+  assert.match(header, /href="\.\/power-chords\/"/);
   assert.match(footer, />FAQ<\/button>/);
   assert.match(footer, />PM playbooks<\/button>/);
   assert.match(footer, />About &amp; privacy<\/button>/);
@@ -292,7 +295,8 @@ test("PM capabilities are concise, expandable, and framed as upcoming work", () 
   assert.match(plainText(example), /clickable prototype, scoped MVP and stakeholder update/);
   assert.match(plainText(example), /You review everything/);
   assert.ok(plainText(example).split(/\s+/).length < 30);
-  assert.doesNotMatch(plainText(page), /Power Chords|Product Sense Engine|skills engine|github\.com|52 capabilities/i);
+  assert.doesNotMatch(plainText(page), /Product Sense Engine|skills engine|github\.com|52 capabilities/i);
+  assert.doesNotMatch(plainText(mission), /Power Chords/);
   assert.match(plainText(page), /Be among the first/);
   assert.match(plainText(page), /Help shape the PM extension you wish you already had/);
 });

@@ -16,10 +16,12 @@ Lazo has a dedicated **Lazo** Analytics account (`413598303`), **Lazo Website** 
 
 | Event | Parameters | Meaning |
 | --- | --- | --- |
-| `page_view` | Fixed canonical page URL and title, empty referrer | One per document after consent |
+| `page_view` | Approved canonical page URL and title, empty referrer | One per document after consent |
 | `cta_tapped` | `cta_id` from the fixed allowlist | A button/link interaction, not a completed signup |
 
 Allowed CTA IDs: `header_launch_updates`, `hero_launch_updates`, `open_google_form`, `open_playbooks`, `open_faq`. No user ID or custom user properties are set. Google may still process technical connection/device information when the tag is allowed; excluding app-entered content does not make Analytics anonymous.
+
+Approved page identities are the Lazo homepage, `/everyday/` and `/power-chords/`. Page titles and canonical URLs come from the fixed tool registry, never raw query strings or fragments. Browser/test exclusions and consent apply on all three pages. Placeholder navigation is not counted as a launch-update click.
 
 Consent is separate from launch-update consent and lasts up to 180 days in this browser. Withdrawal blocks subsequent site events and expires GA cookies; it does not erase data already sent. The tag is never loaded before opt-in. Visits without consent are intentionally absent from reports.
 

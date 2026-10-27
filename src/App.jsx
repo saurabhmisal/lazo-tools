@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ToolsMenu } from "./ToolsMenu.jsx";
 import { AnalyticsPreferences } from "./AnalyticsPreferences.jsx";
 import { PressureStory } from "./PressureStory.jsx";
 import { useSectionReveals } from "./useSectionReveals.js";
@@ -684,6 +685,7 @@ export function App() {
           <Link2 size={25} strokeWidth={2} aria-hidden="true" /> Lazo
         </a>
         <nav className="simple-nav" aria-label="Main navigation">
+          <ToolsMenu />
           <a className="why-link" href="#mission">
             Why Lazo
           </a>
