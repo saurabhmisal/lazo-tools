@@ -23,6 +23,16 @@ Allowed CTA IDs: `header_launch_updates`, `hero_launch_updates`, `open_google_fo
 
 Consent is separate from launch-update consent and lasts up to 180 days in this browser. Withdrawal blocks subsequent site events and expires GA cookies; it does not erase data already sent. The tag is never loaded before opt-in. Visits without consent are intentionally absent from reports.
 
+## Owner And Setup-Test Exclusion
+
+Open [exclude this browser](https://lazo.tools/?analytics=exclude) once in each browser/profile the owner uses. The exclusion is saved in browser storage and blocks both page views and CTA events before saved consent can activate the tag. It follows that browser across network changes, but not across devices, profiles, private browsing sessions or cleared storage. The footer confirms the exclusion and offers a way to include the browser again; re-including does not automatically grant analytics consent.
+
+All future browser QA should start at [the excluded test URL](https://lazo.tools/?analytics=test), before visiting the ordinary production URL. This also persists exclusion for that browser. Browsers that report WebDriver automation are automatically excluded and cannot opt in. Local/preview hosts remain untracked. Unit tests use a fake browser, never the live Google tag. Do not perform a new production collection test merely to verify UI changes.
+
+If storage is unavailable, the exclusion link still blocks the current visit, but must be used again for future visits. No exclusion parameter is sent to Google. Cross-tab changes immediately block collection in open tabs.
+
+Network-wide exclusion across other devices requires identifying the owner's public IP addresses/ranges and configuring GA internal-traffic rules; a browser exclusion is not an IP filter. Do not guess those addresses or exclude broad networks. Exclusions only affect future collection. Previously collected owner/test events remain in historical reports and cannot be reliably separated without an identifier that was captured at the time.
+
 Automated tests exercise the consent state machine, duplicate prevention and payload restrictions using a fake browser. They do not establish live delivery or replace browser/network verification. Verify delivery in Realtime after deployment and explicit consent; standard reports can take longer to populate.
 
 References: [Google Analytics setup](https://support.google.com/analytics/answer/14183469), [manual page views](https://developers.google.com/analytics/devguides/collection/ga4/views), [Google tag configuration](https://developers.google.com/tag-platform/gtagjs/configure).

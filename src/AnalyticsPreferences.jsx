@@ -10,6 +10,17 @@ export function AnalyticsPreferences() {
     return analytics.subscribe(setState);
   }, []);
   if (!state.configured) return null;
+  if (state.excluded) return (
+    <aside className="analytics-preferences" aria-label="Website analytics preferences">
+      <p>
+        This browser is excluded from analytics. Your visits and clicks are not recorded.
+        {!state.exclusionPersistent && !state.automated && " Storage is unavailable; keep the exclusion link for future visits."}
+      </p>
+      {!state.automated && <button type="button" className="text-link" onClick={() => getAnalytics().setExcluded(false)}>
+        Include this browser again
+      </button>}
+    </aside>
+  );
   const choose = choice => { getAnalytics().setConsent(choice); setOpen(false); };
   return (
     <aside className="analytics-preferences" aria-label="Website analytics preferences">

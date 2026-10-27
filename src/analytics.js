@@ -4,6 +4,7 @@ export const CTA_IDS = Object.freeze([
   "open_playbooks", "open_faq",
 ]);
 const CONSENT_KEY = "lazo.analytics-consent.v1";
+const EXCLUSION_KEY = "lazo.analytics-excluded.v1";
 const MAX_AGE = 180 * 24 * 60 * 60 * 1000;
 const PAGE = Object.freeze({
   page_location: "https://lazo.tools/", page_title: "Lazo | You, but amplified!", page_referrer: "",
@@ -13,20 +14,38 @@ export function createAnalytics({ measurementId, window: win, document: doc, now
   const configured = /^G-[A-Z0-9]{6,20}$/.test(measurementId || "")
     && win?.location?.protocol === "https:" && win.location.hostname === "lazo.tools";
   let choice = null;
+  const automated = win?.navigator?.webdriver === true;
+  let excluded = automated;
+  let exclusionPersistent = false;
   let started = false;
   let pageSent = false;
   const listeners = new Set();
   if (configured) {
+    try {
+      exclusionPersistent = win.localStorage.getItem(EXCLUSION_KEY) === "true";
+      excluded ||= exclusionPersistent;
+    } catch {}
+    // Resolve owner/test exclusion before restoring any saved consent.
+    try {
+      const mode = new URL(win.location.href).searchParams.get("analytics");
+      if (mode === "exclude" || mode === "test") {
+        excluded = true;
+        try {
+          win.localStorage.setItem(EXCLUSION_KEY, "true");
+          exclusionPersistent = true;
+        } catch {}
+      }
+    } catch {}
     try {
       const saved = JSON.parse(win.localStorage.getItem(CONSENT_KEY));
       if (["granted", "denied"].includes(saved?.choice) && Number.isFinite(saved.at)
           && saved.at <= now() && now() - saved.at < MAX_AGE) choice = saved.choice;
     } catch { /* Storage can be unavailable; default remains no collection. */ }
   }
-  const snapshot = () => ({ configured, choice });
+  const snapshot = () => ({ configured, choice, excluded, exclusionPersistent, automated });
   const gtag = (...args) => win.gtag(...args);
   function activate() {
-    if (!configured || choice !== "granted") return;
+    if (!configured || excluded || choice !== "granted") return;
     win[`ga-disable-${measurementId}`] = false;
     if (!started) {
       started = true;
@@ -68,7 +87,7 @@ export function createAnalytics({ measurementId, window: win, document: doc, now
     if (persist) {
       try { win.localStorage.setItem(CONSENT_KEY, JSON.stringify({ choice, at: now() })); } catch {}
     }
-    if (choice === "granted") activate();
+    if (choice === "granted" && !excluded) activate();
     else if (configured) {
       win[`ga-disable-${measurementId}`] = true;
       if (started) gtag("consent", "update", { analytics_storage: "denied" });
@@ -77,17 +96,23 @@ export function createAnalytics({ measurementId, window: win, document: doc, now
     for (const listener of listeners) listener(snapshot());
   }
   function trackCta(id) {
-    if (!configured || choice !== "granted" || !CTA_IDS.includes(id)) return false;
+    if (!configured || excluded || choice !== "granted" || !CTA_IDS.includes(id)) return false;
     gtag("event", "cta_tapped", { cta_id: id, ...PAGE, send_to: measurementId });
     return true;
   }
-  // Never inspect field values, labels, free text, query strings, fragments or referrers.
+  // Event payloads never contain form text, URLs from the browser, or referrers.
   if (configured) {
     doc.addEventListener("click", event => {
       const id = event.target?.closest?.("[data-analytics-cta]")?.getAttribute("data-analytics-cta");
       trackCta(id);
     });
     win.addEventListener("storage", event => {
+      if (event.key === EXCLUSION_KEY || event.key === null) {
+        exclusionPersistent = event.newValue === "true";
+        excluded = automated || exclusionPersistent;
+        apply("denied", false);
+        return;
+      }
       if (event.key !== CONSENT_KEY) return;
       let saved;
       try { saved = JSON.parse(event.newValue); } catch {}
@@ -100,8 +125,29 @@ export function createAnalytics({ measurementId, window: win, document: doc, now
     snapshot,
     subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
     setConsent(next) {
-      if (!configured || !["granted", "denied"].includes(next)) return false;
+      if (!configured || excluded || !["granted", "denied"].includes(next)) return false;
       apply(next, true); return true;
+    },
+    setExcluded(next) {
+      if (!configured || automated || typeof next !== "boolean") return false;
+      excluded = next;
+      exclusionPersistent = false;
+      try {
+        win.localStorage.setItem(EXCLUSION_KEY, String(next));
+        exclusionPersistent = next;
+      } catch {}
+      if (!next) {
+        try {
+          const url = new URL(win.location.href);
+          if (["exclude", "test"].includes(url.searchParams.get("analytics"))) {
+            url.searchParams.delete("analytics");
+            win.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+          }
+        } catch {}
+      }
+      // Re-including a browser never opts it back into analytics automatically.
+      apply("denied", true);
+      return true;
     },
     trackCta,
   });
