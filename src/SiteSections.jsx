@@ -447,6 +447,7 @@ export function ReleaseSection() {
           <p className="interest-note">
             Google Forms confirms your submission in a new tab.{" "}
             <a
+              data-analytics-cta="open_google_form"
               href={interestForm.url}
               target="_blank"
               rel="noopener noreferrer"
@@ -467,8 +468,8 @@ export function SiteFooter({ onAbout, onPlaybooks, onFAQ }) {
         <Link2 size={21} aria-hidden="true" /> Lazo
       </a>
       <nav aria-label="More about Lazo">
-        <button onClick={onFAQ}>FAQ</button>
-        <button onClick={onPlaybooks}>PM playbooks</button>
+        <button data-analytics-cta="open_faq" onClick={onFAQ}>FAQ</button>
+        <button data-analytics-cta="open_playbooks" onClick={onPlaybooks}>PM playbooks</button>
         <button onClick={onAbout}>About & privacy</button>
       </nav>
       <small>© {new Date().getFullYear()} Lazo</small>

@@ -34,3 +34,7 @@ The interest form submits directly to a Google Form for confirmation. Its respon
 
 The workspace preview and PM illustration are concepts, not released-capability demonstrations. The current illustration uses a CSS transition; continuous character video remains future work. The site requests fonts from Google Fonts. Playbook content stays in browser memory until closed or reloaded.
 
+
+## Optional Analytics
+
+GA4 uses a dedicated Lazo property and only loads after a visitor allows analytics. It records visits and selected button clicks, not signup details or playbook text. Without a valid deployment Measurement ID it stays inactive. See [setup, consent, event definitions and verification](docs/analytics.md).

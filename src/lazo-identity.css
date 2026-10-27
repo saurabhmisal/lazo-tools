@@ -1332,3 +1332,9 @@ summary:focus-visible,
     padding: 20px 16px;
   }
 }
+
+.analytics-preferences { padding: 1rem 2rem; max-width: 72rem; margin: auto; font-size: .875rem; }
+.analytics-preferences p { max-width: 48rem; margin: 0 0 .75rem; }
+.analytics-preferences > div { display: flex; flex-wrap: wrap; gap: .75rem; }
+.analytics-preferences .button { min-height: 44px; }
+@media (max-width: 600px) { .analytics-preferences { padding: 1rem 20px; } }

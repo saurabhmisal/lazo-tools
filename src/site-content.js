@@ -162,7 +162,7 @@ export const faqs = [
     category: "Data",
     question: "What happens to text I enter on this website?",
     answer:
-      "The early-interest form sends your email, system preference, update consent, and any optional name or blocker you provide through Google Forms to Lazo's private response Sheet. Response summaries are not public. Playbook text is not submitted to a server or AI model. Closing the playbooks or reloading clears it. Fonts are requested from Google Fonts.",
+      "The early-interest form sends your email, system preference, update consent, and any optional name or blocker you provide through Google Forms to Lazo's private response Sheet. Response summaries are not public. Playbook text is not submitted to a server or AI model. Closing the playbooks or reloading clears it. Fonts are requested from Google Fonts. Where enabled, optional Google Analytics records visits and selected button clicks after you allow it; form details and playbook text are excluded. Change this choice near the footer.",
   },
   {
     id: "download",

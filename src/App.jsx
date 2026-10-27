@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { AnalyticsPreferences } from "./AnalyticsPreferences.jsx";
 import { PressureStory } from "./PressureStory.jsx";
 import { useSectionReveals } from "./useSectionReveals.js";
 import {
@@ -686,7 +687,7 @@ export function App() {
           <a className="why-link" href="#mission">
             Why Lazo
           </a>
-          <a className="button button-primary" href="#release">
+          <a className="button button-primary" href="#release" data-analytics-cta="header_launch_updates">
             Get launch updates <ArrowRight size={16} />
           </a>
         </nav>
@@ -718,7 +719,7 @@ export function App() {
                 decisions. Lazo helps carry the legwork.
               </p>
               <div className="hero-actions">
-                <a className="button button-primary" href="#release">
+                <a className="button button-primary" href="#release" data-analytics-cta="hero_launch_updates">
                   Get launch updates <ArrowRight size={17} aria-hidden="true" />
                 </a>
               </div>
@@ -797,6 +798,7 @@ export function App() {
         </section>
         <ReleaseSection />
       </main>
+      <AnalyticsPreferences />
       <SiteFooter
         onAbout={() => setPolicyOpen(true)}
         onPlaybooks={() => setDetail("playbooks")}
@@ -929,6 +931,21 @@ export function App() {
               The early-interest form submits your details to Google Forms and
               Lazo's private response Sheet for launch and early-access updates.
               It is separate from the local playbook editor.
+            </p>
+            <p>
+              Where enabled, Google Analytics measures visits and selected button
+              clicks only after you allow analytics. It uses cookies, and does not
+              receive your form details or playbook text from this site. Change
+              your choice using the Analytics control near the footer. Declining
+              analytics does not affect launch updates. Google also processes
+              connection and device information.{" "}
+              <a
+                href="https://policies.google.com/technologies/partner-sites"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                How Google uses data
+              </a>.
             </p>
             <p>
               The illustrative workspace is not a released version of Lazo or a
