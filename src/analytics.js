@@ -119,7 +119,8 @@ export function createAnalytics({ measurementId, window: win, document: doc, now
       const valid = Number.isFinite(saved?.at) && saved.at <= now() && now() - saved.at < MAX_AGE;
       apply(valid && saved.choice === "granted" ? "granted" : "denied", false);
     });
-    apply(choice, false);
+    // Also revoke consent in older open tabs that predate browser exclusions.
+    apply(excluded ? "denied" : choice, excluded);
   }
   return Object.freeze({
     snapshot,

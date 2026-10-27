@@ -97,6 +97,7 @@ test("owner and test links persist exclusion before restoring consent", () => {
     assert.equal(f.analytics.snapshot().excluded, true);
     assert.equal(f.scripts.length, 0);
     assert.equal(f.storage.get("lazo.analytics-excluded.v1"), "true");
+    assert.equal(JSON.parse(f.storage.get("lazo.analytics-consent.v1")).choice, "denied");
     assert.equal(f.analytics.trackCta("hero_launch_updates"), false);
   }
 });
