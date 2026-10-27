@@ -807,14 +807,14 @@ export function App() {
           </div>
           <div className="home-tools-links">
             {tools.map((tool) => (
-              <a className="home-tool-link" key={tool.slug} href={`./${tool.slug}/`}>
+              <a className="home-tool-link" key={tool.slug} href={tool.url || `./${tool.slug}/`}>
                 <div className="home-tool-copy">
                   <div className="home-tool-identity">
                     <ToolLogo tool={tool} base={import.meta.env.BASE_URL} />
                     <h3>{tool.name}</h3>
                   </div>
                   <p>{tool.description}</p>
-                  <small>Page coming soon</small>
+                  <small>{tool.url ? "Visit website" : "Page coming soon"}</small>
                 </div>
                 <ArrowRight size={20} aria-hidden="true" />
               </a>

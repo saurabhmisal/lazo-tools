@@ -9,6 +9,7 @@ export const tools = Object.freeze([
     slug: "power-chords",
     name: "Power Chords",
     description: "Product skills and workflows that turn context into reviewable documents.",
-    mark: "🤘",
+    logo: "assets/power-chords-loop-pc.png",
+    url: "https://powerchords.lazo.tools/",
   }),
 ]);

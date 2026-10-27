@@ -63,7 +63,7 @@
 }
 .home-tool-copy { min-width: 0; }
 .home-tool-identity { display: flex; align-items: center; gap: 10px; }
-.home-tool-logo { display: block; width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; }
+.home-tool-logo { display: block; width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; border-radius: 8px; }
 .home-tool-mark { display: grid; place-items: center; font-size: 30px; line-height: 1; background: #263c30; border-radius: 10px; }
 .home-tool-link h3 { margin: 0; font-size: 16px; font-weight: 500; line-height: 1.4; }
 .home-tool-link p { margin: 12px 0 10px; color: var(--muted); font-size: 13px; line-height: 1.6; }
@@ -75,6 +75,9 @@
 .tool-placeholder-copy { max-width: 640px; }
 .tool-family { color: var(--emerald-light); font-size: 13px; margin: 0 0 20px; }
 .tool-page-logo { width: 64px; height: 64px; margin-bottom: 24px; }
+.tool-logo-link { display: block; width: fit-content; border-radius: 8px; }
+.tool-website-action { margin: 28px 0 0; }
+.tool-website-action .button { gap: 12px; }
 .tool-page-logo.home-tool-mark { font-size: 42px; border-radius: 14px; }
 .tool-placeholder h1 { font-family: "Newsreader", Georgia, serif; font-size: 64px; line-height: 1.1; font-weight: 400; margin: 0 0 28px; }
 .tool-status { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--emerald-light); }

@@ -24,10 +24,15 @@ test("each Lazo tool has a distinct static entry and placeholder identity", asyn
       } else {
         assert.ok(html.includes(tool.mark));
       }
-      assert.match(html, /Page coming soon/);
+      assert.ok(html.includes(tool.url ? "Dedicated website" : "Page coming soon"));
       assert.match(html, /href="\.\.\/">Back to Lazo/);
       assert.match(html, /href="\.\.\/everyday\/"/);
-      assert.match(html, /href="\.\.\/power-chords\/"/);
+      assert.match(html, /href="https:\/\/powerchords\.lazo\.tools\/"/);
+      assert.doesNotMatch(html, /🤘/);
+      if (tool.url) {
+        assert.ok(html.includes(`href="${tool.url}" aria-label="Visit ${tool.name} website"`));
+        assert.ok(html.includes(`Explore ${tool.name}`));
+      }
       assert.doesNotMatch(html, /github\.com|skills engine|Product Sense Engine|<form\b|Download now/i);
       const entry = await readFile(new URL(`../${tool.slug}/index.html`, import.meta.url), "utf8");
       assert.ok(entry.includes(`<title>${tool.name} | Lazo</title>`));
