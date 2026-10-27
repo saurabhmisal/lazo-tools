@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ToolsMenu } from "./ToolsMenu.jsx";
+import { ToolLogo } from "./ToolLogo.jsx";
 import { tools } from "./tools.js";
 import { AnalyticsPreferences } from "./AnalyticsPreferences.jsx";
 import { PressureStory } from "./PressureStory.jsx";
@@ -809,12 +810,7 @@ export function App() {
               <a className="home-tool-link" key={tool.slug} href={`./${tool.slug}/`}>
                 <div className="home-tool-copy">
                   <div className="home-tool-identity">
-                    {tool.logo ? (
-                      <img className="home-tool-logo" src={`${import.meta.env.BASE_URL}${tool.logo}`}
-                        alt="" width="44" height="44" loading="lazy" decoding="async" />
-                    ) : (
-                      <span className="home-tool-logo home-tool-mark" aria-hidden="true">{tool.mark}</span>
-                    )}
+                    <ToolLogo tool={tool} base={import.meta.env.BASE_URL} />
                     <h3>{tool.name}</h3>
                   </div>
                   <p>{tool.description}</p>

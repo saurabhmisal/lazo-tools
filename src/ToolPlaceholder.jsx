@@ -1,6 +1,7 @@
 import { ArrowLeft, Link2 } from "lucide-react";
 import { AnalyticsPreferences } from "./AnalyticsPreferences.jsx";
 import { ToolsMenu } from "./ToolsMenu.jsx";
+import { ToolLogo } from "./ToolLogo.jsx";
 
 export function ToolPlaceholder({ tool }) {
   return (
@@ -18,9 +19,10 @@ export function ToolPlaceholder({ tool }) {
       <main id="main" className="tool-placeholder">
         <div className="tool-placeholder-copy">
           <p className="tool-family">By Lazo</p>
+          <ToolLogo tool={tool} base="../" className="tool-page-logo" loading="eager" />
           <h1>{tool.name}</h1>
           <p className="tool-status"><span aria-hidden="true" />Page coming soon</p>
-          <p>A home for {tool.name} under Lazo. More details soon.</p>
+          <p>{tool.description}</p>
           <a className="text-link tool-back" href="../">
             <ArrowLeft size={16} aria-hidden="true" /> Back to Lazo
           </a>

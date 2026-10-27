@@ -12,3 +12,5 @@ These are standalone static HTML entries, so direct visits and reloads work on G
 The homepage also introduces both tools in a compact "More from Lazo" section before the signup. It uses the same registry and stable page URLs, one short product description each, and simple "Page coming soon" labels until individual pages are developed. Everyday uses its existing app logo (copied from the public Everyday landing page); Power Chords uses its existing 🤘 brand mark. Fixed 44px logo slots keep the cards stable as the image loads.
 
 Preserve the existing shared consent and browser/test exclusions when replacing a placeholder. Only approved canonical page identities reach Analytics. Test via the excluded browser or `?analytics=test`, never by creating new production traffic.
+
+The individual pages reuse the exact homepage descriptions from `src/tools.js` and the shared `ToolLogo` component. Page logos are 64px; homepage logos remain 44px. Nested pages resolve the same local image with a `../` prefix, and their descriptions also match in search/social metadata and the no-JavaScript fallback.
