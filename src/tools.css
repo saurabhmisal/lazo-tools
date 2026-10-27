@@ -31,6 +31,40 @@
 .tools-menu-panel a { display: grid; gap: 4px; padding: 12px; color: var(--emerald-deep); font-size: 14px; }
 .tools-menu-panel a:hover, .tools-menu-panel a:focus-visible { background: #e4ece5; }
 .tools-menu-panel small { color: #4c5b50; font-size: 11px; }
+.home-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  align-items: center;
+  gap: 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 36px 32px 48px;
+  border-top: 1px solid var(--line);
+}
+.home-tools h2 {
+  margin: 0;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.home-tools-intro p { margin: 10px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.home-tools-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.home-tool-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--pearl);
+}
+.home-tool-link h3 { margin: 0 0 8px; font-size: 16px; font-weight: 500; line-height: 1.4; }
+.home-tool-link small { display: block; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.home-tool-link svg { flex-shrink: 0; color: var(--emerald-light); }
+.home-tool-link:hover { border-color: var(--emerald-light); background: #202a24; }
 .tool-site { min-height: 100svh; display: flex; flex-direction: column; }
 .tool-placeholder { flex: 1; width: 100%; max-width: 1280px; margin: 0 auto; padding: 80px 32px 100px; }
 .tool-placeholder-copy { max-width: 640px; }
@@ -49,11 +83,13 @@
 .tool-footer details p { margin: 12px 0; line-height: 1.7; }
 .tool-footer details a { color: var(--emerald-light); text-decoration: underline; }
 @media (max-width: 700px) {
+  .home-tools { grid-template-columns: minmax(0, 1fr); padding: 28px 20px 36px; gap: 20px; }
   .tool-placeholder { padding: 56px 20px 72px; }
   .tool-placeholder h1 { font-size: 48px; }
   .tool-footer { padding: 24px 20px; }
 }
 @media (max-width: 480px) {
+  .home-tools-links { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .simple-nav { gap: 8px; }
   .simple-nav > .button { white-space: nowrap; }
   .simple-nav > .button svg { display: none; }

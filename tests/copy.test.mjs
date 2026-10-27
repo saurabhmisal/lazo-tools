@@ -161,15 +161,21 @@ test("privacy and release answers distinguish local work from external services"
   );
 });
 
-test("the launch page has only three main sections and a short reading path", () => {
+test("the launch page adds only a compact tool introduction to its short reading path", () => {
   const main = page.match(/<main\b[\s\S]*?<\/main>/)[0];
-  assert.equal((main.match(/<section\b/g) || []).length, 3);
+  assert.equal((main.match(/<section\b/g) || []).length, 4);
   const initialReadingPath = main.replace(
     /<details\b[\s\S]*?<\/details>/g,
     (details) => details.match(/<summary\b[\s\S]*?<\/summary>/)[0],
   );
-  const wordCount = plainText(initialReadingPath).split(/\s+/).length;
-  assert.ok(wordCount < 250, `${wordCount} words in the initial reading path`);
+  const toolIntroduction = main.match(/<section class="home-tools"[\s\S]*?<\/section>/)[0];
+  assert.ok(plainText(toolIntroduction).split(/\s+/).length <= 25);
+  assert.match(toolIntroduction, /href="\.\/everyday\/"/);
+  assert.match(toolIntroduction, /href="\.\/power-chords\/"/);
+  assert.doesNotMatch(toolIntroduction, /<form\b|Download now|github\.com/i);
+  const originalReadingPath = initialReadingPath.replace(toolIntroduction, "");
+  const wordCount = plainText(originalReadingPath).split(/\s+/).length;
+  assert.ok(wordCount < 250, `${wordCount} words outside the requested tool introduction`);
   assert.doesNotMatch(
     main,
     /principles-grid|extension-outcomes|closing-section/,

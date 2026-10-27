@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ToolsMenu } from "./ToolsMenu.jsx";
+import { tools } from "./tools.js";
 import { AnalyticsPreferences } from "./AnalyticsPreferences.jsx";
 import { PressureStory } from "./PressureStory.jsx";
 import { useSectionReveals } from "./useSectionReveals.js";
@@ -796,6 +797,23 @@ export function App() {
               clickable prototype, scoped MVP and stakeholder update.
               <span>You review everything.</span>
             </p>
+          </div>
+        </section>
+        <section className="home-tools" aria-labelledby="home-tools-title">
+          <div className="home-tools-intro">
+            <h2 id="home-tools-title">More from Lazo</h2>
+            <p>Meet the growing Lazo family.</p>
+          </div>
+          <div className="home-tools-links">
+            {tools.map((tool) => (
+              <a className="home-tool-link" key={tool.slug} href={`./${tool.slug}/`}>
+                <div>
+                  <h3>{tool.name}</h3>
+                  <small>Page coming soon</small>
+                </div>
+                <ArrowRight size={20} aria-hidden="true" />
+              </a>
+            ))}
           </div>
         </section>
         <ReleaseSection />
