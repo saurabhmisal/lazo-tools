@@ -17,6 +17,7 @@ import {
   ArrowUp,
   BookOpen,
   Bot,
+  Brain,
   Check,
   CheckSquare,
   ChevronDown,
@@ -36,8 +37,10 @@ import {
   LockKeyhole,
   MessageSquareText,
   NotebookPen,
+  Rocket,
   Search,
   Target,
+  UsersRound,
   X,
 } from "lucide-react";
 
@@ -764,35 +767,43 @@ export function App() {
                 [
                   "Find the signal",
                   "Bring notes, feedback and evidence together into a clear picture of the problem.",
+                  Search,
                 ],
                 [
                   "Strengthen your thinking",
                   "Explore alternatives, uncover assumptions and weigh trade-offs in your context.",
+                  Brain,
                 ],
                 [
                   "Make it tangible",
                   "Turn your direction into product briefs, prototypes and scoped MVPs.",
+                  Layers3,
                 ],
                 [
                   "Bring people with you",
                   "Prepare leadership updates, decision notes and clear asks that help unblock stakeholders.",
+                  UsersRound,
                 ],
                 [
                   "Keep momentum",
                   "Turn decisions into next steps, experiments and launch plans.",
+                  Rocket,
                 ],
-              ].map(([title, description]) => (
+              ].map(([title, description, Icon]) => (
                 <details className="capability" key={title}>
                   <summary>
-                    <span>{title}</span>
-                    <ChevronDown size={18} aria-hidden="true" />
+                    <span className="capability-label">
+                      <Icon size={18} aria-hidden="true" />
+                      <span>{title}</span>
+                    </span>
+                    <ChevronDown className="capability-chevron" size={18} aria-hidden="true" />
                   </summary>
                   <p>{description}</p>
                 </details>
               ))}
             </div>
             <p className="capability-example">
-              <strong>Planned example</strong>
+              <strong><FileText size={16} aria-hidden="true" /> Planned example</strong>
               Meeting notes + onboarding ideas{" "}
               <ArrowRight size={14} role="img" aria-label="become" />{" "}
               clickable prototype, scoped MVP and stakeholder update.

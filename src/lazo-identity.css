@@ -1069,7 +1069,13 @@ summary:focus-visible,
   flex-shrink: 0;
   color: var(--emerald-light);
 }
-.capability[open] summary svg {
+.capability-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.capability[open] .capability-chevron {
   transform: rotate(180deg);
 }
 .capability summary:hover {
@@ -1080,7 +1086,7 @@ summary:focus-visible,
   outline-offset: 4px;
 }
 .simple-mission .capability p {
-  padding: 0 28px 18px 0;
+  padding: 0 28px 18px 30px;
   font-size: 14px;
 }
 .simple-mission .capability-example {
@@ -1092,6 +1098,9 @@ summary:focus-visible,
   display: block;
 }
 .capability-example strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 6px;
   color: var(--pearl);
   font-size: 12px;
@@ -1102,6 +1111,10 @@ summary:focus-visible,
   vertical-align: middle;
   margin-inline: 5px;
   color: var(--emerald-light);
+}
+.capability-example strong svg {
+  flex-shrink: 0;
+  margin: 0;
 }
 .simple-site .release-section {
   padding: 56px max(32px, calc((100% - 1216px) / 2));
