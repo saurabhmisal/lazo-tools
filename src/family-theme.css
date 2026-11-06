@@ -1,0 +1,35 @@
+/* Lazo family interface tokens. Product artwork retains its own colours. */
+:root { color-scheme: dark; --brand-bg:#181b19; --brand-panel:#202823; --brand-text:#f4f5f0; --brand-muted:#aeb7ae; --brand-accent:#2e7d63; --brand-light:#89d0b2; --brand-line:#3c443d; --bg:var(--brand-bg); --panel:var(--brand-panel); --text:var(--brand-text); --accent:var(--brand-light); --paper:var(--brand-bg); --ink:var(--brand-text); --muted:var(--brand-muted); --purple:var(--brand-light); --line:var(--brand-line); }
+body, #pc-site { background:var(--brand-bg); color:var(--brand-text); }
+#pc-site { --pc-bg:var(--brand-bg); --pc-panel:var(--brand-panel); --pc-text:var(--brand-text); --pc-muted:var(--brand-muted); --pc-accent:var(--brand-light); --pc-line:var(--brand-line); --pc-green:var(--brand-light); }
+body .button, body .pc-primary, body button:not(.secondary):not(.replay):not(.motion-toggle):not(.text-link) { background:var(--brand-accent); color:var(--brand-text); }
+body .button:hover, body .pc-primary:hover { background:#25674f; }
+body .secondary, body .button-secondary { background:transparent; border:1px solid var(--brand-line); color:var(--brand-text); }
+body .intro, body .hero-detail, body .quiet, body .muted, body small, body .eyebrow, body .local-note, body .demo-caption, body .art-caption, body .art-foot { color:var(--brand-muted); }
+body .paper, body .step { background:var(--brand-panel); border-color:var(--brand-line); color:var(--brand-text); }
+body input, body select, body textarea { background:var(--brand-bg); color:var(--brand-text); border-color:#718d7e; }
+body .status:not(.error), body .processing-note, body .result { background:var(--brand-panel); color:var(--brand-light); }
+body header, body footer, body .header, body .section, body .rules li, body th, body td { border-color:var(--brand-line); }
+body footer, body .brand span, body .replay, body .motion-toggle { color:var(--brand-muted); }
+body a:focus-visible, body button:focus-visible, body input:focus, body select:focus, body summary:focus-visible { outline:2px solid var(--brand-light); outline-offset:4px; }
+body .hero h1 em, body .spark, body .scene figcaption { color:var(--brand-light); }
+/* Keep illustrated paper notes readable against the common charcoal shell. */
+body .note, body .memory-result, body .workspace, body .input-note, body .task-label, body .focus-block { color:#29362f; }
+body .note small { color:#5d675d; }
+.analytics-preferences { box-sizing:border-box; position:relative; width:100%; margin:0; padding:24px max(24px, calc((100vw - 1240px)/2)); border-top:1px solid var(--brand-line); background:var(--brand-bg); color:var(--brand-text); font:400 18px/1.5 var(--brand-font, 'Source Sans 3', 'Segoe UI', Arial, sans-serif); }
+.analytics-preferences p { margin:0 0 18px; max-width:1100px; font:inherit; color:inherit; }
+.analytics-preferences > div { display:flex; flex-wrap:wrap; gap:16px; }
+body .analytics-preferences button, body .analytics-preferences .button { display:inline-flex; background:transparent; color:var(--brand-text); border:1px solid #718d7e; border-radius:7px; padding:12px 20px; min-height:44px; font:600 16px/1.4 var(--brand-font, 'Source Sans 3', 'Segoe UI', Arial, sans-serif); cursor:pointer; text-decoration:none; }
+body .analytics-preferences button:hover { background:var(--brand-panel); }
+@media(max-width:480px) { .analytics-preferences { padding:22px 20px; font-size:16px; } .analytics-preferences > div { gap:10px; } }
+/* Shared treatment for supporting panels and interactive examples. */
+body .demo-section, body .closing, body .workspace, body .demo-sidebar, body .answer, body .source-detail, body .memory-result, body .input-note, body .focus-block { background:var(--brand-panel); color:var(--brand-text); border-color:var(--brand-line); }
+body .demo-heading p, body .principles p, body .closing p, body .answer>p, body .demo-top, body .demo-bottom, body .answer-footer, body .source-list, body .focus-block small { color:var(--brand-muted); }
+body .memory-result strong, body .step-heading svg, body .task-label, body .result .step-heading svg, body .focus-block>span, body .closing a { color:var(--brand-light); }
+body .step.active { border-color:var(--brand-light); box-shadow:0 10px 32px #0003; }
+body .note p, body .source-detail blockquote { font-family:var(--brand-font); font-style:normal; }
+body .note-two { background:#dce9df; }
+body .input-note:nth-child(3), body .source-button { background:#2b3b30; color:var(--brand-text); }
+body .input-note>span, body .step-number { color:var(--brand-muted); }
+#pc-site .pc-button.pc-primary { background:var(--brand-accent); color:var(--brand-text); border-color:var(--brand-accent); }
+#pc-site .pc-button.pc-primary:hover { background:#25674f; }

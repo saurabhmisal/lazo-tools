@@ -3,9 +3,9 @@ import test from "node:test";
 import { analyticsPageForPath, createAnalytics } from "../src/analytics.js";
 
 function fixture({ host = "lazo.tools", id = "G-TEST123456", stored = null, excluded = false,
-  automated = false, href = "https://lazo.tools/?email=private@example.com#secret", storageBlocked = false } = {}) {
+  automated = false, href = "https://lazo.tools/?email=private@example.com#secret", storageBlocked = false, familyExclusion = false } = {}) {
   const scripts = [], events = {}, storageEvents = {}, writes = [];
-  let cookies = "_ga=old; _ga_TEST123456=old; unrelated=keep";
+  let cookies = "_ga=old; _ga_TEST123456=old; unrelated=keep" + (familyExclusion ? "; lazo_analytics_excluded=true" : "");
   const storage = new Map(stored ? [["lazo.analytics-consent.v1", JSON.stringify(stored)]] : []);
   if (excluded) storage.set("lazo.analytics-excluded.v1", "true");
   const win = { location: { protocol: "https:", hostname: host, href, pathname: new URL(href).pathname }, navigator: { webdriver: automated },
@@ -173,4 +173,30 @@ test("tool pages use approved canonical URLs without private URL parameters", ()
     assert.equal(fixture({ excluded: true, href: `https://lazo.tools/${slug}/` }).scripts.length, 0);
   }
   assert.equal(analyticsPageForPath('/unknown/private').page_location, 'https://lazo.tools/');
+});
+
+test("each public family host requires consent and only sends a canonical non-personal page", () => {
+  for (const host of ['everyday.lazo.tools', 'pencil.lazo.tools', 'powerchords.lazo.tools', 'accounts.lazo.tools']) {
+    const f = fixture({host, href:`https://${host}/signup?email=private@example.com&grant=secret#private`});
+    assert.equal(f.analytics.snapshot().configured, true);
+    assert.equal(f.scripts.length, 0);
+    f.analytics.setConsent('granted');
+    assert.equal(f.scripts.length, 1);
+    assert.doesNotMatch(JSON.stringify(f.calls()), /private|secret|email=|grant=/);
+    assert.equal(f.calls().find(c => c[0] === 'event')[2].page_location,
+      `https://${host}${host === 'accounts.lazo.tools' ? '/signup' : '/'}`);
+    f.analytics.setConsent('denied');
+    assert.equal(f.analytics.trackCta('signup'), false);
+  }
+});
+
+test("shared owner exclusion wins across subdomains and private admin pages never track", () => {
+  for (const host of ['everyday.lazo.tools', 'pencil.lazo.tools', 'powerchords.lazo.tools', 'accounts.lazo.tools']) {
+    const f = fixture({host, href:`https://${host}/`, familyExclusion:true, stored:{choice:'granted',at:100000000000}});
+    assert.equal(f.analytics.snapshot().excluded, true);
+    assert.equal(f.scripts.length, 0);
+  }
+  assert.equal(fixture({host:'accounts.lazo.tools',href:'https://accounts.lazo.tools/admin'}).analytics.snapshot().configured,false);
+  const f = fixture(); f.analytics.setExcluded(true);
+  assert(f.writes.some(value => value.startsWith('lazo_analytics_excluded=true;') && value.includes('Domain=lazo.tools')));
 });

@@ -1,0 +1,7 @@
+:root { --brand-bg:#181b19; --brand-panel:#202823; --brand-text:#f4f5f0; --brand-line:#3c443d; }
+.analytics-preferences { box-sizing:border-box; position:relative; width:100%; margin:0; padding:24px max(24px, calc((100vw - 1240px)/2)); border-top:1px solid var(--brand-line); background:var(--brand-bg); color:var(--brand-text); font:400 18px/1.5 var(--brand-font, 'Source Sans 3', 'Segoe UI', Arial, sans-serif); }
+.analytics-preferences p { margin:0 0 18px; max-width:1100px; font:inherit; color:inherit; }
+.analytics-preferences > div { display:flex; flex-wrap:wrap; gap:16px; }
+body .analytics-preferences button, body .analytics-preferences .button { display:inline-flex; background:transparent; color:var(--brand-text); border:1px solid #718d7e; border-radius:7px; padding:12px 20px; min-height:44px; font:600 16px/1.4 var(--brand-font, 'Source Sans 3', 'Segoe UI', Arial, sans-serif); cursor:pointer; text-decoration:none; }
+body .analytics-preferences button:hover { background:var(--brand-panel); }
+@media(max-width:480px) { .analytics-preferences { padding:22px 20px; font-size:16px; } .analytics-preferences > div { gap:10px; } }

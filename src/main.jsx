@@ -7,6 +7,7 @@ import "./lazo-identity.css";
 import "./pressure-story.css";
 import "./tools.css";
 import "./brand-type.css";
+import "./family-consent.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>

@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test:sites": "node --test tests/sites-worker.test.mjs",
     "test": "node --test tests/*.test.mjs",
-    "render:scene": "node scripts/render-thinking-scene.mjs"
+    "render:scene": "node scripts/render-thinking-scene.mjs",
+    "build:family": "node scripts/build-family-assets.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "5.0.4",

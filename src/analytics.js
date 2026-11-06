@@ -1,9 +1,10 @@
 import { tools } from "./tools.js";
+import { POWER_CHORDS_PAGES } from "./analytics-pages.js";
 
 // Only these fixed, non-personal values can become analytics parameters.
 export const CTA_IDS = Object.freeze([
   "header_launch_updates", "hero_launch_updates", "open_google_form",
-  "open_playbooks", "open_faq",
+  "open_playbooks", "open_faq", "signup", "download", "product_website",
 ]);
 const CONSENT_KEY = "lazo.analytics-consent.v1";
 const EXCLUSION_KEY = "lazo.analytics-excluded.v1";
@@ -22,10 +23,35 @@ export function analyticsPageForPath(pathname) {
   }) : PAGE;
 }
 
+export const ANALYTICS_NOTICE = "Allow Google Analytics to measure visits and button clicks? We do not send form details or playbook text. Analytics cookies are optional.";
+const FAMILY = Object.freeze({
+  "lazo.tools": "Lazo", "everyday.lazo.tools": "Everyday", "pencil.lazo.tools": "Pencil",
+  "powerchords.lazo.tools": "Power Chords", "accounts.lazo.tools": "Lazo account",
+});
+export function analyticsPageForHost(host, path) {
+  if (host === "lazo.tools") return analyticsPageForPath(path);
+  if (!FAMILY[host]) return null;
+  if (host === "powerchords.lazo.tools") {
+    for (const [slug, title] of Object.entries(POWER_CHORDS_PAGES)) {
+      if ([`/capabilities/${slug}/`, `/capabilities/${slug}/index.html`].includes(path)) {
+        return { page_location:`https://${host}/capabilities/${slug}/`, page_title:`${title} | Power Chords`, page_referrer:"" };
+      }
+    }
+    if (["/workspace.html", "/verification.html", "/third-party-notices.html"].includes(path)) {
+      return { page_location:`https://${host}${path}`, page_title:"Power Chords | Lazo", page_referrer:"" };
+    }
+  }
+  if (host === "pencil.lazo.tools" && ["/app/", "/app/index.html"].includes(path)) {
+    return { page_location:`https://${host}/app/`, page_title:"Pencil workspace | Lazo", page_referrer:"" };
+  }
+  const accountPath = host === "accounts.lazo.tools" && ["/signup", "/login", "/download", "/privacy"].includes(path) ? path : "/";
+  return { page_location: `https://${host}${accountPath}`, page_title: `${FAMILY[host]} | Lazo`, page_referrer: "" };
+}
+
 export function createAnalytics({ measurementId, window: win, document: doc, now = Date.now }) {
-  const page = analyticsPageForPath(win?.location?.pathname);
+  const page = analyticsPageForHost(win?.location?.hostname, win?.location?.pathname);
   const configured = /^G-[A-Z0-9]{6,20}$/.test(measurementId || "")
-    && win?.location?.protocol === "https:" && win.location.hostname === "lazo.tools";
+    && win?.location?.protocol === "https:" && Boolean(page) && !(win.location.hostname === "accounts.lazo.tools" && win.location.pathname === "/admin");
   let choice = null;
   const automated = win?.navigator?.webdriver === true;
   let excluded = automated;
@@ -33,16 +59,23 @@ export function createAnalytics({ measurementId, window: win, document: doc, now
   let started = false;
   let pageSent = false;
   const listeners = new Set();
+  const familyExcluded = () => (doc.cookie || "").split(";").some(value => value.trim() === "lazo_analytics_excluded=true");
+  function persistExclusion(value) {
+    doc.cookie = `lazo_analytics_excluded=${value}; Max-Age=${MAX_AGE / 1000}; Path=/; Domain=lazo.tools; SameSite=Lax; Secure`;
+  }
   if (configured) {
     try {
-      exclusionPersistent = win.localStorage.getItem(EXCLUSION_KEY) === "true";
+      exclusionPersistent = win.localStorage.getItem(EXCLUSION_KEY) === "true" || familyExcluded();
       excluded ||= exclusionPersistent;
     } catch {}
+    excluded ||= familyExcluded();
+    if (excluded && !automated) persistExclusion(true);
     // Resolve owner/test exclusion before restoring any saved consent.
     try {
       const mode = new URL(win.location.href).searchParams.get("analytics");
       if (mode === "exclude" || mode === "test") {
         excluded = true;
+        persistExclusion(true);
         try {
           win.localStorage.setItem(EXCLUSION_KEY, "true");
           exclusionPersistent = true;
@@ -119,6 +152,12 @@ export function createAnalytics({ measurementId, window: win, document: doc, now
       const id = event.target?.closest?.("[data-analytics-cta]")?.getAttribute("data-analytics-cta");
       trackCta(id);
     });
+    // An owner exclusion set on another Lazo subdomain must stop an open page too.
+    win.addEventListener("focus", () => {
+      if (familyExcluded() && !excluded) {
+        excluded = true; exclusionPersistent = true; apply("denied", true);
+      }
+    });
     win.addEventListener("storage", event => {
       if (event.key === EXCLUSION_KEY || event.key === null) {
         exclusionPersistent = event.newValue === "true";
@@ -145,6 +184,7 @@ export function createAnalytics({ measurementId, window: win, document: doc, now
     setExcluded(next) {
       if (!configured || automated || typeof next !== "boolean") return false;
       excluded = next;
+      persistExclusion(next);
       exclusionPersistent = false;
       try {
         win.localStorage.setItem(EXCLUSION_KEY, String(next));
