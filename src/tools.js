@@ -12,6 +12,7 @@ export const tools = Object.freeze([
     name: "Everyday",
     description: "Tasks, notes and focused work in one private workspace.",
     logo: "assets/everyday-logo.png",
+    url: "https://everyday.lazo.tools/",
   }),
   Object.freeze({
     slug: "power-chords",
