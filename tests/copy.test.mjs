@@ -77,7 +77,7 @@ test("navigation stays minimal and supporting resources remain available on dema
   assert.match(header, /href="#mission">Why Lazo<\/a>/);
   assert.equal(
     (header.match(/<nav\b[\s\S]*?<\/nav>/)[0].match(/<a\b/g) || []).length,
-    4,
+    5,
   );
   assert.match(header, /aria-label="Lazo tools" aria-expanded="false"/);
   assert.match(header, /href="\.\/everyday\/"/);
@@ -169,7 +169,7 @@ test("the launch page adds only a compact tool introduction to its short reading
     (details) => details.match(/<summary\b[\s\S]*?<\/summary>/)[0],
   );
   const toolIntroduction = main.match(/<section class="home-tools"[\s\S]*?<\/section>/)[0];
-  assert.ok(plainText(toolIntroduction).split(/\s+/).length <= 45);
+  assert.ok(plainText(toolIntroduction).split(/\s+/).length <= 65);
   assert.match(toolIntroduction, /href="\.\/everyday\/"/);
   assert.match(toolIntroduction, /href="https:\/\/powerchords\.lazo\.tools\/"/);
   assert.doesNotMatch(toolIntroduction, /🤘/);

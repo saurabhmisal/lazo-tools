@@ -13,8 +13,8 @@ test("each Lazo tool has a distinct static entry and placeholder identity", asyn
     optimizeDeps: { noDiscovery: true, include: [] } });
   try {
     const { ToolPlaceholder } = await compiler.ssrLoadModule("/src/ToolPlaceholder.jsx");
-    assert.deepEqual(tools.map(tool => tool.slug), ["everyday", "power-chords"]);
-    for (const tool of tools) {
+    assert.deepEqual(tools.map(tool => tool.slug), ["pencil", "everyday", "power-chords"]);
+    for (const tool of tools.filter(tool => !tool.externalOnly)) {
       const html = renderToStaticMarkup(createElement(ToolPlaceholder, { tool }));
       assert.match(html, new RegExp(`<h1>${tool.name}</h1>`));
       assert.ok(html.includes(`<p>${tool.description}</p>`));
@@ -46,7 +46,7 @@ test("each Lazo tool has a distinct static entry and placeholder identity", asyn
 });
 
 test("built tool URLs have their own HTML and valid nested asset paths", async () => {
-  for (const { slug, name } of tools) {
+  for (const { slug, name } of tools.filter(tool => !tool.externalOnly)) {
     const html = await readFile(new URL(`../dist/client/${slug}/index.html`, import.meta.url), "utf8");
     assert.ok(html.includes(`<title>${name} | Lazo</title>`));
     assert.match(html, /src="\.\.\/assets\//);

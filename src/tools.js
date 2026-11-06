@@ -1,5 +1,13 @@
 export const tools = Object.freeze([
   Object.freeze({
+    slug: "pencil",
+    name: "Pencil",
+    description: "Notes, tasks and source-linked knowledge, with a memory for your work.",
+    logo: "assets/pencil-logo.svg",
+    url: "https://pencil.lazo.tools/",
+    externalOnly: true,
+  }),
+  Object.freeze({
     slug: "everyday",
     name: "Everyday",
     description: "Tasks, notes and focused work in one private workspace.",

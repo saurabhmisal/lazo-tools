@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("./assets/fonts/source-sans-3.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+:root { --brand-font: "Source Sans 3", "Segoe UI", Arial, sans-serif; }
+html body, .simple-site, .simple-site button, .simple-site input, .simple-site select, .simple-site textarea, button, input, select, textarea { font-family: var(--brand-font); font-synthesis: none; }
+h1, h2, h3, h4, .simple-site h1, .simple-site h2, .simple-site h3, .simple-site .hero .hero-subtitle, .simple-site .hero .hero-subtitle em, .home-tools h2, .tool-placeholder h1 { font-family: var(--brand-font); font-weight: 600; font-style: normal; letter-spacing: -0.025em; line-height: 1.12; }
+h1 em, h1 > span, h2 em, h2 > em, .hero-subtitle em { font-family: inherit; font-style: normal; font-weight: inherit; letter-spacing: inherit; }
+.nav-brand, .brand, .footer-brand { font-family: var(--brand-font); letter-spacing: -0.015em; }
+.simple-site .hero-description, .intro, .lead { line-height: 1.65; }
+.simple-nav, nav, .button { font-weight: 600; }
+@media (max-width: 700px) { h1 > span { white-space: normal; } }
+
+#pc-site { font-family: var(--brand-font); }
+#pc-site h1, #pc-site h2, #pc-site h3, #pc-site h1 em { font-family: var(--brand-font); font-weight: 600; font-style: normal; letter-spacing: -.025em; }
+body h1 > span { font-family: inherit; font-style: normal; font-weight: inherit; letter-spacing: inherit; }

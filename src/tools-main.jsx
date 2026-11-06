@@ -6,6 +6,7 @@ import "./styles.css";
 import "./site-sections.css";
 import "./lazo-identity.css";
 import "./tools.css";
+import "./brand-type.css";
 
 const root = document.getElementById("root");
 const tool = tools.find((item) => item.slug === root.dataset.tool);
