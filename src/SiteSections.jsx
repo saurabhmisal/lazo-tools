@@ -18,7 +18,6 @@ import {
   faqs,
   playbooks,
 } from "./site-content.js";
-import { interestForm } from "./interest-config.js";
 
 const icons = {
   context: Link2,
@@ -352,110 +351,20 @@ export function FAQSection() {
 
 export function ReleaseSection() {
   return (
-    <section
-      className="page-section release-section"
-      id="release"
-      aria-labelledby="release-title"
-    >
+    <section className="page-section release-section" id="release" aria-labelledby="release-title">
       <div className="release-layout">
         <div>
-          <h2 id="release-title">Be among the first</h2>
-          <p>Help shape the PM extension you wish you already had.</p>
-          <p className="release-cost">
-            Lazo is free forever. External AI services may charge separately.
-          </p>
+          <h2 id="release-title">Your next step starts here</h2>
+          <p>One Lazo account for Pencil, Everyday and Power Chords.</p>
+          <p className="release-cost">Free forever. External AI services may charge separately.</p>
         </div>
-        <form
-          className="interest-form"
-          action={interestForm.action}
-          method="POST"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Lazo early interest"
-        >
-          <div className="interest-field">
-            <label htmlFor="interest-email">Email address</label>
-            <input
-              id="interest-email"
-              name={interestForm.fields.email}
-              type="email"
-              autoComplete="email"
-              maxLength={254}
-              required
-            />
-          </div>
-          <div className="interest-field">
-            <label htmlFor="interest-system">Which system do you use?</label>
-            <select
-              id="interest-system"
-              name={interestForm.fields.system}
-              defaultValue=""
-              required
-            >
-              <option value="" disabled>
-                Choose your system
-              </option>
-              {interestForm.systems.map((system) => (
-                <option key={system} value={system}>
-                  {system}
-                </option>
-              ))}
-            </select>
-          </div>
-          <details className="interest-optional">
-            <summary>
-              Tell us more <span>(optional)</span>
-              <ChevronDown size={16} />
-            </summary>
-            <div className="interest-field">
-              <label htmlFor="interest-name">Your name</label>
-              <input
-                id="interest-name"
-                name={interestForm.fields.name}
-                autoComplete="name"
-                maxLength={100}
-              />
-            </div>
-            <div className="interest-field">
-              <label htmlFor="interest-blocker">
-                What slows your product work down?
-              </label>
-              <textarea
-                id="interest-blocker"
-                name={interestForm.fields.blocker}
-                rows={3}
-                maxLength={1800}
-              />
-            </div>
-          </details>
-          <label className="interest-consent">
-            <input
-              type="checkbox"
-              name={interestForm.fields.consent}
-              value={interestForm.consent}
-              required
-            />
-            <span>{interestForm.consent}</span>
-          </label>
-          <button className="button button-primary" type="submit">
-            Get launch updates <ArrowRight size={15} />
-          </button>
-          <p className="interest-privacy">
-            Saved privately via Google Forms. No confidential work details,
-            please.
-          </p>
-          <p className="interest-note">
-            Google Forms confirms your submission in a new tab.{" "}
-            <a
-              data-analytics-cta="open_google_form"
-              href={interestForm.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open the form directly
-            </a>
-          </p>
-        </form>
+        <div className="signup-invitation">
+          <a className="button button-primary" href="https://accounts.lazo.tools/signup">
+            Create your Lazo account <ArrowRight size={16} aria-hidden="true" />
+          </a>
+          <p>Verify your email. Available downloads start automatically.</p>
+          <a href="https://accounts.lazo.tools/privacy">How we use your details</a>
+        </div>
       </div>
     </section>
   );

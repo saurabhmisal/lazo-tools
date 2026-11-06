@@ -85,7 +85,7 @@ test("navigation stays minimal and supporting resources remain available on dema
   assert.match(footer, />FAQ<\/button>/);
   assert.match(footer, />PM playbooks<\/button>/);
   assert.match(footer, />About &amp; privacy<\/button>/);
-  assert.equal((page.match(/Get launch updates/g) || []).length, 3);
+  assert.equal((page.match(/Get started/g) || []).length, 2);
   assert.doesNotMatch(page, /id="playbooks"|id="faq"|workspace-window/);
   assert.match(resources.faq, /id="faq"/);
   assert.match(resources.playbooks, /id="playbooks"/);
@@ -96,7 +96,7 @@ test("the opening section has one reading flow and a single signup action", asyn
   assert.match(hero, /aria-describedby="hero-description"/);
   assert.match(
     plainText(hero),
-    /Launching soon.*You, but amplified!.*Lazo is being built as your PM extension/,
+    /Tools are live.*You, but amplified!.*Lazo is being built as your PM extension/,
   );
   assert.equal((hero.match(/href="#release"/g) || []).length, 1);
   assert.equal((hero.match(/class="hero-title-word"/g) || []).length, 2);
@@ -121,7 +121,7 @@ test("the opening section has one reading flow and a single signup action", asyn
 });
 
 test("launch copy preserves free software, external costs, and human ownership", () => {
-  assert.match(plainText(page), /Launching soon/);
+  assert.match(plainText(page), /Tools are live/);
   assert.match(plainText(page), /You own the decisions/);
   assert.doesNotMatch(
     plainText(page),
@@ -144,7 +144,7 @@ test("privacy and release answers distinguish local work from external services"
   );
   assert.match(
     faqs.find((item) => item.id === "website-data").answer,
-    /optional name or blocker/,
+    /optional phone number and system/,
   );
   assert.match(
     faqs.find((item) => item.id === "website-data").answer,
@@ -152,7 +152,7 @@ test("privacy and release answers distinguish local work from external services"
   );
   assert.match(
     faqs.find((item) => item.id === "access").answer,
-    /does not create an account or guarantee/,
+    /Phone is optional/,
   );
   assert.match(plainText(page), /Illustrated concept/);
   assert.match(
@@ -304,31 +304,13 @@ test("PM capabilities are concise, expandable, and framed as upcoming work", () 
   assert.ok(plainText(example).split(/\s+/).length < 30);
   assert.doesNotMatch(plainText(page), /Product Sense Engine|skills engine|github\.com|52 capabilities/i);
   assert.doesNotMatch(plainText(mission), /Power Chords/);
-  assert.match(plainText(page), /Be among the first/);
-  assert.match(plainText(page), /Help shape the PM extension you wish you already had/);
+  assert.match(plainText(page), /Your next step starts here/);
+  assert.match(plainText(page), /One Lazo account for Pencil, Everyday and Power Chords/);
 });
 
-test("the compact form preserves Google fields, required consent, and optional context", () => {
-  const form = page.match(/<form\b[\s\S]*?<\/form>/)[0];
-  assert.ok(form.includes(`action="${interestForm.action}"`));
-  assert.match(form, /method="POST"/);
-  assert.match(form, /target="_blank"/);
-  const names = [...form.matchAll(/\bname="([^"]+)"/g)].map(
-    (match) => match[1],
-  );
-  assert.deepEqual(names.sort(), Object.values(interestForm.fields).sort());
-  assert.match(form, /<input\b[^>]*id="interest-email"[^>]*required=""/);
-  const select = form.match(/<select\b[\s\S]*?<\/select>/)[0];
-  assert.match(select, /required=""/);
-  for (const system of interestForm.systems) {
-    assert.ok(select.includes(`value="${system}"`));
-  }
-  const optional = form.match(/<details\b[\s\S]*?<\/details>/)[0];
-  assert.doesNotMatch(optional, /\bopen(?:=|\s|>)/);
-  assert.doesNotMatch(optional, /required=/);
-  assert.match(optional, /id="interest-name"/);
-  assert.match(optional, /id="interest-blocker"/);
-  assert.match(form, /<input\b[^>]*type="checkbox"[^>]*required=""/);
-  assert.ok(form.includes(interestForm.consent));
-  assert.match(form, /Google Forms confirms your submission in a new tab/);
+test("the homepage routes product access to the shared verified signup", () => {
+  assert.doesNotMatch(page, /<form\b/);
+  assert.match(page, /href="https:\/\/accounts\.lazo\.tools\/signup"/);
+  assert.match(page, /href="https:\/\/accounts\.lazo\.tools\/privacy"/);
+  assert.match(plainText(page), /Verify your email. Available downloads start automatically/);
 });

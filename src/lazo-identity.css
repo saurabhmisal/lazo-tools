@@ -1351,3 +1351,7 @@ summary:focus-visible,
 .analytics-preferences > div { display: flex; flex-wrap: wrap; gap: .75rem; }
 .analytics-preferences .button { min-height: 44px; }
 @media (max-width: 600px) { .analytics-preferences { padding: 1rem 20px; } }
+
+.signup-invitation { display: grid; justify-items: start; gap: 16px; min-width: 0; }
+.signup-invitation p { margin: 0; font-size: 14px; line-height: 1.6; }
+.signup-invitation > a:last-child { color: var(--emerald-deep); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }

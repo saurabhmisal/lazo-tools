@@ -695,7 +695,7 @@ export function App() {
             Why Lazo
           </a>
           <a className="button button-primary" href="#release" data-analytics-cta="header_launch_updates">
-            Get launch updates <ArrowRight size={16} />
+            Get started <ArrowRight size={16} />
           </a>
         </nav>
       </header>
@@ -708,8 +708,7 @@ export function App() {
           <div className="hero-intro">
             <div className="hero-heading">
               <p className="simple-launch">
-                <span className="tiny-dot coral" aria-hidden="true" /> Launching
-                soon
+                <span className="tiny-dot coral" aria-hidden="true" /> Tools are live
               </p>
               <h1 id="hero-title" className="hero-subtitle">
                 <span className="hero-title-word">You, but</span>{" "}
@@ -727,7 +726,7 @@ export function App() {
               </p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#release" data-analytics-cta="hero_launch_updates">
-                  Get launch updates <ArrowRight size={17} aria-hidden="true" />
+                  Get started <ArrowRight size={17} aria-hidden="true" />
                 </a>
               </div>
               <p className="hero-product-note">
@@ -946,9 +945,9 @@ export function App() {
       {policyOpen && (
         <Dialog title="ABOUT THIS WEBSITE" onClose={() => setPolicyOpen(false)}>
           <div className="resource-detail">
-            <h2>A look at what's taking shape.</h2>
+            <h2>Useful tools. Your direction.</h2>
             <p>
-              Lazo is a workspace for product managers, launching soon. It is
+              Lazo brings together tools for product work. It is
               being built as an extension of you, with your direction and final
               say at the center. Free forever, on your own system.
             </p>
@@ -964,16 +963,14 @@ export function App() {
               Google Fonts supplies the website fonts.
             </p>
             <p>
-              The early-interest form submits your details to Google Forms and
-              Lazo's private response Sheet for launch and early-access updates.
-              It is separate from the local playbook editor.
+              Signup opens the separate Lazo account service. It collects your first and last name, email, optional phone and system, and verifies your email for download access. Your local playbook text is separate.
             </p>
             <p>
               Where enabled, Google Analytics measures visits and selected button
               clicks only after you allow analytics. It uses cookies, and does not
               receive your form details or playbook text from this site. Change
               your choice using the Analytics control near the footer. Declining
-              analytics does not affect launch updates. Google also processes
+              analytics does not affect signup. Google also processes
               connection and device information.{" "}
               <a
                 href="https://policies.google.com/technologies/partner-sites"

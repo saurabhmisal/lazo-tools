@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { interestForm } from "../src/interest-config.js";
 import { faqs } from "../src/site-content.js";
 
-test("interest intake uses the verified Google Form, not a public response Sheet", () => {
+test("legacy interest configuration retains its historical Google Form identifiers", () => {
   const action = new URL(interestForm.action);
   assert.equal(action.origin, "https://docs.google.com");
   assert.match(
@@ -20,7 +20,7 @@ test("interest intake uses the verified Google Form, not a public response Sheet
   );
 });
 
-test("system preference includes alternatives and is not advertised as support", () => {
+test("system messaging keeps Windows availability distinct from signup", () => {
   assert.deepEqual(interestForm.systems, [
     "Windows",
     "macOS",
@@ -30,22 +30,22 @@ test("system preference includes alternatives and is not advertised as support",
   ]);
   assert.doesNotMatch(
     faqs.map((item) => item.answer).join(" "),
-    /initial platform|macOS|Windows|Linux|Pricing has not/,
+    /initial platform|Pricing has not/,
   );
   assert.match(
     faqs.find((item) => item.id === "download").answer,
-    /not a promise of platform support/,
+    /Windows for Everyday and Pencil is being worked on/,
   );
 });
 
-test("launch and privacy copy distinguish free software, interest data, and local playbooks", () => {
+test("signup and privacy copy distinguish account information from local work", () => {
   assert.match(faqs.find((item) => item.id === "free").answer, /free forever/);
   assert.match(
     faqs.find((item) => item.id === "website-data").answer,
-    /private response Sheet/,
+    /separate Lazo signup service/,
   );
   assert.match(
     faqs.find((item) => item.id === "access").answer,
-    /does not.*guarantee/,
+    /Verify your email/,
   );
 });

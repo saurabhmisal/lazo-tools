@@ -162,14 +162,14 @@ export const faqs = [
     category: "Data",
     question: "What happens to text I enter on this website?",
     answer:
-      "The early-interest form sends your email, system preference, update consent, and any optional name or blocker you provide through Google Forms to Lazo's private response Sheet. Response summaries are not public. Playbook text is not submitted to a server or AI model. Closing the playbooks or reloading clears it. Fonts are requested from Google Fonts. Where enabled, optional Google Analytics records visits and selected button clicks after you allow it; form details and playbook text are excluded. Change this choice near the footer.",
+      "The separate Lazo signup service collects first name, last name, email, optional phone number and system for verified product access. Its privacy page explains how account information is handled. Playbook text is not submitted to a server or AI model. Closing the playbooks or reloading clears it. Main text uses fonts served by Lazo; handwritten annotations use Google Fonts. Where enabled, optional Google Analytics records visits and selected button clicks after you allow it; form details and playbook text are excluded. Change this choice near the footer.",
   },
   {
     id: "download",
     category: "Release",
     question: "Can I download Lazo now?",
     answer:
-      "Not yet. Lazo is launching soon. Join the early-interest list to hear about launch and early access. The system question helps us understand what people use; it is not a promise of platform support.",
+      "Visit a product website and create your Lazo account. After email verification, an available download starts automatically. Windows for Everyday and Pencil is being worked on; sign up and we will get back to you soon. A download appears only when a release for your selected system is published.",
   },
   {
     id: "free",
@@ -181,9 +181,9 @@ export const faqs = [
   {
     id: "access",
     category: "Release",
-    question: "How can I hear when Lazo launches?",
+    question: "How do I get started?",
     answer:
-      "Use the early-interest form below. We will use your email for Lazo launch and early-access updates. Joining records your interest; it does not create an account or guarantee an early-access invitation. Google Forms shows the confirmation after your response is saved.",
+      "Create a Lazo account with your first and last name, email and system. Phone is optional. Verify your email to finish signup and get available downloads. Signup does not subscribe you to marketing.",
   },
 ];
 
