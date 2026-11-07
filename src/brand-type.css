@@ -1,19 +1,18 @@
-@font-face {
-  font-family: "Source Sans 3";
-  src: url("./assets/fonts/source-sans-3.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 200 900;
-  font-display: swap;
-}
-:root { --brand-font: "Source Sans 3", "Segoe UI", Arial, sans-serif; }
-html body, .simple-site, .simple-site button, .simple-site input, .simple-site select, .simple-site textarea, button, input, select, textarea { font-family: var(--brand-font); font-synthesis: none; }
-h1, h2, h3, h4, .simple-site h1, .simple-site h2, .simple-site h3, .simple-site .hero .hero-subtitle, .simple-site .hero .hero-subtitle em, .home-tools h2, .tool-placeholder h1 { font-family: var(--brand-font); font-weight: 600; font-style: normal; letter-spacing: -0.025em; line-height: 1.12; }
-h1 em, h1 > span, h2 em, h2 > em, .hero-subtitle em { font-family: inherit; font-style: normal; font-weight: inherit; letter-spacing: inherit; }
-.nav-brand, .brand, .footer-brand { font-family: var(--brand-font); letter-spacing: -0.015em; }
-.simple-site .hero-description, .intro, .lead { line-height: 1.65; }
-.simple-nav, nav, .button { font-weight: 600; }
-@media (max-width: 700px) { h1 > span { white-space: normal; } }
+/* Lazo family typography: one self-hosted, readable interface family. */
+@font-face { font-family:"Source Sans 3"; src:url("./assets/fonts/source-sans-3.woff2") format("woff2"); font-style:normal; font-weight:200 900; font-display:swap; }
+:root { --brand-font:"Source Sans 3","Segoe UI",Arial,sans-serif; --brand-mono:ui-monospace,SFMono-Regular,Consolas,monospace; }
+html { text-size-adjust:100%; -webkit-text-size-adjust:100%; }
+html body, #pc-site, .simple-site, button, input, select, textarea { font-family:var(--brand-font); font-synthesis:none; }
+html body { font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+h1,h2,h3,h4,.simple-site h1,.simple-site h2,.simple-site h3,.simple-site .hero .hero-subtitle,.simple-site .hero .hero-subtitle em,.tool-placeholder h1,#pc-site h1,#pc-site h2,#pc-site h3 { font-family:var(--brand-font); font-weight:600; font-style:normal; letter-spacing:-.025em; line-height:1.15; text-wrap:balance; }
+h1 em,h1>span,h2 em,h2>em,.hero-subtitle em,body h1>span { font-family:inherit; font-style:normal; font-weight:inherit; letter-spacing:inherit; }
+body p { line-height:1.65; }
+.nav-brand,.brand,.footer-brand { font-family:var(--brand-font); letter-spacing:-.015em; }
+body button,body .button,body .pc-button,body .header-cta { font-family:var(--brand-font); font-size:1rem; font-weight:600; line-height:1.4; }
+body input,body select,body textarea { font:400 1rem/1.5 var(--brand-font); }
+body label { font-size:.875rem; line-height:1.5; }
+body small { font-size:.875rem; line-height:1.55; }
+body :is(pre,code,kbd) { font-family:var(--brand-mono); }
+@media(max-width:700px) { h1>span { white-space:normal; } html body { font-size:16px; } }
 
-#pc-site { font-family: var(--brand-font); }
-#pc-site h1, #pc-site h2, #pc-site h3, #pc-site h1 em { font-family: var(--brand-font); font-weight: 600; font-style: normal; letter-spacing: -.025em; }
-body h1 > span { font-family: inherit; font-style: normal; font-weight: inherit; letter-spacing: inherit; }
+#pc-site h1 em { font-family:inherit; font-style:normal; font-weight:600; letter-spacing:inherit; }

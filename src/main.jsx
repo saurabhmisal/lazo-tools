@@ -9,6 +9,8 @@ import "./tools.css";
 import "./brand-type.css";
 import "./family-consent.css";
 
+import "./family-theme.css";
+
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />

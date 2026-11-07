@@ -16,8 +16,9 @@ const root = new URL("../public/assets/", import.meta.url);
 const artwork = {};
 for (const [name, filename] of Object.entries(SCENE_ASSETS))
   artwork[name] = await loadImage(new URL(filename, root).pathname);
-const font = "/System/Library/Fonts/Supplemental/Chalkboard.ttc";
+const font = new URL("../src/assets/fonts/kalam-regular.ttf", import.meta.url).pathname;
 if (existsSync(font)) GlobalFonts.registerFromPath(font, "LazoHand");
+GlobalFonts.registerFromPath(new URL("../src/assets/fonts/source-sans-3.woff2", import.meta.url).pathname, "Source Sans 3");
 const options = { handwriting: '"LazoHand", cursive', PathType: Path2D };
 const canvas = createCanvas(
   SCENE_WIDTH * SCENE_RENDER_SCALE,
@@ -27,7 +28,7 @@ const ctx = canvas.getContext("2d");
 ctx.scale(SCENE_RENDER_SCALE, SCENE_RENDER_SCALE);
 drawThinkingScene(ctx, artwork, 10500, { ...options, still: true });
 await writeFile(
-  new URL("thinker-scene-poster-v9.png", root),
+  new URL("thinker-scene-poster-v10.png", root),
   canvas.toBuffer("image/png"),
 );
 
@@ -57,7 +58,7 @@ for (let frame = 0; frame < (STORY_DURATION_MS / 1000) * fps; frame++) {
   });
 }
 gif.finish();
-await writeFile(new URL("thinker-scene-v9.gif", root), gif.bytes());
+await writeFile(new URL("thinker-scene-v10.gif", root), gif.bytes());
 console.log(
   `Rendered ${STORY_DURATION_MS / 1000}s loop at ${fps}fps (${(gif.bytes().length / 1024 / 1024).toFixed(1)} MiB).`,
 );

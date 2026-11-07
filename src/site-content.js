@@ -162,7 +162,7 @@ export const faqs = [
     category: "Data",
     question: "What happens to text I enter on this website?",
     answer:
-      "The separate Lazo signup service collects first name, last name, email, optional phone number and system for verified product access. Its privacy page explains how account information is handled. Playbook text is not submitted to a server or AI model. Closing the playbooks or reloading clears it. Main text uses fonts served by Lazo; handwritten annotations use Google Fonts. Where enabled, optional Google Analytics records visits and selected button clicks after you allow it; form details and playbook text are excluded. Change this choice near the footer.",
+      "The separate Lazo signup service collects first name, last name, email, optional phone number and system for verified product access. Its privacy page explains how account information is handled. Playbook text is not submitted to a server or AI model. Closing the playbooks or reloading clears it. Reading text and handwritten annotations use fonts served by Lazo. Where enabled, optional Google Analytics records visits and selected button clicks after you allow it; form details and playbook text are excluded. Change this choice near the footer.",
   },
   {
     id: "download",

@@ -9,6 +9,7 @@ import {
   SCENE_WIDTH,
   SCENE_HEIGHT,
   SCENE_RENDER_SCALE,
+  sceneRenderScaleForWidth,
   PHONE_SCREENS,
   SCENE_LAYOUT,
 } from "../src/thinking-scene.js";
@@ -272,7 +273,7 @@ test("the small gold earring stays on the anatomical left ear in both expression
 test("the live scene and poster preserve a two-times resolution without changing layout ratio", () => {
   assert.equal(SCENE_RENDER_SCALE, 2);
   const poster = readFileSync(
-    new URL("../public/assets/thinker-scene-poster-v9.png", import.meta.url),
+    new URL("../public/assets/thinker-scene-poster-v10.png", import.meta.url),
   );
   assert.equal(poster.readUInt32BE(16), SCENE_WIDTH * SCENE_RENDER_SCALE);
   assert.equal(poster.readUInt32BE(20), SCENE_HEIGHT * SCENE_RENDER_SCALE);
@@ -280,16 +281,16 @@ test("the live scene and poster preserve a two-times resolution without changing
     new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  assert.match(component, /width=\{SCENE_WIDTH \* SCENE_RENDER_SCALE\}/);
+  assert.match(component, /width=\{Math.round\(SCENE_WIDTH \* renderScale\)\}/);
   assert.match(
     component,
-    /context\.setTransform\(SCENE_RENDER_SCALE, 0, 0, SCENE_RENDER_SCALE, 0, 0\)/,
+    /context\.setTransform\(renderScale, 0, 0, renderScale, 0, 0\)/,
   );
 });
 
 test("a real looping GIF is downloadable without autoplaying it for reduced motion", () => {
   const gif = readFileSync(
-    new URL("../public/assets/thinker-scene-v9.gif", import.meta.url),
+    new URL("../public/assets/thinker-scene-v10.gif", import.meta.url),
   );
   assert.equal(gif.subarray(0, 6).toString(), "GIF89a");
   assert.equal(gif.readUInt16LE(6), 800);
@@ -300,8 +301,15 @@ test("a real looping GIF is downloadable without autoplaying it for reduced moti
     new URL("../src/ThinkingScene.jsx", import.meta.url),
     "utf8",
   );
-  assert.match(component, /thinker-scene-poster-v9\.png/);
+  assert.match(component, /thinker-scene-poster-v10\.png/);
   assert.doesNotMatch(component, /<img[^>]*\.gif/);
   assert.match(component, /cancelAnimationFrame/);
   assert.match(component, /playback === "still"/);
+});
+
+test("live scene scales to its actual display while bounding retina memory use",()=>{
+ assert.equal(sceneRenderScaleForWidth(320,2),0.8);
+ assert.equal(sceneRenderScaleForWidth(640,2),1.6);
+ assert.equal(sceneRenderScaleForWidth(1920,3),2);
+ assert.equal(sceneRenderScaleForWidth(0,NaN),1);
 });

@@ -960,7 +960,7 @@ export function App() {
               Playbook text stays in this browser session and is not sent to a
               server or an AI model. Copy and download happen only when you
               choose them. Closing the playbooks or reloading clears the text.
-              Google Fonts supplies the website fonts.
+              Website fonts are served by Lazo.
             </p>
             <p>
               Signup opens the separate Lazo account service. It collects your first and last name, email, optional phone and system, and verifies your email for download access. Your local playbook text is separate.

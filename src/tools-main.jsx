@@ -9,6 +9,8 @@ import "./tools.css";
 import "./brand-type.css";
 import "./family-consent.css";
 
+import "./family-theme.css";
+
 const root = document.getElementById("root");
 const tool = tools.find((item) => item.slug === root.dataset.tool);
 createRoot(root).render(<React.StrictMode><ToolPlaceholder tool={tool} /></React.StrictMode>);

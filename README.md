@@ -38,3 +38,8 @@ The workspace preview and PM illustration are concepts, not released-capability 
 ## Optional Analytics
 
 GA4 uses a dedicated Lazo property and only loads after a visitor allows analytics. It records visits and selected button clicks, not signup details or playbook text. Without a valid deployment Measurement ID it stays inactive. See [setup, consent, event definitions and verification](docs/analytics.md).
+
+
+## Lazo design standard
+
+Follow [the shared design principles](docs/DESIGN_PRINCIPLES.md) for palette, Source Sans 3 typography, responsive layout, character identity and accessible motion. The Lazo website owns the shared style source and exports it with `npm run build:family`.

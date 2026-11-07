@@ -23,6 +23,11 @@ import { __iconData as compass } from "lucide-react/dist/esm/icons/compass.mjs";
 export const SCENE_WIDTH = 800;
 export const SCENE_HEIGHT = 600;
 export const SCENE_RENDER_SCALE = 2;
+export function sceneRenderScaleForWidth(width, pixelRatio = 1) {
+  const displayWidth = Number.isFinite(width) && width > 0 ? width : SCENE_WIDTH;
+  const ratio = Number.isFinite(pixelRatio) && pixelRatio > 0 ? pixelRatio : 1;
+  return Math.max(0.5, Math.min(SCENE_RENDER_SCALE, displayWidth * Math.min(ratio, 2) / SCENE_WIDTH));
+}
 export const SCENE_ASSETS = {
   pressure: "pm-thinking-v5.png",
   composed: "pm-contented-v5.png",
@@ -185,7 +190,7 @@ function roundBox(ctx, x, y, w, h, fill, stroke, radius = 8) {
   }
 }
 
-function text(ctx, value, x, y, size, color, family = "sans-serif") {
+function text(ctx, value, x, y, size, color, family = '"Source Sans 3", sans-serif') {
   ctx.font = `${size}px ${family}`;
   ctx.fillStyle = color;
   ctx.fillText(value, x, y);
@@ -445,7 +450,7 @@ export function drawThinkingScene(
 ) {
   const frame = thinkingSceneAt(elapsed, still);
   ctx.clearRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
-  ctx.fillStyle = "#181b19";
+  ctx.fillStyle = "#172b4d";
   ctx.fillRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
   standingDesk(ctx);
   ctx.save();

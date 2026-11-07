@@ -1,35 +1,128 @@
-/* Lazo family interface tokens. Product artwork retains its own colours. */
-:root { color-scheme: dark; --brand-bg:#181b19; --brand-panel:#202823; --brand-text:#f4f5f0; --brand-muted:#aeb7ae; --brand-accent:#2e7d63; --brand-light:#89d0b2; --brand-line:#3c443d; --bg:var(--brand-bg); --panel:var(--brand-panel); --text:var(--brand-text); --accent:var(--brand-light); --paper:var(--brand-bg); --ink:var(--brand-text); --muted:var(--brand-muted); --purple:var(--brand-light); --line:var(--brand-line); }
-body, #pc-site { background:var(--brand-bg); color:var(--brand-text); }
-#pc-site { --pc-bg:var(--brand-bg); --pc-panel:var(--brand-panel); --pc-text:var(--brand-text); --pc-muted:var(--brand-muted); --pc-accent:var(--brand-light); --pc-line:var(--brand-line); --pc-green:var(--brand-light); }
-body .button, body .pc-primary, body button:not(.secondary):not(.replay):not(.motion-toggle):not(.text-link) { background:var(--brand-accent); color:var(--brand-text); }
-body .button:hover, body .pc-primary:hover { background:#25674f; }
-body .secondary, body .button-secondary { background:transparent; border:1px solid var(--brand-line); color:var(--brand-text); }
-body .intro, body .hero-detail, body .quiet, body .muted, body small, body .eyebrow, body .local-note, body .demo-caption, body .art-caption, body .art-foot { color:var(--brand-muted); }
-body .paper, body .step { background:var(--brand-panel); border-color:var(--brand-line); color:var(--brand-text); }
-body input, body select, body textarea { background:var(--brand-bg); color:var(--brand-text); border-color:#718d7e; }
-body .status:not(.error), body .processing-note, body .result { background:var(--brand-panel); color:var(--brand-light); }
-body header, body footer, body .header, body .section, body .rules li, body th, body td { border-color:var(--brand-line); }
-body footer, body .brand span, body .replay, body .motion-toggle { color:var(--brand-muted); }
-body a:focus-visible, body button:focus-visible, body input:focus, body select:focus, body summary:focus-visible { outline:2px solid var(--brand-light); outline-offset:4px; }
-body .hero h1 em, body .spark, body .scene figcaption { color:var(--brand-light); }
-/* Keep illustrated paper notes readable against the common charcoal shell. */
-body .note, body .memory-result, body .workspace, body .input-note, body .task-label, body .focus-block { color:#29362f; }
-body .note small { color:#5d675d; }
-.analytics-preferences { box-sizing:border-box; position:relative; width:100%; margin:0; padding:24px max(24px, calc((100vw - 1240px)/2)); border-top:1px solid var(--brand-line); background:var(--brand-bg); color:var(--brand-text); font:400 18px/1.5 var(--brand-font, 'Source Sans 3', 'Segoe UI', Arial, sans-serif); }
-.analytics-preferences p { margin:0 0 18px; max-width:1100px; font:inherit; color:inherit; }
-.analytics-preferences > div { display:flex; flex-wrap:wrap; gap:16px; }
-body .analytics-preferences button, body .analytics-preferences .button { display:inline-flex; background:transparent; color:var(--brand-text); border:1px solid #718d7e; border-radius:7px; padding:12px 20px; min-height:44px; font:600 16px/1.4 var(--brand-font, 'Source Sans 3', 'Segoe UI', Arial, sans-serif); cursor:pointer; text-decoration:none; }
-body .analytics-preferences button:hover { background:var(--brand-panel); }
-@media(max-width:480px) { .analytics-preferences { padding:22px 20px; font-size:16px; } .analytics-preferences > div { gap:10px; } }
-/* Shared treatment for supporting panels and interactive examples. */
-body .demo-section, body .closing, body .workspace, body .demo-sidebar, body .answer, body .source-detail, body .memory-result, body .input-note, body .focus-block { background:var(--brand-panel); color:var(--brand-text); border-color:var(--brand-line); }
-body .demo-heading p, body .principles p, body .closing p, body .answer>p, body .demo-top, body .demo-bottom, body .answer-footer, body .source-list, body .focus-block small { color:var(--brand-muted); }
-body .memory-result strong, body .step-heading svg, body .task-label, body .result .step-heading svg, body .focus-block>span, body .closing a { color:var(--brand-light); }
-body .step.active { border-color:var(--brand-light); box-shadow:0 10px 32px #0003; }
-body .note p, body .source-detail blockquote { font-family:var(--brand-font); font-style:normal; }
-body .note-two { background:#dce9df; }
-body .input-note:nth-child(3), body .source-button { background:#2b3b30; color:var(--brand-text); }
-body .input-note>span, body .step-number { color:var(--brand-muted); }
-#pc-site .pc-button.pc-primary { background:var(--brand-accent); color:var(--brand-text); border-color:var(--brand-accent); }
-#pc-site .pc-button.pc-primary:hover { background:#25674f; }
+/* Shared Lazo design standard. See docs/DESIGN_PRINCIPLES.md. */
+:root {
+ color-scheme:light; --brand-navy:#172b4d; --brand-ivory:#f7f5ee; --brand-green:#267057; --brand-green-hover:#1c5844; --brand-ink:#17201f; --brand-mint:#9bd7b5;
+ --brand-bg:var(--brand-ivory); --brand-panel:#fffef9; --brand-text:var(--brand-navy); --brand-muted:#526171; --brand-accent:var(--brand-green); --brand-action-text:#fffef9; --brand-light:#267057; --brand-line:#cbd2ce; --brand-tint:#e9efea; --brand-focus:#267057;
+ --bg:var(--brand-bg); --panel:var(--brand-panel); --text:var(--brand-text); --paper:var(--brand-bg); --ink:var(--brand-text); --muted:var(--brand-muted); --line:var(--brand-line); --accent:var(--brand-light); --purple:var(--brand-light);
+}
+html[data-brand="everyday"] {
+ color-scheme:dark; --brand-bg:var(--brand-ink); --brand-panel:#202d2a; --brand-text:var(--brand-ivory); --brand-muted:#bdc9c2; --brand-accent:var(--brand-mint); --brand-action-text:#17201f; --brand-light:var(--brand-mint); --brand-line:#52665b; --brand-tint:#2b4036; --brand-focus:var(--brand-mint);
+}
+*,*::before,*::after { box-sizing:border-box; }
+body { margin:0; background:var(--brand-bg); color:var(--brand-text); }
+body img,body video,body canvas { max-width:100%; }
+body img { height:auto; }
+body a { color:inherit; text-underline-offset:.2em; }
+body :is(p,li,h1,h2,h3,label) { overflow-wrap:break-word; }
+body :is(button,.button,.pc-button,.header-cta) { min-height:44px; }
+body :is(.button,.pc-primary,button.full):not(.secondary):not(.replay):not(.motion-toggle):not(.text-link):not(.icon-button) { background:var(--brand-accent); color:var(--brand-action-text); }
+body .button:hover,body .pc-primary:hover { background:var(--brand-green-hover); color:#fffef9; }
+body :is(.secondary,.button-secondary,.text-link,.replay,.motion-toggle) { background:transparent; color:var(--brand-text); border-color:var(--brand-line); }
+body :is(.intro,.hero-detail,.quiet,.muted,.eyebrow,.local-note,.demo-caption,.art-caption,.art-foot,.release-note) { color:var(--brand-muted); }
+body :is(.paper,.step,.demo-section,.closing,.workspace,.demo-sidebar,.answer,.source-detail,.memory-result,.input-note,.focus-block) { background:var(--brand-panel); color:var(--brand-text); border-color:var(--brand-line); }
+body :is(input,select,textarea) { max-width:100%; background:var(--brand-panel); color:var(--brand-text); border-color:#82928d; }
+body :is(header,footer,.header,.section,.rules li,th,td) { border-color:var(--brand-line); }
+body :is(a,button,input,select,textarea,summary):focus-visible { outline:3px solid var(--brand-focus); outline-offset:4px; }
+body :is(.demo-heading p,.principles p,.closing p,.answer>p,.demo-top,.demo-bottom,.answer-footer,.source-list,.focus-block small,.brand span) { color:var(--brand-muted); }
+body :is(.memory-result strong,.step-heading svg,.task-label,.result .step-heading svg,.focus-block>span,.hero h1 em,.spark) { color:var(--brand-light); }
+body .step.active { border-color:var(--brand-light); box-shadow:0 8px 24px #172b4d0c; }
+body .note { color:var(--brand-navy); }
+body .note p,body .source-detail blockquote { font-family:var(--brand-font); font-style:normal; }
+body .note small { color:#526171; }
+body .note-two,body .input-note:nth-child(3),body .source-button { background:var(--brand-tint); color:var(--brand-text); }
+body .source-list .source-item { color:var(--brand-text); background:var(--brand-tint); }
+body .input-note>span,body .step-number { color:var(--brand-muted); }
+body :is(.header nav,.section-kicker,.demo-sidebar,.demo-top,.answer-footer,.principles p,.privacy,.closing small,footer) { font-size:14px; line-height:1.6; }
+body :is(.hero-detail,.demo-heading p,.demo-caption,.answer>p) { font-size:16px; }
+/* Lazo: navy words and neutral space, one restrained action colour. */
+.simple-site { --pearl:var(--brand-text); --charcoal:var(--brand-bg); --muted:var(--brand-muted); --faint:var(--brand-muted); --emerald-light:var(--brand-green); --emerald-deep:var(--brand-green); --line:var(--brand-line); background:var(--brand-bg); color:var(--brand-text); }
+.simple-site :is(.site-header,.release-section,.site-footer,.dialog,.dialog-header) { background:var(--brand-bg); color:var(--brand-text); border-color:var(--brand-line); }
+.simple-site .nav-brand,.simple-site .nav-brand svg { color:var(--brand-navy); }
+.simple-site .hero .hero-subtitle { font-size:clamp(44px,6.2vw,80px); line-height:1.08; }
+.simple-site .hero .hero-subtitle em { color:var(--brand-navy); }
+.simple-site :is(.hero-promise,.mission-ambition,.story-output,.tool-description) { color:var(--brand-text); }
+.simple-site .hero-description { font-size:18px; max-width:60ch; }
+.simple-site :is(.mission-intro p,.capability-list p,.capability-example,.home-tools-intro) { font-size:17px; line-height:1.7; }
+.simple-site :is(.simple-launch,.hero-assurances,.story-caption,.tool-status,.home-tool-link p) { font-size:14px; line-height:1.6; }
+.simple-site .home-tool-link { background:var(--brand-panel); border-color:var(--brand-line); }
+.simple-site .home-tool-link h3 { color:var(--brand-navy); }
+.simple-site .hero { padding-block:clamp(40px,5vw,72px) 16px; }
+.simple-site .hero-intro { gap:20px; padding-bottom:24px; }
+/* Product library and capability pages use the same navy/ivory system. */
+#pc-site { --pc-bg:var(--brand-bg); --pc-panel:var(--brand-panel); --pc-text:var(--brand-text); --pc-muted:var(--brand-muted); --pc-accent:var(--brand-green); --pc-line:var(--brand-line); --pc-green:var(--brand-green); color-scheme:light; background:var(--pc-bg); color:var(--pc-text); font:17px/1.65 var(--brand-font); }
+#pc-site .pc-brand { font-size:21px; gap:12px; }
+#pc-site .pc-brand img { width:48px; height:48px; object-fit:contain; }
+#pc-site .pc-nav nav { font-size:16px; color:var(--brand-navy); }
+#pc-site .pc-button.pc-primary { background:var(--brand-green); color:#fffef9; border-color:var(--brand-green); }
+#pc-site .pc-button.pc-primary:hover { background:var(--brand-green-hover); }
+#pc-site :is(.capability-card,.pc-io-card,.pc-flow li,.pc-library-filters input,.pc-library-filters select) { background:var(--brand-panel); color:var(--brand-text); border-color:var(--brand-line); }
+#pc-site :is(.pc-flow-input,.pc-flow-output,.pc-review-gate,.pc-badge,.pc-badge-tool) { background:var(--brand-tint); color:var(--brand-green); border-color:var(--brand-line); }
+#pc-site :is(.pc-terminal,.pc-prompt) { background:var(--brand-navy); color:var(--brand-ivory); }
+#pc-site :is(pre,.pc-terminal code) { font-size:14px; color:var(--brand-ivory); }
+#pc-site .pc-how-grid p,#pc-site .capability-card>p,#pc-site .pc-library-status { font-size:16px; }
+#pc-site .pc-pause { color:var(--brand-ivory); background:#172b4de8; font-size:14px; }
+#pc-site .pc-cover img { animation-duration:24s; }
+/* Everyday: dark ink, ivory reading surfaces and a mint primary action. */
+html[data-brand="everyday"] .button { background:var(--brand-mint); color:var(--brand-ink); }
+html[data-brand="everyday"] :is(.hero h1 em,.logo svg,.status,.step-heading svg,.connections li>span) { color:var(--brand-mint); }
+html[data-brand="everyday"] .connections li>span { background:var(--brand-tint); }
+html[data-brand="everyday"] :is(.scene-bridge,.focus-orbit) { background:var(--brand-tint); color:var(--brand-mint); box-shadow:none; }
+html[data-brand="everyday"] :is(.input-note,.processing,.result,.focus-block) { background:var(--brand-panel); color:var(--brand-text); }
+html[data-brand="everyday"] .life-scene { border-color:var(--brand-line); }
+html[data-brand="everyday"] .hero-copy .release-note { font-size:14px; line-height:1.6; color:var(--brand-muted); margin-top:16px; }
+/* Analytics is optional, visibly separate and never a blocking overlay. */
+.analytics-preferences { width:100%; margin:0; padding:24px max(24px,calc((100vw - 1240px)/2)); border-top:1px solid var(--brand-line); background:var(--brand-bg); color:var(--brand-text); font:400 16px/1.65 var(--brand-font); }
+.analytics-preferences p { margin:0 0 16px; max-width:75ch; font:inherit; color:inherit; }
+.analytics-preferences>div { display:flex; flex-wrap:wrap; gap:12px; }
+body .analytics-preferences button,body .analytics-preferences .button { display:inline-flex; align-items:center; background:transparent; color:var(--brand-text); border:1px solid #82928d; border-radius:8px; padding:12px 18px; min-height:44px; font:600 16px/1.4 var(--brand-font); cursor:pointer; }
+body .analytics-preferences button:hover { background:var(--brand-tint); }
+.analytics-preferences>a { display:inline-block; margin:12px 0 0 16px; color:var(--brand-light); text-decoration:underline; }
+body .prose { max-width:72ch; }
+body .prose p { font-size:17px; }
+body .names>* { min-width:0; }
+body .hash { overflow-wrap:anywhere; }
+@media(max-width:700px) {
+ body :is(.wrap,#pc-site .pc-wrap) { width:calc(100% - 40px); }
+ .simple-site .hero-description { font-size:17px; }
+ .simple-site .site-header { padding-inline:20px; gap:12px; }
+ .simple-site .simple-nav { gap:12px; }
+ #pc-site .pc-nav { gap:12px; flex-wrap:wrap; padding-block:16px; }
+ #pc-site .pc-nav nav { order:3; width:100%; justify-content:space-between; margin:0; font-size:15px; }
+ #pc-site .pc-nav nav a:last-child { display:initial; }
+ #pc-site .pc-github { margin-left:auto; }
+ #pc-site .pc-grid { grid-template-columns:1fr; }
+ #pc-site .pc-library-filters { grid-template-columns:1fr; }
+ #pc-site :is(h1,.pc-title) { font-size:clamp(38px,8vw,56px); }
+ .analytics-preferences { padding:24px 20px; }
+ .analytics-preferences>a { margin-left:0; display:block; }
+ body header>a:last-child { font-size:14px; max-width:160px; }
+}
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+
+#pc-site .pc-notices { color:var(--brand-text); background:var(--brand-panel); }
+body .rules li { font-size:16px; }
+body .status:not(.error) { background:var(--brand-tint); color:var(--brand-text); }
+body .error { background:#f6e9df; color:#823d31; }
+
+.simple-site .hero-description { color:var(--brand-muted); }
+.simple-site .tools-menu-panel { background:var(--brand-panel); color:var(--brand-text); border-color:var(--brand-line); }
+.simple-site .story-clock .story-direction,.simple-site .story-resolution p { font-size:24px; color:var(--brand-green); }
+
+/* Supporting labels must stay readable after switching a surface theme. */
+body :is(.note-type,.section-kicker,.sidebar-label,.answer .eyebrow,.closing .eyebrow,.closing small,.memory-result small,.principles article>span),body .principles article>span,body .memory-result small,body footer,body .demo-sidebar .source-item { color:var(--brand-muted); }
+body .brand>span,.simple-site .footer-brand { color:var(--brand-text); }
+body .result-icon,body .large-mark,body .answer-title>span { color:var(--brand-green); }
+.simple-site .hero-assurances,.simple-site .hero-assurances span { color:var(--brand-muted); }
+#pc-site .pc-terminal :is(a,span,b,strong,.pc-text-link) { color:var(--brand-mint); }
+html[data-brand="everyday"] .brand svg { stroke:var(--brand-mint); }
+
+body .demo-content>.eyebrow,body .answer-label,body .answer-label>span,body footer>span { color:var(--brand-muted); }
+#pc-site .pc-terminal>p { color:var(--brand-mint); }
+
+.simple-site .hero-product-note,.simple-site .hero-product-note span { color:var(--brand-muted); font-size:14px; }
+#pc-site .pc-flow :is(.pc-flow-input,.pc-flow-output) { background:var(--brand-tint); color:var(--brand-text); border-color:var(--brand-line); }
+body :is(label,summary) { color:var(--brand-text); }
+body small,body .rules li span { color:var(--brand-muted); }
+.simple-site .site-header { padding-left:max(20px,env(safe-area-inset-left)); padding-right:max(20px,env(safe-area-inset-right)); }
+@media(min-width:701px) { .simple-site .site-header { padding-inline:max(32px,calc((100% - 1216px)/2)); } }
+
+body .private { color:var(--brand-muted); font-size:14px; }

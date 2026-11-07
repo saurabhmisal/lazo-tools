@@ -4,15 +4,28 @@ import {
   SCENE_ASSETS,
   SCENE_WIDTH,
   SCENE_HEIGHT,
-  SCENE_RENDER_SCALE,
+  sceneRenderScaleForWidth,
 } from "./thinking-scene.js";
 
 export function ThinkingScene({ playback, revision, dispatch }) {
   const canvas = useRef(null);
   const artwork = useRef({});
   const elapsed = useRef(0);
+  const [renderScale, setRenderScale] = useState(1);
   const [loaded, setLoaded] = useState(0);
   const [drawn, setDrawn] = useState(false);
+
+  useEffect(() => {
+    const resize = () => setRenderScale(sceneRenderScaleForWidth(canvas.current?.clientWidth, window.devicePixelRatio));
+    resize();
+    if (typeof ResizeObserver === "function") {
+      const observer = new ResizeObserver(resize);
+      if (canvas.current) observer.observe(canvas.current);
+      return () => observer.disconnect();
+    }
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -51,14 +64,21 @@ export function ThinkingScene({ playback, revision, dispatch }) {
       return;
     }
     if (!context || !loaded) return;
-    context.setTransform(SCENE_RENDER_SCALE, 0, 0, SCENE_RENDER_SCALE, 0, 0);
+    context.setTransform(renderScale, 0, 0, renderScale, 0, 0);
     if (playback === "still") elapsed.current = 0;
     let request;
     let previous;
+    let lastPaint = -Infinity;
+    let hasPainted = false;
     const paint = (time) => {
       if (playback === "playing" && previous !== undefined)
         elapsed.current += time - previous;
       previous = time;
+      if (playback === "playing" && time - lastPaint < 1000 / 30) {
+        request = requestAnimationFrame(paint);
+        return;
+      }
+      lastPaint = time;
       try {
         drawThinkingScene(context, artwork.current, elapsed.current, {
           still: playback === "still",
@@ -67,7 +87,7 @@ export function ThinkingScene({ playback, revision, dispatch }) {
         setDrawn(false);
         return;
       }
-      setDrawn(true);
+      if (!hasPainted) { setDrawn(true); hasPainted = true; }
       if (playback === "playing" && typeof requestAnimationFrame === "function")
         request = requestAnimationFrame(paint);
     };
@@ -75,12 +95,12 @@ export function ThinkingScene({ playback, revision, dispatch }) {
     return () => {
       if (request !== undefined) cancelAnimationFrame(request);
     };
-  }, [loaded, playback, revision]);
+  }, [loaded, playback, revision, renderScale]);
 
   return (
     <div className="thinking-scene" data-rendered={drawn}>
       <img
-        src={`${import.meta.env.BASE_URL}assets/thinker-scene-poster-v9.png`}
+        src={`${import.meta.env.BASE_URL}assets/thinker-scene-poster-v10.png`}
         alt=""
         width={SCENE_WIDTH}
         height={SCENE_HEIGHT}
@@ -88,8 +108,8 @@ export function ThinkingScene({ playback, revision, dispatch }) {
       />
       <canvas
         ref={canvas}
-        width={SCENE_WIDTH * SCENE_RENDER_SCALE}
-        height={SCENE_HEIGHT * SCENE_RENDER_SCALE}
+        width={Math.round(SCENE_WIDTH * renderScale)}
+        height={Math.round(SCENE_HEIGHT * renderScale)}
         aria-hidden="true"
       />
     </div>
