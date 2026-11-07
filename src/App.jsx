@@ -982,9 +982,7 @@ export function App() {
             </p>
             <p>
               The illustrative workspace is not a released version of Lazo or a
-              promise of final functionality. The early-interest form records
-              your interest; it does not create a Lazo account or guarantee
-              early access.
+              promise of final functionality. Product signup uses the separate Lazo account service and unlocks available downloads for your selected system after email verification.
             </p>
           </div>
         </Dialog>

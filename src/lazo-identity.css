@@ -1355,3 +1355,23 @@ summary:focus-visible,
 .signup-invitation { display: grid; justify-items: start; gap: 16px; min-width: 0; }
 .signup-invitation p { margin: 0; font-size: 14px; line-height: 1.6; }
 .signup-invitation > a:last-child { color: var(--emerald-deep); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Supporting dialogs belong to the same reading system as the public page. */
+.simple-site .dialog :is(p,span,label,summary,h1,h2,h3,h4,li,strong,small,button,a) { color:var(--brand-text); }
+.simple-site .dialog :is(.workspace-window,.workspace-main,.window-bar,.app-sidebar,.resource-panel,.resource-entry,.code-panel,.agent-task,.agent-message,.goal-block,.question-block,.playbook-document,.document-toolbar,.reference-card,.search-box,.search-results button) { background:var(--brand-panel); border-color:var(--brand-line); }
+.simple-site .dialog :is(button,.playbook-picker button) { background:transparent; border-color:var(--brand-line); }
+.simple-site .dialog :is(.faq-filters button,.playbook-picker button,.workspace-tabs button)[aria-pressed="true"],.simple-site .dialog :is(button[aria-selected="true"],button.active) { background:var(--brand-tint); color:var(--brand-navy); border-color:var(--brand-green); }
+.simple-site .dialog .button-primary { background:var(--brand-green); color:#fffef9; }
+.simple-site .dialog .button-primary>span { color:inherit; }
+.simple-site .dialog :is(input,select,textarea) { background:var(--brand-panel); color:var(--brand-text); font:400 16px/1.6 var(--brand-font); border-color:#82928d; }
+.simple-site .dialog textarea::placeholder { color:var(--brand-muted); }
+.simple-site .dialog :is(.faq-list details>p,.document-purpose,.document-context p,.playbook-steps p,.document-outcome p,.session-note p,.resource-detail p) { font-size:16px; line-height:1.7; }
+.simple-site .dialog :is(.question-count,.field-meta,.document-type,.document-guardrail,.mini-heading,.session-note,.document-actions>span,.search-disclaimer,.detail-note) { font-size:14px; line-height:1.6; color:var(--brand-muted); }
+.simple-site .dialog :is(.faq-list summary,.faq-filters button,.playbook-picker button,.document-actions .button) { font-size:16px; min-height:44px; }
+
+.simple-site .workspace-dialog :is(.draft-note,.code-header,.evidence-quote,.insight-line) { background:var(--brand-tint); color:var(--brand-text); border-color:var(--brand-line); }
+.simple-site .workspace-dialog .experiment-checks :is(label,span) { color:var(--brand-text); font-size:15px; }
+.simple-site .workspace-dialog :is(.resource-entry,.resource-entry small,.app-sidebar button,.workspace-tabs button,.code-caption) { font-size:14px; line-height:1.5; }
+.simple-site .workspace-dialog :is(.goal-block p,.question-block li,.view-intro) { font-size:16px; line-height:1.65; }
+.simple-site .workspace-dialog pre { background:var(--brand-navy); color:var(--brand-ivory); font-size:14px; }
+.simple-site .workspace-dialog pre code { color:inherit; }
