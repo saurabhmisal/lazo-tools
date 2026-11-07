@@ -1375,3 +1375,6 @@ summary:focus-visible,
 .simple-site .workspace-dialog :is(.goal-block p,.question-block li,.view-intro) { font-size:16px; line-height:1.65; }
 .simple-site .workspace-dialog pre { background:var(--brand-navy); color:var(--brand-ivory); font-size:14px; }
 .simple-site .workspace-dialog pre code { color:inherit; }
+
+.simple-site .simple-nav :is(.why-link,.tools-menu-button) { color:var(--brand-navy); }
+.simple-site .simple-nav :is(.why-link,.tools-menu-button):hover { color:var(--brand-green); }
