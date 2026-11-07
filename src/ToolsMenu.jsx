@@ -40,8 +40,7 @@ export function ToolsMenu({ base = "./" }) {
       <div id={id} className="tools-menu-panel" hidden={!open}>
         {tools.map((tool) => (
           <a key={tool.slug} href={tool.url || `${base}${tool.slug}/`} onClick={() => setOpen(false)}>
-            <span>{tool.name}</span>
-            <small>{tool.url ? "Visit website" : "Page coming soon"}</small>
+            {tool.name}
           </a>
         ))}
       </div>

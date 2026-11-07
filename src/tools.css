@@ -30,7 +30,6 @@
 .tools-menu-panel[hidden] { display: none; }
 .tools-menu-panel a { display: grid; gap: 4px; padding: 12px; color: var(--emerald-deep); font-size: 14px; }
 .tools-menu-panel a:hover, .tools-menu-panel a:focus-visible { background: #e4ece5; }
-.tools-menu-panel small { color: #4c5b50; font-size: 11px; }
 .home-tools {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -66,8 +65,9 @@
 .home-tool-logo { display: block; width: 44px; height: 44px; flex-shrink: 0; object-fit: contain; border-radius: 8px; }
 .home-tool-mark { display: grid; place-items: center; font-size: 30px; line-height: 1; background: #263c30; border-radius: 10px; }
 .home-tool-link h3 { margin: 0; font-size: 16px; font-weight: 500; line-height: 1.4; }
+.home-tool-link h3 a { text-decoration: underline; text-underline-offset: 4px; }
+.home-tool-link h3 a:hover { text-decoration-thickness: 2px; }
 .home-tool-link p { margin: 12px 0 10px; color: var(--muted); font-size: 13px; line-height: 1.6; }
-.home-tool-link small { display: block; color: var(--muted); font-size: 12px; line-height: 1.5; }
 .home-tool-link svg { flex-shrink: 0; color: var(--emerald-light); }
 .home-tool-link:hover { border-color: var(--emerald-light); background: #202a24; }
 .tool-site { min-height: 100svh; display: flex; flex-direction: column; }
