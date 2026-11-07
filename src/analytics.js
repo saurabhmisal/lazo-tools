@@ -23,7 +23,7 @@ export function analyticsPageForPath(pathname) {
   }) : PAGE;
 }
 
-export const ANALYTICS_NOTICE = "Allow Google Analytics to measure visits and button clicks? We do not send form details or playbook text. Analytics cookies are optional.";
+export const ANALYTICS_NOTICE = "Allow analytics to measure visits and button clicks? We do not send form details or playbook text. Analytics cookies are optional.";
 const FAMILY = Object.freeze({
   "lazo.tools": "Lazo", "everyday.lazo.tools": "Everyday", "pencil.lazo.tools": "Pencil",
   "powerchords.lazo.tools": "Power Chords", "accounts.lazo.tools": "Lazo account",

@@ -1,5 +1,7 @@
 # Website analytics
 
+The consent prompt uses the plain label “analytics”. Google Analytics remains named in the linked privacy details, with provider processing information. Consent, withdrawal, owner exclusions and all collection safeguards remain unchanged.
+
 The GA4 integration uses the public `VITE_GA_MEASUREMENT_ID` repository variable. Without a valid ID, it stays inactive. No Google Cloud billing project is needed.
 
 Lazo has a dedicated **Lazo** Analytics account (`413598303`), **Lazo Website** GA4 property (`560957186`), and web stream (`16212321552`) for `https://lazo.tools/`. Measurement ID: `G-B3WTD82CQ0`. Reporting uses India time and INR. Enhanced Measurement and optional account data sharing were disabled during setup. Open the [Lazo Analytics dashboard](https://analytics.google.com/analytics/web/#/a413598303p560957186/reports/intelligenthome) using an authorized Google account.

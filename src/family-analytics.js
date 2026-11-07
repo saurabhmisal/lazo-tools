@@ -28,6 +28,10 @@ if (analytics.snapshot().configured) {
       }
       aside.append(p, actions);
     } else aside.append(button(`Analytics: ${state.choice === 'granted' ? 'on' : 'off'} · Change`, () => { expanded = true; render(); }));
+    const privacy = document.createElement('a');
+    privacy.href = 'https://accounts.lazo.tools/privacy';
+    privacy.textContent = 'Privacy details';
+    aside.append(privacy);
   }
   analytics.subscribe(render); render();
 }

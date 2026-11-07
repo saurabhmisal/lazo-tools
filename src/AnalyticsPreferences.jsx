@@ -19,6 +19,7 @@ export function AnalyticsPreferences() {
       {!state.automated && <button type="button" className="text-link" onClick={() => getAnalytics().setExcluded(false)}>
         Include this browser again
       </button>}
+      <a href="https://accounts.lazo.tools/privacy">Privacy details</a>
     </aside>
   );
   const choose = choice => { getAnalytics().setConsent(choice); setOpen(false); };
@@ -33,6 +34,7 @@ export function AnalyticsPreferences() {
       </> : <button type="button" className="text-link" onClick={() => setOpen(true)}>
         Analytics: {state.choice === "granted" ? "on" : "off"} · Change
       </button>}
+      <a href="https://accounts.lazo.tools/privacy">Privacy details</a>
     </aside>
   );
 }

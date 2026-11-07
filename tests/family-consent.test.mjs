@@ -12,11 +12,14 @@ function fixture() {
   vm.runInNewContext(outputFiles[0].text, {window,document,URL,Date,Set,Object,JSON,Number});
   const flatten=(node)=>[node,...node.children.flatMap(flatten)];
   const button=label=>flatten(document.body).find(item=>item.tag==='button'&&item.textContent===label);
-  return {document,scripts,button};
+  return {document,scripts,button,all:()=>flatten(document.body)};
 }
 test('shared notice offers keyboard-native allow, decline and change controls without an early Google request',()=>{
  const f=fixture(); assert.equal(f.scripts.length,0);
  assert(f.button('Allow analytics')); assert(f.button('Decline analytics'));
+ assert(f.all().some(n=>n.textContent.startsWith('Allow analytics to measure')));
+ assert(!f.all().some(n=>n.textContent.includes('Allow Google Analytics')));
+ assert(f.all().some(n=>n.tag==='a'&&n.href==='https://accounts.lazo.tools/privacy'&&n.textContent==='Privacy details'));
  f.button('Decline analytics').handlers.click(); assert.equal(f.scripts.length,0);
  f.button('Analytics: off · Change').handlers.click();
  f.button('Allow analytics').handlers.click(); assert.equal(f.scripts.length,1);
