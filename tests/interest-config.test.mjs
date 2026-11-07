@@ -34,7 +34,7 @@ test("system messaging keeps Windows availability distinct from signup", () => {
   );
   assert.match(
     faqs.find((item) => item.id === "download").answer,
-    /Windows for Everyday and Pencil is being worked on/,
+    /Windows is not ready yet/,
   );
 });
 
@@ -42,10 +42,10 @@ test("signup and privacy copy distinguish account information from local work", 
   assert.match(faqs.find((item) => item.id === "free").answer, /free forever/);
   assert.match(
     faqs.find((item) => item.id === "website-data").answer,
-    /separate Lazo signup service/,
+    /separate account service/,
   );
   assert.match(
     faqs.find((item) => item.id === "access").answer,
-    /Verify your email/,
+    /verify your email/i,
   );
 });

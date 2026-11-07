@@ -43,7 +43,7 @@
 }
 .home-tools h2 {
   margin: 0;
-  font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+  font-family: "Commissioner", "Segoe UI", Arial, sans-serif;
   font-size: 30px;
   font-weight: 400;
   line-height: 1.2;
@@ -79,7 +79,7 @@
 .tool-website-action { margin: 28px 0 0; }
 .tool-website-action .button { gap: 12px; }
 .tool-page-logo.home-tool-mark { font-size: 42px; border-radius: 14px; }
-.tool-placeholder h1 { font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif; font-size: 64px; line-height: 1.1; font-weight: 400; margin: 0 0 28px; }
+.tool-placeholder h1 { font-family: "Commissioner", "Segoe UI", Arial, sans-serif; font-size: 64px; line-height: 1.1; font-weight: 400; margin: 0 0 28px; }
 .tool-status { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--emerald-light); }
 .tool-status span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 .tool-placeholder-copy > p:not([class]) { color: var(--muted); font-size: 16px; line-height: 1.7; margin: 20px 0 0; }

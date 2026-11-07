@@ -190,7 +190,7 @@ function roundBox(ctx, x, y, w, h, fill, stroke, radius = 8) {
   }
 }
 
-function text(ctx, value, x, y, size, color, family = '"Source Sans 3", sans-serif') {
+function text(ctx, value, x, y, size, color, family = '"Commissioner", sans-serif') {
   ctx.font = `${size}px ${family}`;
   ctx.fillStyle = color;
   ctx.fillText(value, x, y);

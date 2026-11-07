@@ -13,7 +13,7 @@ test("the pitch describes PM support rather than four product stages", () => {
     ["context", "follow-through", "alignment"],
   );
   for (const item of extensionBenefits) {
-    assert.ok(item.title.trim() && item.description.length > 50);
+    assert.ok(item.title.trim() && item.description.trim().split(/\s+/).length >= 6 && item.description.trim().split(/\s+/).length <= 15);
     assert.ok(item.outcome.trim());
     assert.ok(!["Research", "Strategy", "Build", "Learn"].includes(item.title));
   }
@@ -21,13 +21,13 @@ test("the pitch describes PM support rather than four product stages", () => {
 test("extension positioning preserves PM judgment and final decisions", () => {
   assert.match(
     faqs.find((item) => item.id === "extension").answer,
-    /final decisions remain yours/,
+    /You review the work and make the calls/,
   );
   assert.match(
     faqs.find((item) => item.id === "ai").answer,
-    /decisions are yours/,
+    /You make the decisions/,
   );
-  assert.match(faqs.find((item) => item.id === "ai").answer, /final say/);
+  assert.match(faqs.find((item) => item.id === "ai").answer, /you review it/);
 });
 test("each playbook produces a complete distinct Markdown download", () => {
   assert.equal(

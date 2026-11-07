@@ -4,7 +4,7 @@ export const extensionBenefits = [
     title: "Keep the context close.",
     color: "lime",
     description:
-      "Keep the evidence, reasoning, and open questions connected, so returning to a decision does not mean reconstructing the whole story.",
+      "Keep the evidence and reasoning beside each decision.",
     outcome: "Less catching up. More clarity.",
   },
   {
@@ -12,7 +12,7 @@ export const extensionBenefits = [
     title: "Leave the legwork to Lazo.",
     color: "coral",
     description:
-      "Turn the direction you choose into drafts and next steps you can review. Spend less energy chasing the details and more on moving the work forward.",
+      "Turn your direction into drafts and next steps to review.",
     outcome: "Less chasing. More momentum.",
   },
   {
@@ -20,7 +20,7 @@ export const extensionBenefits = [
     title: "Bring people with you.",
     color: "blue",
     description:
-      "Give stakeholders a shared view of the decision, the reasoning, and what comes next, so collaboration starts from the same understanding.",
+      "Share the decision, its reasons and the next step.",
     outcome: "Less repetition. Better alignment.",
   },
 ];
@@ -33,23 +33,23 @@ export const playbooks = [
     color: "lime",
     question: "Why do new users leave before experiencing value?",
     purpose:
-      "Separate the problem you can observe from the solution you are assuming.",
+      "Define the problem before choosing a solution.",
     steps: [
       {
         title: "Name the user and the moment",
-        text: "Describe who is struggling, what they are trying to achieve, and where the friction appears.",
+        text: "Name the user, their goal and where they get stuck.",
       },
       {
         title: "Collect evidence, not just opinions",
-        text: "Bring together customer observations, relevant behavioral signals, and source excerpts. Mark assumptions separately.",
+        text: "Collect observations, behaviour and source excerpts. Label assumptions.",
       },
       {
         title: "Find the pattern",
-        text: "Group repeated problems. Look for counterexamples and differences between users who succeed and those who struggle.",
+        text: "Group recurring problems. Check counterexamples and differences between users.",
       },
       {
         title: "Write the next question",
-        text: "Choose one uncertainty to investigate before committing to a solution.",
+        text: "Choose one uncertainty to investigate next.",
       },
     ],
     outcome:
@@ -64,23 +64,23 @@ export const playbooks = [
     color: "blue",
     question: "How could a relevant example make the first session easier?",
     purpose:
-      "Turn one product bet into something concrete enough to inspect and challenge.",
+      "Make one product bet testable.",
     steps: [
       {
         title: "Choose the narrowest useful flow",
-        text: "Name the starting point, the desired user outcome, and what is deliberately out of scope.",
+        text: "Define the start, the user outcome and what is out of scope.",
       },
       {
         title: "Write the acceptance criteria",
-        text: "Describe what someone must be able to do. Include the most important empty, error, and recovery states.",
+        text: "Define what users must be able to do, including error and recovery states.",
       },
       {
         title: "Investigate before rebuilding",
-        text: "Find existing components, product conventions, and implementation constraints. Reuse what already works.",
+        text: "Check existing components and constraints. Reuse what works.",
       },
       {
         title: "Make it testable",
-        text: "Prepare one realistic task and review the flow with a user. Separate prototype behavior from production promises.",
+        text: "Test one realistic task with a user. Label prototype limits.",
       },
     ],
     outcome:
@@ -95,23 +95,23 @@ export const playbooks = [
     color: "violet",
     question:
       "Does starting with an example help users complete a meaningful first task?",
-    purpose: "Decide what you need to learn before deciding what to scale.",
+    purpose: "Decide what you need to learn.",
     steps: [
       {
         title: "State a falsifiable hypothesis",
-        text: "Connect the proposed change to a specific user behavior and explain why you expect it to change.",
+        text: "State the behaviour you expect to change, and why.",
       },
       {
         title: "Choose signals and guardrails",
-        text: "Define the primary outcome, measurement window, and potential harms. Record the baseline and any data limitations.",
+        text: "Define the outcome, time window and risks. Record the baseline and data limits.",
       },
       {
         title: "Plan the smallest credible test",
-        text: "Choose participants, exposure, instrumentation, and review criteria. Check feasibility before choosing a method.",
+        text: "Choose participants, measurement and review criteria. Check feasibility.",
       },
       {
         title: "Define the decision in advance",
-        text: "Write what would justify continuing, revising, or stopping. Keep observations distinct from conclusions.",
+        text: "Set criteria to continue, revise or stop. Separate observations from conclusions.",
       },
     ],
     outcome:
@@ -127,63 +127,63 @@ export const faqs = [
     category: "Product",
     question: "What is Lazo?",
     answer:
-      "Lazo is a free workspace for product managers, launching soon. It runs on your own system and is being built as an extension of you: connecting context, preparing the next steps, and easing stakeholder coordination. You focus on the decisions and strategy that matter.",
+      "Lazo is a family of free tools for thinking and doing: Pencil, Everyday and Power Chords. You set the direction. The tools help with the work.",
   },
   {
     id: "extension",
     category: "Product",
     question: "What do you mean by an extension of me?",
     answer:
-      "Lazo is being designed to work from your direction and support the legwork around it. That means less time chasing context, preparing drafts, and repeating explanations. Your judgment, relationships, and final decisions remain yours.",
+      "Tools that work from your context and direction. Less searching, drafting and chasing. You review the work and make the calls.",
   },
   {
     id: "teams",
     category: "Product",
     question: "Is Lazo meant to replace my team?",
     answer:
-      "No. Lazo is being built to strengthen collaboration, not replace it. Clearer context, tangible ideas, and better-prepared decisions help you work with design, engineering, and other stakeholders from a shared starting point.",
+      "No. Lazo helps you prepare the context, drafts and updates you share with your team.",
   },
   {
     id: "ai",
     category: "Product",
     question: "Does AI make the product decisions?",
     answer:
-      "No. The decisions are yours. Lazo is being built to work from the direction and boundaries you set; you review the work and keep the final say. The aim is less legwork, not less control. No agents run from this website's illustrative workspace.",
+      "You make the decisions. AI can help prepare the work; you review it. No agents run in this website’s concept workspace.",
   },
   {
     id: "local",
     category: "Data",
     question: "Does running on my own system mean everything is offline?",
     answer:
-      "No. Lazo is being built to run on your own system, but connecting an external AI service may send selected context to that provider. Running locally does not mean every feature works offline.",
+      "No. The apps run on your computer. If you connect an external AI service, selected context may go to that provider.",
   },
   {
     id: "website-data",
     category: "Data",
     question: "What happens to text I enter on this website?",
     answer:
-      "The separate Lazo signup service collects first name, last name, email, optional phone number and system for verified product access. Its privacy page explains how account information is handled. Playbook text is not submitted to a server or AI model. Closing the playbooks or reloading clears it. Reading text and handwritten annotations use fonts served by Lazo. Where enabled, optional Google Analytics records visits and selected button clicks after you allow it; form details and playbook text are excluded. Change this choice near the footer.",
+      "Playbook text stays in this browser session and clears when you close it or reload. Signup uses a separate account service. Optional Google Analytics measures visits and clicks only with consent; form details and playbook text are excluded. Fonts are hosted by Lazo. Use the footer controls to change analytics preferences.",
   },
   {
     id: "download",
     category: "Release",
     question: "Can I download Lazo now?",
     answer:
-      "Visit a product website and create your Lazo account. After email verification, an available download starts automatically. Windows for Everyday and Pencil is being worked on; sign up and we will get back to you soon. A download appears only when a release for your selected system is published.",
+      "Yes. Sign up for a product and verify your email. Available downloads start automatically. Pencil and Everyday are unsigned Apple Silicon previews; Windows is not ready yet.",
   },
   {
     id: "free",
     category: "Release",
     question: "Is Lazo free?",
     answer:
-      "Yes. Lazo is free forever and runs on your own system. If you choose to connect an external AI or other service, that provider's usage charges may still apply separately.",
+      "Yes. Lazo tools are free forever. External AI or other services may charge separately.",
   },
   {
     id: "access",
     category: "Release",
     question: "How do I get started?",
     answer:
-      "Create a Lazo account with your first and last name, email and system. Phone is optional. Verify your email to finish signup and get available downloads. Signup does not subscribe you to marketing.",
+      "Choose a tool, enter your name, email and system, then verify your email. Phone is optional. Signup does not subscribe you to marketing.",
   },
 ];
 

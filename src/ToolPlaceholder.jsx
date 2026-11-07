@@ -27,7 +27,7 @@ export function ToolPlaceholder({ tool }) {
             <ToolLogo tool={tool} base="../" className="tool-page-logo" loading="eager" />
           )}
           <h1>{tool.name}</h1>
-          <p className="tool-status"><span aria-hidden="true" />{tool.url ? "Dedicated website" : "Page coming soon"}</p>
+          <p className="tool-status"><span aria-hidden="true" />{tool.url ? "By Lazo" : "Page coming soon"}</p>
           <p>{tool.description}</p>
           {tool.url && (
             <p className="tool-website-action">

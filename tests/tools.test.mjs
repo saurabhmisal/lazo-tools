@@ -24,7 +24,7 @@ test("each Lazo tool has a distinct static entry and placeholder identity", asyn
       } else {
         assert.ok(html.includes(tool.mark));
       }
-      assert.ok(html.includes(tool.url ? "Dedicated website" : "Page coming soon"));
+      assert.ok(html.includes(tool.url ? "By Lazo" : "Page coming soon"));
       assert.match(html, /href="\.\.\/">Back to Lazo/);
       assert.match(html, /href="https:\/\/everyday\.lazo\.tools\/"/);
       assert.match(html, /href="https:\/\/powerchords\.lazo\.tools\/"/);

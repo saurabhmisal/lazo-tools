@@ -61,7 +61,7 @@ export function PressureStory({ onExplore }) {
         ref={ref}
         className="story-canvas"
         role="img"
-        aria-label="An illustrated concept for the upcoming product: a standing PM thinks seriously with an Apple Pencil, then smiles as work progresses on devices on a lower height-adjustable desk behind him. His yellow-strap Apple Watch visualises voice dictation, the laptop writes code, the iPad adds handwritten notes, and the phone cycles fictional ride-hailing, fintech, healthcare, rentals, OTT and product app grids. Meeting notes, feedback, ideas, metrics, and requests flow into Lazo below the character and devices. Outcomes include decisions published, a stakeholder unblocked, multiple launches, clear strategy, aligned teams, measurable impact, prototypes and MVPs. The PM keeps direction, review, and final say."
+        aria-label="Illustrated concept: a PM thinks, then smiles as connected devices turn notes and ideas into proposed outputs. A watch shows voice dictation, a laptop shows code, a tablet holds notes and a phone shows app concepts. The PM reviews the work."
         data-motion={animated ? "full" : "still"}
         data-playback={playback}
         data-static-art={
@@ -157,7 +157,7 @@ export function PressureStory({ onExplore }) {
         </div>
       </div>
       <figcaption className="story-caption">
-        <span>Illustrated concept. Lazo is in development.</span>
+        <span>Illustrated concept, not a product demo.</span>
         <button className="text-link" onClick={onExplore}>
           Explore preview <ArrowRight size={14} />
         </button>

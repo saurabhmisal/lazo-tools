@@ -96,7 +96,7 @@ test("the opening section has one reading flow and a single signup action", asyn
   assert.match(hero, /aria-describedby="hero-description"/);
   assert.match(
     plainText(hero),
-    /Tools are live.*You, but amplified!.*Lazo is being built as your PM extension/,
+    /Tools are live.*You, but amplified!.*Lazo helps turn your ideas/,
   );
   assert.equal((hero.match(/href="#release"/g) || []).length, 1);
   assert.equal((hero.match(/class="hero-title-word"/g) || []).length, 2);
@@ -122,33 +122,33 @@ test("the opening section has one reading flow and a single signup action", asyn
 
 test("launch copy preserves free software, external costs, and human ownership", () => {
   assert.match(plainText(page), /Tools are live/);
-  assert.match(plainText(page), /You own the decisions/);
+  assert.match(plainText(page), /You set the direction and make the calls/);
   assert.doesNotMatch(
     plainText(page),
     /Free, forever|desktop direction|local-first/,
   );
   const free = faqs.find((item) => item.id === "free").answer;
   assert.match(free, /free forever/);
-  assert.match(free, /runs on your own system/);
-  assert.match(free, /provider's usage charges may still apply separately/);
+  assert.match(faqs.find(item => item.id === "local").answer, /apps run on your computer/);
+  assert.match(free, /services may charge separately/);
   assert.match(
     faqs.find((item) => item.id === "ai").answer,
-    /you review the work and keep the final say/,
+    /you review it/i,
   );
 });
 
 test("privacy and release answers distinguish local work from external services", () => {
   assert.match(
     faqs.find((item) => item.id === "local").answer,
-    /does not mean every feature works offline/,
+    /external AI service.*selected context may go to that provider/,
   );
   assert.match(
     faqs.find((item) => item.id === "website-data").answer,
-    /optional phone number and system/,
+    /separate account service/,
   );
   assert.match(
     faqs.find((item) => item.id === "website-data").answer,
-    /Closing the playbooks or reloading clears it/,
+    /clears when you close it or reload/,
   );
   assert.match(
     faqs.find((item) => item.id === "access").answer,
@@ -197,15 +197,15 @@ test("the illustrated story has a stable static fallback and no live-product cla
   assert.doesNotMatch(page, /More inputs\. Same deadline\./);
   assert.match(page, /You set the direction/);
   assert.match(page, /You keep the final say/);
-  assert.match(page, /Illustrated concept\. Lazo is in development\./);
+  assert.match(page, /Illustrated concept, not a product demo\./);
   assert.match(page, /aria-label="Download animation as GIF"/);
   assert.match(page, /assets\/thinker-scene-poster-v10\.png/);
-  assert.match(page, /height-adjustable desk behind him/);
+  assert.match(page, /connected devices turn notes and ideas into proposed outputs/);
   assert.match(
     page,
-    /fictional ride-hailing, fintech, healthcare, rentals, OTT and product app grids/,
+    /phone shows app concepts/,
   );
-  assert.match(page, /thinks seriously.*then smiles/);
+  assert.match(page, /PM thinks, then smiles/);
   assert.doesNotMatch(page, /New_DP\.png/);
   const heroEnd = page.indexOf("</section>");
   assert.ok(page.indexOf('class="pressure-story"') > heroEnd);
@@ -293,24 +293,24 @@ test("PM capabilities are concise, expandable, and framed as upcoming work", () 
     assert.doesNotMatch(html, /\bopen(?:=|\s|>)/);
     assert.ok(plainText(html.match(/<p>[\s\S]*?<\/p>/)[0]).split(/\s+/).length < 20);
   }
-  assert.match(plainText(mission), /PMs lose time piecing together context/);
-  assert.match(plainText(mission), /Lazo is being built to close that gap/);
-  assert.match(plainText(mission), /Your judgment stays yours/);
+  assert.match(plainText(mission), /Scattered notes, repeated updates and follow-ups/);
+  assert.match(plainText(mission), /You think and direct/);
+  assert.match(plainText(mission), /Lazo is your extension for the work/);
   const example = mission.match(/<p class="capability-example">[\s\S]*?<\/p>/)[0];
-  assert.match(plainText(example), /Planned example/);
-  assert.match(plainText(example), /Meeting notes \+ onboarding ideas/);
-  assert.match(plainText(example), /clickable prototype, scoped MVP and stakeholder update/);
-  assert.match(plainText(example), /You review everything/);
+  assert.match(plainText(example), /Planned workflow/);
+  assert.match(plainText(example), /Meeting notes \+ ideas/);
+  assert.match(plainText(example), /prototype, MVP scope and stakeholder update/);
+  assert.match(plainText(example), /You review the work/);
   assert.ok(plainText(example).split(/\s+/).length < 30);
   assert.doesNotMatch(plainText(page), /Product Sense Engine|skills engine|github\.com|52 capabilities/i);
   assert.doesNotMatch(plainText(mission), /Power Chords/);
-  assert.match(plainText(page), /Your next step starts here/);
-  assert.match(plainText(page), /One Lazo account for Pencil, Everyday and Power Chords/);
+  assert.match(plainText(page), /Start with a thought/);
+  assert.match(plainText(page), /One account\. Three tools to help you act/);
 });
 
 test("the homepage routes product access to the shared verified signup", () => {
   assert.doesNotMatch(page, /<form\b/);
   assert.match(page, /href="https:\/\/accounts\.lazo\.tools\/signup"/);
   assert.match(page, /href="https:\/\/accounts\.lazo\.tools\/privacy"/);
-  assert.match(plainText(page), /Verify your email. Available downloads start automatically/);
+  assert.match(plainText(page), /Sign up\. Verify your email\. Download/);
 });

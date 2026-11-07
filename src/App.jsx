@@ -717,12 +717,11 @@ export function App() {
             </div>
             <div className="hero-invitation">
               <p className="hero-promise">
-                Your direction. More possibilities brought to life.
+                Your thinking, put to work.
               </p>
               <p className="hero-description" id="hero-description">
-                Lazo is being built as your PM extension, turning scattered
-                context into work you can move forward with. You own the
-                decisions. Lazo helps carry the legwork.
+                Lazo helps turn your ideas into drafts, prototypes and next steps.
+                You set the direction and make the calls.
               </p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#release" data-analytics-cta="hero_launch_updates">
@@ -749,43 +748,41 @@ export function App() {
           <PressureStory onExplore={() => setDetail("workspace")} />
           <div className="mission-intro">
             <h2 id="mission-title">
-              From what's on your mind to what moves things forward
+              More room to think
             </h2>
             <p>
-              PMs lose time piecing together context, preparing deliverables and
-              chasing alignment. Lazo is being built to close that gap.
+              Scattered notes, repeated updates and follow-ups eat into thinking time.
             </p>
             <p className="mission-ambition">
-              <strong>Our ambition:</strong> Your capacity should keep up with
-              your ideas. Your judgment stays yours.
+              <strong>Our belief:</strong> You think and direct. Lazo is your extension for the work.
             </p>
           </div>
           <div className="mission-capabilities">
-            <div className="capability-list" aria-label="Planned PM capabilities">
+            <div className="capability-list" aria-label="What we are building toward">
               {[
                 [
                   "Find the signal",
-                  "Bring notes, feedback and evidence together into a clear picture of the problem.",
+                  "Connect notes, feedback and evidence.",
                   Search,
                 ],
                 [
                   "Strengthen your thinking",
-                  "Explore alternatives, uncover assumptions and weigh trade-offs in your context.",
+                  "Test assumptions. Weigh the options.",
                   Brain,
                 ],
                 [
                   "Make it tangible",
-                  "Turn your direction into product briefs, prototypes and scoped MVPs.",
+                  "Shape briefs, prototypes and MVP scope.",
                   Layers3,
                 ],
                 [
                   "Bring people with you",
-                  "Prepare leadership updates, decision notes and clear asks that help unblock stakeholders.",
+                  "Prepare updates, decisions and clear asks.",
                   UsersRound,
                 ],
                 [
                   "Keep momentum",
-                  "Turn decisions into next steps, experiments and launch plans.",
+                  "Plan the next step, experiment or launch.",
                   Rocket,
                 ],
               ].map(([title, description, Icon]) => (
@@ -802,18 +799,17 @@ export function App() {
               ))}
             </div>
             <p className="capability-example">
-              <strong><FileText size={16} aria-hidden="true" /> Planned example</strong>
-              Meeting notes + onboarding ideas{" "}
+              <strong><FileText size={16} aria-hidden="true" /> Planned workflow</strong>
+              Meeting notes + ideas{" "}
               <ArrowRight size={14} role="img" aria-label="become" />{" "}
-              clickable prototype, scoped MVP and stakeholder update.
-              <span>You review everything.</span>
+              prototype, MVP scope and stakeholder update.
+              <span>You review the work.</span>
             </p>
           </div>
         </section>
         <section className="home-tools" aria-labelledby="home-tools-title">
           <div className="home-tools-intro">
-            <h2 id="home-tools-title">More from Lazo</h2>
-            <p>Meet the growing Lazo family.</p>
+            <h2 id="home-tools-title">Tools for the work</h2>
           </div>
           <div className="home-tools-links">
             {tools.map((tool) => (
@@ -945,25 +941,19 @@ export function App() {
       {policyOpen && (
         <Dialog title="ABOUT THIS WEBSITE" onClose={() => setPolicyOpen(false)}>
           <div className="resource-detail">
-            <h2>Useful tools. Your direction.</h2>
+            <h2>Your thinking. Your direction.</h2>
             <p>
-              Lazo brings together tools for product work. It is
-              being built as an extension of you, with your direction and final
-              say at the center. Free forever, on your own system.
+              Lazo is a family of free tools for thinking and doing.
+              You set the direction and review the work.
             </p>
             <p>
-              The sample project is fictional. No agents run, no files or
-              repositories are accessed. Changes to example checkboxes are
-              temporary.
+              This fictional workspace runs no agents and accesses no files or repositories. Example changes are temporary.
             </p>
             <p>
-              Playbook text stays in this browser session and is not sent to a
-              server or an AI model. Copy and download happen only when you
-              choose them. Closing the playbooks or reloading clears the text.
-              Website fonts are served by Lazo.
+              Playbook text stays in this browser session. Nothing is sent to a server or AI model. Closing or reloading clears it. You choose when to copy or download. Fonts are hosted by Lazo.
             </p>
             <p>
-              Signup opens the separate Lazo account service. It collects your first and last name, email, optional phone and system, and verifies your email for download access. Your local playbook text is separate.
+              Signup uses a separate account service. It collects your name, email, optional phone and system, then verifies your email for downloads.
             </p>
             <p>
               Where enabled, Google Analytics measures visits and selected button
@@ -981,8 +971,7 @@ export function App() {
               </a>.
             </p>
             <p>
-              The illustrative workspace is not a released version of Lazo or a
-              promise of final functionality. Product signup uses the separate Lazo account service and unlocks available downloads for your selected system after email verification.
+              This workspace is a concept, not a product demo. Sign up for available tools; downloads depend on your selected system.
             </p>
           </div>
         </Dialog>

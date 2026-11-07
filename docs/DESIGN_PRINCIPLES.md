@@ -26,7 +26,7 @@ Use semantic variables in `brand-theme.css` / `family-theme.css`. Never recolour
 
 ## Typography
 
-Use self-hosted Adobe Source Sans 3 throughout the interface: regular 400 body, semibold 600 headings and controls. Avoid synthetic styles and decorative heading italics. Self-hosted Kalam is restricted to illustration annotations; code retains a system monospace face. Both font licenses are retained.
+Use self-hosted Commissioner throughout the interface: regular 400 body, semibold 600 headings and controls. Avoid synthetic styles and decorative heading italics. Self-hosted Kalam is restricted to illustration annotations; code retains a system monospace face. Both font licenses are retained.
 
 Body text 16–18px, line height 1.6–1.7; secondary descriptions 14–16px. Form fields at least 16px to avoid mobile input zoom. Main reading columns usually 60–72 characters. Headings use fluid sizes and natural wrapping. Never shrink essential instructions to make a composition fit.
 

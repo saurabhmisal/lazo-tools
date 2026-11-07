@@ -354,16 +354,16 @@ export function ReleaseSection() {
     <section className="page-section release-section" id="release" aria-labelledby="release-title">
       <div className="release-layout">
         <div>
-          <h2 id="release-title">Your next step starts here</h2>
-          <p>One Lazo account for Pencil, Everyday and Power Chords.</p>
+          <h2 id="release-title">Start with a thought</h2>
+          <p>One account. Three tools to help you act.</p>
           <p className="release-cost">Free forever. External AI services may charge separately.</p>
         </div>
         <div className="signup-invitation">
           <a className="button button-primary" href="https://accounts.lazo.tools/signup">
-            Create your Lazo account <ArrowRight size={16} aria-hidden="true" />
+            Get the tools <ArrowRight size={16} aria-hidden="true" />
           </a>
-          <p>Verify your email. Available downloads start automatically.</p>
-          <a href="https://accounts.lazo.tools/privacy">How we use your details</a>
+          <p>Sign up. Verify your email. Download.</p>
+          <a href="https://accounts.lazo.tools/privacy">Privacy</a>
         </div>
       </div>
     </section>
