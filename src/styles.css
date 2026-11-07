@@ -1,8 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;450;500;550;600;650;700;750;800&display=swap");
-
 :root {
   font-family:
-    Inter,
+    "Source Sans 3",
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
@@ -147,7 +145,7 @@ h3 {
   background: var(--bg);
 }
 .nav-brand {
-  font-family: Inter, sans-serif;
+  font-family: "Source Sans 3", sans-serif;
   font-weight: 750;
   font-size: 24px;
   line-height: 28px;
@@ -211,7 +209,7 @@ h3 {
 }
 .hero-description {
   color: #aab5c4;
-  font-family: "DM Mono", monospace;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 18px;
   line-height: 1.6;
   margin: 10px 0 17px;
@@ -660,7 +658,7 @@ h3 {
   padding: 0 55px 0 0;
 }
 .workflow-copy h2 {
-  font-family: "DM Mono", monospace;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 27px;
   line-height: 1.4;
   font-weight: 400;
@@ -907,7 +905,7 @@ h3 {
   color: #8493a7;
 }
 .footer-brand {
-  font-family: Inter, sans-serif;
+  font-family: "Source Sans 3", sans-serif;
   font-size: 30px;
   font-weight: 700;
   color: #f5f5f6;
@@ -948,7 +946,7 @@ h3 {
   align-items: center;
 }
 .project-content h3.view-title {
-  font-family: Inter, sans-serif;
+  font-family: "Source Sans 3", sans-serif;
   color: #f4f5f6;
   font-size: 21px;
   font-weight: 550;
@@ -980,7 +978,7 @@ h3 {
   font-size: 7px;
   color: #9cbd8c;
   margin-top: 14px;
-  font-family: "DM Mono", monospace;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 .insight-line {
   display: flex;
@@ -1033,7 +1031,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: "DM Mono", monospace;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 9px;
   color: #94add1;
   background: #1b2430;
@@ -1041,7 +1039,7 @@ h3 {
   margin-top: 12px;
 }
 .project-content pre {
-  font-family: "DM Mono", monospace;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 10px;
   line-height: 1.9;
   color: #a4caff;
@@ -1080,7 +1078,7 @@ h3 {
 }
 .check-progress,
 .muted-note {
-  font-family: "DM Mono", monospace;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 8px;
   line-height: 1.8;
   color: #8898ae;
@@ -1098,7 +1096,7 @@ h3 {
 }
 .memory-row span {
   font-size: 9px;
-  font-family: "DM Mono", monospace;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   color: var(--blue);
 }
 .memory-row p {
@@ -1228,7 +1226,7 @@ h3 {
 .search-results small {
   display: block;
   font-size: 8px;
-  font-family: "DM Mono", monospace;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   color: #8096b3;
   margin-top: 5px;
 }
