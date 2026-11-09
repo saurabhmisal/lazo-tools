@@ -44,3 +44,14 @@ test('generic clicks use fixed destinations and never send button text or form c
  const f=fixture();f.analytics.setGaConsent('granted');const el={href:'https://accounts.lazo.tools/download?product=pencil&email=SECRET',tagName:'A',getAttribute:()=>null,closest:()=>null,textContent:'PRIVATE'};
  f.events.click({target:{closest:()=>el}});const row=f.win.dataLayer.map(x=>Array.from(x)).find(x=>x[1]==='ui_click');assert.equal(row[2].link_url,'https://accounts.lazo.tools/download');assert.equal(row[2].product,'pencil');assert.doesNotMatch(JSON.stringify(row),/SECRET|PRIVATE|email/);
 });
+
+test('explicit debug visit marks every GA event, skips counters and preserves saved exclusion and consent',()=>{
+ const f=fixture({href:'https://lazo.tools/?analytics=debug&qa_run=lazo_e2e_20261109',excluded:true,automated:true});
+ assert.equal(f.requests.length,0);assert.equal(f.scripts.length,0);const before=[...f.storage];assert.equal(f.analytics.setGaConsent('granted'),true);assert.equal(f.scripts.length,1);f.analytics.trackCta('hero_launch_updates');
+ const commands=f.win.dataLayer.map(x=>Array.from(x));assert.equal(commands.find(x=>x[0]==='config')[2].debug_mode,true);for(const row of commands.filter(x=>x[0]==='event')){assert.equal(row[2].debug_mode,true);assert.equal(row[2].qa_run,'lazo_e2e_20261109');}
+ assert.equal(f.requests.length,0);assert.deepEqual([...f.storage],before);assert.equal(f.writes.length,0);f.analytics.setGaConsent('denied');assert.equal(f.win['ga-disable-G-B3WTD82CQ0'],true);
+ const next=fixture({excluded:true});assert.equal(next.analytics.setGaConsent('granted'),false);
+});
+test('debug bypass requires an explicit labelled run and still honours browser privacy signals',()=>{
+ for(const options of [{href:'https://lazo.tools/?analytics=debug',excluded:true},{href:'https://lazo.tools/?analytics=debug&qa_run=wrong',excluded:true},{href:'https://lazo.tools/?analytics=debug&qa_run=lazo_e2e_x',signal:{globalPrivacyControl:true}}]){const f=fixture(options);assert.equal(f.analytics.setGaConsent('granted'),false);assert.equal(f.scripts.length,0);}
+});

@@ -28,6 +28,7 @@ export function analyticsPageForHost(host,path){
 export function createAnalytics({window:win,document:doc,now=Date.now}){
  const page=analyticsPageForHost(win?.location?.hostname,win?.location?.pathname);
  const configured=win?.location?.protocol==='https:'&&Boolean(page);
+ let debug=false,qaRun='';try{const q=new URL(win.location.href).searchParams;qaRun=q.get('qa_run')||'';debug=configured&&q.get('analytics')==='debug'&&/^lazo_e2e_[a-z0-9_]{1,40}$/.test(qaRun);}catch{}
  const automated=win?.navigator?.webdriver===true;
  const privacySignal=win?.navigator?.globalPrivacyControl===true||win?.navigator?.doNotTrack==='1';
  let gaChoice='pending',gaLoaded=false;
@@ -51,11 +52,12 @@ export function createAnalytics({window:win,document:doc,now=Date.now}){
  const gaCookie=()=>String(doc?.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('lazo_ga_consent='))?.split('=')[1];
  try{const saved=JSON.parse(win.localStorage.getItem(GA_KEY));if(saved&&now()-saved.at<15552000000)gaChoice=saved.choice;}catch{}
  if(['granted','denied'].includes(gaCookie())){gaChoice=gaCookie();choice=gaChoice;}
+ if(debug)gaChoice='pending';
  function cleanCampaign(){const result={};try{const query=new URL(win.location.href).searchParams;for(const key of ['source','medium','campaign','id','term','content']){const value=query.get('utm_'+key);if(value&&/^[a-zA-Z0-9_. -]{1,80}$/.test(value)&&!/(email|phone|@)/i.test(value))result['campaign_'+(key==='campaign'?'name':key)]=value;}}catch{}return result;}
  function referrer(){try{const u=new URL(doc.referrer);return u.protocol==='https:'&&!u.hostname.endsWith('lazo.tools')?u.origin+'/':'';}catch{return '';}}
  const campaign=cleanCampaign();
- function gaAllowed(){return configured&&!excluded&&!privacySignal&&choice==='granted'&&gaChoice==='granted';}
- function gaEvent(name,params={}){if(!gaAllowed()||!gaLoaded)return false;win.gtag('event',name,{send_to:GA_ID,page_location:page.page_location,page_title:page.page_title,page_referrer:referrer(),product:({'pencil.lazo.tools':'pencil','powerchords.lazo.tools':'power-chords','accounts.lazo.tools':'accounts'})[win.location.hostname]||'lazo',...params});return true;}
+ function gaAllowed(){return configured&&(debug||!excluded)&&!privacySignal&&choice==='granted'&&gaChoice==='granted';}
+ function gaEvent(name,params={}){if(!gaAllowed()||!gaLoaded)return false;win.gtag('event',name,{send_to:GA_ID,page_location:page.page_location,page_title:page.page_title,page_referrer:referrer(),product:({'pencil.lazo.tools':'pencil','powerchords.lazo.tools':'power-chords','accounts.lazo.tools':'accounts'})[win.location.hostname]||'lazo',...params,...(debug?{debug_mode:true,qa_run:qaRun}: {})});return true;}
  function activateGa(){
   if(!gaAllowed()||gaLoaded)return;
   gaLoaded=true;win['ga-disable-'+GA_ID]=false;
@@ -63,15 +65,16 @@ export function createAnalytics({window:win,document:doc,now=Date.now}){
   win.gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
   win.gtag('consent','update',{analytics_storage:'granted'});
   win.gtag('js',new Date());
-  win.gtag('config',GA_ID,{page_location:page.page_location,page_title:page.page_title,page_referrer:referrer(),send_page_view:false,cookie_domain:'lazo.tools',allow_google_signals:false,allow_ad_personalization_signals:false,ignore_referrer:!referrer(),...campaign});
+  if(debug)win.gtag('set',{debug_mode:true,qa_run:qaRun});
+  win.gtag('config',GA_ID,{page_location:page.page_location,page_title:page.page_title,page_referrer:referrer(),send_page_view:false,cookie_domain:'lazo.tools',allow_google_signals:false,allow_ad_personalization_signals:false,ignore_referrer:!referrer(),...campaign,...(debug?{debug_mode:true,qa_run:qaRun}: {})});
   const script=doc.createElement('script');script.async=true;script.id='lazo-ga4';script.src='https://www.googletagmanager.com/gtag/js?id='+GA_ID;doc.head.appendChild(script);
   gaEvent('page_view');
  }
  function stopGa(){if(gaLoaded){win.gtag('consent','update',{analytics_storage:'denied'});win['ga-disable-'+GA_ID]=true;}for(const entry of String(doc.cookie||'').split(';')){const key=entry.trim().split('=')[0];if(key==='_ga'||key.startsWith('_ga_'))for(const domain of ['','; Domain=lazo.tools'])doc.cookie=key+'=; Max-Age=0; Path=/'+domain+'; SameSite=Lax; Secure';}}
- function setGaConsent(next){if(!configured||excluded||privacySignal||!['granted','denied'].includes(next))return false;gaChoice=next;try{win.localStorage.setItem(GA_KEY,JSON.stringify({choice:next,at:now()}));}catch{}doc.cookie='lazo_ga_consent='+next+'; Max-Age=15552000; Path=/; Domain=lazo.tools; SameSite=Lax; Secure';setConsent(next);if(next==='granted'){if(gaLoaded){win['ga-disable-'+GA_ID]=false;win.gtag('consent','update',{analytics_storage:'granted'});}else activateGa();}else stopGa();notify();return true;}
- const snapshot=()=>({configured,choice,gaChoice,excluded,exclusionPersistent,automated,privacySignal});
+ function setGaConsent(next){if(debug){if(privacySignal||!['granted','denied'].includes(next))return false;choice=next;gaChoice=next;if(next==='granted'){if(gaLoaded){win['ga-disable-'+GA_ID]=false;win.gtag('consent','update',{analytics_storage:'granted'});}else activateGa();}else stopGa();notify();return true;}if(!configured||excluded||privacySignal||!['granted','denied'].includes(next))return false;gaChoice=next;try{win.localStorage.setItem(GA_KEY,JSON.stringify({choice:next,at:now()}));}catch{}doc.cookie='lazo_ga_consent='+next+'; Max-Age=15552000; Path=/; Domain=lazo.tools; SameSite=Lax; Secure';setConsent(next);if(next==='granted'){if(gaLoaded){win['ga-disable-'+GA_ID]=false;win.gtag('consent','update',{analytics_storage:'granted'});}else activateGa();}else stopGa();notify();return true;}
+ const snapshot=()=>({configured,choice,gaChoice,debug,excluded,exclusionPersistent,automated,privacySignal});
  function send(event){
-  if(!configured||excluded||privacySignal||choice!=='granted'||typeof win.fetch!=='function')return false;
+  if(debug||!configured||excluded||privacySignal||choice!=='granted'||typeof win.fetch!=='function')return false;
   try{Promise.resolve(win.fetch(ENDPOINT,{method:'POST',mode:'cors',credentials:'omit',referrerPolicy:'no-referrer',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:page.page_location,event}),keepalive:true})).catch(()=>{});return true;}catch{return false;}
  }
  function notify(){for(const listener of listeners)listener(snapshot());}
@@ -90,8 +93,8 @@ export function createAnalytics({window:win,document:doc,now=Date.now}){
    let destination='',product='';try{const u=new URL(el.href,win.location.href);if(el.href&&u.protocol==='https:'){const target=analyticsPageForHost(u.hostname,u.pathname);destination=target?.page_location||u.origin+'/';if(u.hostname==='accounts.lazo.tools'){const value=u.searchParams.get('product');if(['pencil','power-chords'].includes(value))product=value;}}}catch{}
    gaEvent('ui_click',{action_id:CTA_IDS.includes(action)?action:(el.tagName?.toLowerCase()==='summary'?'expand_section':destination?'navigate':'button'),element_type:String(el.tagName||'button').toLowerCase(),element_index:Array.from(doc.querySelectorAll?.('a,button,summary,[role="button"]')||[]).indexOf(el)+1,...(destination?{link_url:destination}:{}),...(product?{product}: {})});
   });
-  win.addEventListener('focus',()=>{if(cookieExcluded()){excluded=true;exclusionPersistent=true;}if(cookieOptout())choice='denied';if(gaCookie()==='denied'){gaChoice='denied';stopGa();}else if(gaCookie()==='granted'&&!excluded&&!privacySignal){gaChoice='granted';choice='granted';if(!gaLoaded)activateGa();else{win['ga-disable-'+GA_ID]=false;win.gtag('consent','update',{analytics_storage:'granted'});}}if(excluded||choice==='denied')stopGa();notify();});
-  win.addEventListener('storage',event=>{
+  win.addEventListener('focus',()=>{if(debug)return;if(cookieExcluded()){excluded=true;exclusionPersistent=true;}if(cookieOptout())choice='denied';if(gaCookie()==='denied'){gaChoice='denied';stopGa();}else if(gaCookie()==='granted'&&!excluded&&!privacySignal){gaChoice='granted';choice='granted';if(!gaLoaded)activateGa();else{win['ga-disable-'+GA_ID]=false;win.gtag('consent','update',{analytics_storage:'granted'});}}if(excluded||choice==='denied')stopGa();notify();});
+  win.addEventListener('storage',event=>{if(debug){if(event.key===null){gaChoice='denied';choice='denied';stopGa();notify();}return;}
    if(event.key===null){choice='denied';gaChoice='denied';stopGa();}
    if(event.key===GA_KEY){try{gaChoice=JSON.parse(event.newValue)?.choice||'denied';}catch{gaChoice='denied';}if(gaChoice==='denied')stopGa();else activateGa();}
    if(event.key===EXCLUSION_KEY||event.key===null){excluded=automated||event.newValue==='true'||cookieExcluded();exclusionPersistent=excluded&&!automated;}

@@ -11,3 +11,7 @@ Campaign example: https://lazo.tools/?utm_source=linkedin&utm_medium=social&utm_
 The existing first-party daily totals remain separate in account administration (90-day retention). They are not GA4 unique-user/session reports and are never imported into GA4. Consent declines disable both.
 
 Verify with local fake-browser event queues and production excluded-mode checks. Never create fake live users, signups or campaign hits. Browser network/Realtime collection must be observed before claiming that production hits arrived.
+
+## Excluded end-to-end QA
+
+The GA property has an Active Developer Traffic / Exclude filter named Lazo developer QA exclusion. Before a production diagnostic, confirm it remains Active. A deliberately labelled `?analytics=debug&qa_run=lazo_e2e_20261109` visit shows a per-document Send debug test events control. Nothing is sent until that button is pressed. Every test config/event carries debug_mode=true and qa_run, and the separate aggregate collector is disabled. No saved owner exclusion or consent is overwritten. Stop debug session clears the temporary GA cookies; ordinary pages continue honouring exclusions. This is an explicit developer-only opt-in, separate from analytics=test (which sends nothing).
