@@ -1,21 +1,13 @@
-# Lazo website counts
+# Lazo analytics
 
-Updated 9 November 2026. All public family pages use the shared `src/analytics.js` module. No Google tag loads. Historical GA4 data is unchanged.
+GA4 property 560957186, stream G-B3WTD82CQ0, covers the public Lazo, Pencil, Power Chords and account pages. Retired URLs immediately redirect to Pencil and do not create their own analytics events. Private administration and local/automated/test browsers are excluded.
 
-## What is counted
+GA4 uses basic consent mode: no Google script or GA request until explicit footer permission. Analytics cookies use lazo.tools so sessions span its subdomains. Ads storage, ad user data, personalization and Google Signals are disabled. Declines, DNT/GPC and owner/test exclusions win. Consent lasts up to 180 days, is shared across subdomains, and can be withdrawn inline. No blocking popup.
 
-The browser sends only an allowlisted canonical public page and fixed action name to `https://accounts.lazo.tools/api/metrics`, with credentials omitted and no referrer. No account identifier, visitor/session ID, cookie identifier, arbitrary URL, query, fragment, form value, note or workspace text is part of the payload. The collector stores daily page/action totals for 90 days. Repeat views count again; these are not unique visitor counts.
+Events: page_view once per document, ui_click for links/buttons/disclosures, cta_click for fixed named calls to action. Parameters: canonical page_location/title, product, fixed action_id, element_type/index, safe link_url and selected product. Raw link text, private paths, form values, verification URLs, notes and workspace text are excluded. Internal anchors stay on their canonical document. Campaign source/medium/name/id/term/content accept only short safe UTM labels; never put personal information in campaign labels. External referrers retain origin only; internal subdomains do not become referral sources. No arbitrary URL query or hash is sent.
 
-The account administration page shows the last 30 days in India time. Website counts are separate from authenticated account download/security records. Hosting providers still process connection information for delivery/security. Short-lived keyed abuse limits are kept separately; IP addresses are not added to the totals.
+Campaign example: https://lazo.tools/?utm_source=linkedin&utm_medium=social&utm_campaign=launch. Use Acquisition reports for source/medium/campaign, Pages and screens for page views, and Events for ui_click/cta_click. Event parameters can be inspected in event details; custom reporting dimensions action_id, product, element_type may need registration in GA Admin. This release does not claim those admin dimensions or key-event settings were changed.
 
-## Preferences and tests
+The existing first-party daily totals remain separate in account administration (90-day retention). They are not GA4 unique-user/session reports and are never imported into GA4. Consent declines disable both.
 
-There is no consent popup or analytics cookie. A small footer control allows an opt-out. Only an explicit preference writes a functional choice cookie/local setting. Earlier declines, owner exclusions, Do Not Track, Global Privacy Control and automated browsers remain excluded. Cross-subdomain opt-out/exclusion cookies stop collection on other family pages; already open tabs recheck on focus. Clearing storage never silently enables an open tab.
-
-Use `?analytics=test` for production QA and `?analytics=exclude` on each owner browser/profile. These exclude that browser across the family; they do not exclude every browser installed on a device or remove historical events. Local previews never collect. Never send synthetic production events to prove collection.
-
-## Build and verification
-
-`npm run build:family` exports the shared script/styles for product sites. PC page builds fingerprint the script. The collector rejects extra fields, unknown pages/events/origins and requests over 1 KB; it uses separate abuse limits. Unit/integration checks cover privacy signals, owner/test links, explicit preferences, canonical payloads, no anonymous sessions/cookies, permissions, expiry and failure tolerance.
-
-This minimal measurement approach reduces stored data. It does not certify compliance in every jurisdiction; public terms and privacy disclosures preserve applicable rights.
+Verify with local fake-browser event queues and production excluded-mode checks. Never create fake live users, signups or campaign hits. Browser network/Realtime collection must be observed before claiming that production hits arrived.

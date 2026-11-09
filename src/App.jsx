@@ -953,9 +953,9 @@ export function App() {
               Signup uses a separate account service. It collects your name, email, optional phone and system, then verifies your email for downloads.
             </p>
             <p>
-              We count page views and selected button clicks without analytics
-              cookies or visitor IDs. Form details, notes and playbook text are
-              excluded. The footer lets you opt out.{" "}
+              Optional analytics measures visits, clicks and campaign sources after
+              permission. Form details, notes and playbook text are excluded.
+              Change your choice in the footer.{" "}
               <a
                 href="https://accounts.lazo.tools/privacy#analytics"
                 target="_blank"

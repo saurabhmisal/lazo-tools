@@ -162,7 +162,7 @@ export const faqs = [
     category: "Data",
     question: "What happens to text I enter on this website?",
     answer:
-      "Playbook text stays in this browser session and clears when you close it or reload. Signup uses a separate account service. Cookie-free analytics counts page views and clicks without visitor IDs; form details and playbook text are excluded. Fonts are hosted by Lazo. Use the footer controls to change analytics preferences.",
+      "Playbook text stays in this browser session and clears when you close it or reload. Signup uses a separate account service. Optional GA4 measures page views, clicks and campaign sources after permission; form details and playbook text are excluded. Fonts are hosted by Lazo. Use the footer controls to change analytics preferences.",
   },
   {
     id: "download",

@@ -47,7 +47,7 @@ export function ToolPlaceholder({ tool }) {
         <p>Lazo tools</p>
         <details>
           <summary>Privacy</summary>
-          <p>Cookie-free counts of page views and button clicks. No visitor IDs or work content. Use the analytics control to opt out.</p>
+          <p>Optional GA4 measures visits and clicks after permission. Form details and work content are excluded.</p>
           <a href="https://accounts.lazo.tools/privacy#analytics">Privacy details</a>
         </details>
         <a href="../terms/">Terms &amp; Conditions</a>

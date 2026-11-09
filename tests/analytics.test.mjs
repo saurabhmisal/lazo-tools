@@ -3,8 +3,8 @@ function fixture({href='https://lazo.tools/?email=private@example.com#secret',st
  const requests=[],writes=[],handlers={},events={},storage=new Map();if(stored)storage.set('lazo.analytics-consent.v1',JSON.stringify(stored));if(excluded)storage.set('lazo.analytics-excluded.v1','true');
  const url=new URL(href);let cookies=cookie;
  const win={location:{hostname:url.hostname,protocol:url.protocol,pathname:url.pathname,href},navigator:{webdriver:automated,...signal},fetch:(url,options)=>{requests.push({url,...options,body:JSON.parse(options.body)});return Promise.resolve({status:204});},localStorage:{getItem:key=>{if(blocked)throw Error('blocked');return storage.get(key);},setItem:(key,value)=>{if(blocked)throw Error('blocked');storage.set(key,value);}},addEventListener:(name,fn)=>handlers[name]=fn,history:{replaceState(){}}};
- const doc={referrer:'https://private.example/secret',get cookie(){return cookies;},set cookie(value){writes.push(value);const[name,raw]=value.split(';')[0].split('=');const map=new Map(cookies.split(';').filter(Boolean).map(x=>x.trim().split('=')));if(value.includes('Max-Age=0'))map.delete(name);else map.set(name,raw);cookies=[...map].map(x=>x.join('=')).join('; ');},addEventListener:(name,fn)=>events[name]=fn};
- return{analytics:createAnalytics({window:win,document:doc}),requests,writes,storage,handlers,events,win,doc};
+ const scripts=[];const doc={head:{appendChild:x=>scripts.push(x)},createElement:()=>({}),referrer:'https://private.example/secret',get cookie(){return cookies;},set cookie(value){writes.push(value);const[name,raw]=value.split(';')[0].split('=');const map=new Map(cookies.split(';').filter(Boolean).map(x=>x.trim().split('=')));if(value.includes('Max-Age=0'))map.delete(name);else map.set(name,raw);cookies=[...map].map(x=>x.join('=')).join('; ');},addEventListener:(name,fn)=>events[name]=fn};
+ return{analytics:createAnalytics({window:win,document:doc}),requests,writes,storage,handlers,events,win,doc,scripts};
 }
 test('default counts have only a canonical page and event, no cookies or visitor identifiers',()=>{
  const f=fixture();assert.deepEqual(f.requests[0].body,{page:'https://lazo.tools/',event:'page_view'});assert.equal(f.requests[0].credentials,'omit');assert.equal(f.requests[0].referrerPolicy,'no-referrer');assert.equal(f.requests.length,1);assert.equal(f.writes.length,0);assert.equal(f.storage.size,0);assert.equal(f.win.dataLayer,undefined);assert.doesNotMatch(JSON.stringify(f.requests),/private|secret|email=|client_id|session_id|googletagmanager/);
@@ -30,4 +30,17 @@ test('explicit footer opt-out applies on other family pages and already-open tab
  const f=fixture();f.analytics.setConsent('denied');assert.ok(f.writes.some(v=>v.includes('lazo_analytics_optout=true')&&v.includes('Domain=lazo.tools')));
  const other=fixture({href:'https://pencil.lazo.tools/',cookie:'lazo_analytics_optout=true'});assert.equal(other.requests.length,0);
  const open=fixture({href:'https://powerchords.lazo.tools/'});open.doc.cookie='lazo_analytics_optout=true';open.handlers.focus();assert.equal(open.analytics.trackCta('signup'),false);
+});
+
+test('GA4 requires explicit permission, shares the family cookie and keeps a single page view',()=>{
+ const f=fixture({href:'https://lazo.tools/?utm_source=newsletter&utm_medium=email&utm_campaign=launch&grant=SECRET#private'});
+ assert.equal(f.scripts.length,0);f.analytics.setGaConsent('granted');assert.equal(f.scripts.length,1);assert.match(f.scripts[0].src,/G-B3WTD82CQ0/);
+ const entries=()=>f.win.dataLayer.map(x=>Array.from(x));const config=entries().find(x=>x[0]==='config')[2];assert.equal(config.page_location,'https://lazo.tools/');assert.equal(config.campaign_source,'newsletter');assert.equal(config.campaign_name,'launch');assert.equal(config.cookie_domain,'lazo.tools');assert.equal(config.send_page_view,false);assert.equal(config.allow_google_signals,false);
+ f.analytics.setGaConsent('granted');assert.equal(entries().filter(x=>x[0]==='event'&&x[1]==='page_view').length,1);assert.doesNotMatch(JSON.stringify(entries()),/SECRET|#private|grant=/);
+ f.analytics.trackCta('download');assert.equal(entries().filter(x=>x[0]==='event'&&x[1]==='cta_click').length,1);f.analytics.setGaConsent('denied');const n=f.win.dataLayer.length;assert.equal(f.analytics.gaEvent('ui_click'),false);assert.equal(f.win.dataLayer.length,n);assert.equal(f.win['ga-disable-G-B3WTD82CQ0'],true);
+ for(const options of [{excluded:true},{signal:{globalPrivacyControl:true}},{href:'https://lazo.tools/?analytics=test'}]){const f=fixture(options);assert.equal(f.analytics.setGaConsent('granted'),false);assert.equal(f.scripts.length,0);}
+});
+test('generic clicks use fixed destinations and never send button text or form content',()=>{
+ const f=fixture();f.analytics.setGaConsent('granted');const el={href:'https://accounts.lazo.tools/download?product=pencil&email=SECRET',tagName:'A',getAttribute:()=>null,closest:()=>null,textContent:'PRIVATE'};
+ f.events.click({target:{closest:()=>el}});const row=f.win.dataLayer.map(x=>Array.from(x)).find(x=>x[1]==='ui_click');assert.equal(row[2].link_url,'https://accounts.lazo.tools/download');assert.equal(row[2].product,'pencil');assert.doesNotMatch(JSON.stringify(row),/SECRET|PRIVATE|email/);
 });
