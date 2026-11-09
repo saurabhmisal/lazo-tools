@@ -8,7 +8,7 @@ Approved direction — 7 November 2026. Apply this standard to every Lazo landin
 | --- | --- |
 | Lazo | Navy wordmark and navigation, generous ivory/neutral space, restrained green primary actions. |
 | Pencil | Ivory writing canvas, navy reading text, green actions. Keep notes, sources and writing prominent. |
-| Everyday (retired) | Preserve the retirement route and point people to Pencil. Keep existing installations and local data untouched. |
+| Retired URLs | Redirect immediately to Pencil; publish no retirement landing pages. |
 | Power Chords | Prominent existing PC loop mark, navy and ivory interface, green selected and interactive details. Keep identity in typography and composition. |
 | Shared account pages | Calm ivory and navy, readable forms and the same green actions. |
 
@@ -56,4 +56,4 @@ The Lazo website repository owns `src/brand-type.css` and `src/family-theme.css`
 
 ## Lazo identity and legal links
 
-Use the homepage linked Lazo mark for Lazo navigation, the account service and supporting pages. Generate all Lazo favicons from that same mark with build:brand. Preserve the distinct Pencil and Power Chords product logos. Public footers link to the canonical Terms & Conditions and Privacy pages. Website analytics uses fixed, cookie-free aggregate page/action counts, with a quiet footer opt-out and no visitor IDs.
+Use the homepage linked Lazo mark for Lazo navigation, the account service and supporting pages. Generate all Lazo favicons from that same mark with build:brand. Preserve the distinct Pencil and Power Chords product logos. Public footers link to the canonical Terms & Conditions and Privacy pages. Website analytics uses shared, consent-based GA4 tagging for canonical page views, UI/CTA clicks and safe campaign labels; owner/test exclusions remain. The separate anonymous daily counter is supplementary.
