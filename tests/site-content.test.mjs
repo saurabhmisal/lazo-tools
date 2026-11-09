@@ -41,7 +41,7 @@ test("each playbook produces a complete distinct Markdown download", () => {
     assert.ok(text.includes(item.outcome));
     assert.ok(text.includes(item.guardrail));
     assert.equal((text.match(/^### \d\./gm) || []).length, 4);
-    assert.ok(text.includes("not AI-generated research"));
+    assert.ok(text.includes("A starting template for your research and decisions."));
   }
 });
 test("custom questions and context are included without corrupting the heading", () => {

@@ -40,7 +40,7 @@ export const playbooks = [
         text: "Name the user, their goal and where they get stuck.",
       },
       {
-        title: "Collect evidence, not just opinions",
+        title: "Collect supporting evidence",
         text: "Collect observations, behaviour and source excerpts. Label assumptions.",
       },
       {
@@ -86,7 +86,7 @@ export const playbooks = [
     outcome:
       "A focused prototype brief: flow, acceptance criteria, constraints, and a usability task.",
     guardrail:
-      "A convincing prototype is not evidence that production reliability, security, or accessibility is complete.",
+      "Check production reliability, security and accessibility before launch.",
   },
   {
     id: "experiment",
@@ -117,7 +117,7 @@ export const playbooks = [
     outcome:
       "An experiment brief: hypothesis, population, measurement, guardrails, and decision criteria.",
     guardrail:
-      "A movement in a metric is not automatically a causal result. Review the test design and uncertainty.",
+      "Review the test design and uncertainty before drawing causal conclusions.",
   },
 ];
 
@@ -193,5 +193,5 @@ export function createPlaybook(id, question = "", notes = "") {
   const heading =
     question.replace(/\s+/g, " ").trim().slice(0, 280) || selected.question;
   const context = notes.trim().slice(0, 1800);
-  return `# ${selected.title}\n\nLazo / PM playbook\n\n## Product question\n${heading}\n\n## Intent\n${selected.purpose}\n${context ? `\n## Your context\n${context}\n` : ""}\n## Working steps\n${selected.steps.map((step, i) => `\n### ${i + 1}. ${step.title}\n${step.text}\n`).join("")}\n## Take forward\n${selected.outcome}\n\n## Keep in mind\n${selected.guardrail}\n\n---\nA starting template, not AI-generated research or a completed product decision.\n`;
+  return `# ${selected.title}\n\nLazo / PM playbook\n\n## Product question\n${heading}\n\n## Intent\n${selected.purpose}\n${context ? `\n## Your context\n${context}\n` : ""}\n## Working steps\n${selected.steps.map((step, i) => `\n### ${i + 1}. ${step.title}\n${step.text}\n`).join("")}\n## Take forward\n${selected.outcome}\n\n## Keep in mind\n${selected.guardrail}\n\n---\nA starting template for your research and decisions.\n`;
 }

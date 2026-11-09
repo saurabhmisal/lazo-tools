@@ -157,7 +157,7 @@ export function PressureStory({ onExplore }) {
         </div>
       </div>
       <figcaption className="story-caption">
-        <span>Illustrated concept, not a product demo.</span>
+        <span>Preview at a glance</span>
         <button className="text-link" onClick={onExplore}>
           Explore preview <ArrowRight size={14} />
         </button>

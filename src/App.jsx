@@ -57,9 +57,9 @@ const examples = {
   },
   "Onboarding analytics": {
     tag: "RESEARCH / EVIDENCE",
-    body: "An illustrative measurement plan, not live analytics.",
+    body: "Example measurement plan.",
     points: [
-      "Track the first meaningful action, not just account creation.",
+      "Track the first meaningful action alongside account creation.",
       "Segment the journey by the job a person came to do.",
       "Compare time to first value before and after the experiment.",
     ],
@@ -73,7 +73,7 @@ const examples = {
       "How quickly can someone see a useful result?",
       "Which setup steps are genuinely necessary?",
     ],
-    note: "Look for patterns, not interfaces to copy. Keep the user problem at the center.",
+    note: "Learn from patterns and create your own interface. Keep the user problem at the center.",
   },
   "Synthesize interviews": {
     tag: "AGENT / REVIEW BEFORE ACTION",
@@ -143,7 +143,7 @@ const examples = {
       "Reuse existing components and accessibility patterns.",
       "Identify focused tests for the first-run path.",
     ],
-    note: "A fuller stack means understanding enough of the system to make better decisions, not rebuilding everything yourself.",
+    note: "Understand enough of the system to make better decisions and reuse what already works.",
   },
   "Suggest quick wins": {
     tag: "BUILD / CODE ANALYSIS",
@@ -453,7 +453,7 @@ function Workspace({ view, setView, onOpen, onSearch }) {
                   <NotebookPen size={17} /> WORKING DRAFT
                 </div>
                 <h3 className="view-title">
-                  A first step, not a setup project.
+                  A simple first step.
                 </h3>
                 <p className="view-intro">
                   Help a new user complete one meaningful task. Start with a
@@ -530,7 +530,7 @@ function Workspace({ view, setView, onOpen, onSearch }) {
                 </pre>
                 <span className="code-caption" role="status">
                   {copyStatus ||
-                    "Illustrative code, not a production implementation."}
+                    "Code preview. Review before using."}
                 </span>
               </>
             )}
@@ -586,7 +586,7 @@ function Workspace({ view, setView, onOpen, onSearch }) {
                   <li>What would change our decision?</li>
                 </ol>
                 <p className="muted-note">
-                  An illustrative agenda, not a recorded meeting.
+                  Example meeting agenda.
                 </p>
               </>
             )}
@@ -969,7 +969,7 @@ export function App() {
               </a>.
             </p>
             <p>
-              This workspace is a concept, not a product demo. Sign up for available tools; downloads depend on your selected system.
+              Explore this workspace preview. Sign up for available tools; downloads depend on your selected system.
             </p>
           </div>
         </Dialog>

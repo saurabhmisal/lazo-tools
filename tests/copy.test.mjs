@@ -154,7 +154,7 @@ test("privacy and release answers distinguish local work from external services"
     faqs.find((item) => item.id === "access").answer,
     /Phone is optional/,
   );
-  assert.match(plainText(page), /Illustrated concept/);
+  assert.match(plainText(page), /Preview at a glance/);
   assert.match(
     plainText(resources.playbooks),
     /WORKING TEMPLATE \/ NOT AI-GENERATED/,
@@ -197,7 +197,7 @@ test("the illustrated story has a stable static fallback and no live-product cla
   assert.doesNotMatch(page, /More inputs\. Same deadline\./);
   assert.match(page, /You set the direction/);
   assert.match(page, /You keep the final say/);
-  assert.match(page, /Illustrated concept, not a product demo\./);
+  assert.match(page, /Preview at a glance/);
   assert.match(page, /aria-label="Download animation as GIF"/);
   assert.match(page, /assets\/thinker-scene-poster-v10\.png/);
   assert.match(page, /connected devices turn notes and ideas into proposed outputs/);

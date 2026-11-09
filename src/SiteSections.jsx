@@ -65,8 +65,7 @@ export function CapabilitySection() {
         </div>
         <p>
           We are building Lazo to reduce the chasing, context-switching, and
-          coordination around your decisions, not to make those decisions for
-          you.
+          coordination around your decisions. You keep the final say.
         </p>
       </div>
       <div className="extension-outcomes">

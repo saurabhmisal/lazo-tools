@@ -28,3 +28,7 @@ Keep technical workflow instructions and third-party licence notices complete. S
 ## Typography
 
 Commissioner was selected by the owner on 7 November 2026. Use locally hosted variable WOFF2 fonts, regular body and semibold headings. Keep the established colour system. Kalam remains for illustration notes, and code stays monospace. No claim is made that a font is exclusive to human-designed work or unused by generative AI.
+
+## Direct language
+
+Use clear, affirmative descriptions. Say "Preview at a glance" for the illustration. Avoid contrastive formulas such as "X, not a Y". Keep necessary limitations and safety instructions precise.
