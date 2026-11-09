@@ -12,6 +12,8 @@ The existing first-party daily totals remain separate in account administration 
 
 Verify with local fake-browser event queues and production excluded-mode checks. Never create fake live users, signups or campaign hits. Browser network/Realtime collection must be observed before claiming that production hits arrived.
 
-## Excluded end-to-end QA
+## End-to-end verification — 9 November 2026
 
-The GA property has an Active Developer Traffic / Exclude filter named Lazo developer QA exclusion. Before a production diagnostic, confirm it remains Active. A deliberately labelled `?analytics=debug&qa_run=lazo_e2e_20261109` visit shows a per-document Send debug test events control. Nothing is sent until that button is pressed. Every test config/event carries debug_mode=true and qa_run, and the separate aggregate collector is disabled. No saved owner exclusion or consent is overwritten. Stop debug session clears the temporary GA cookies; ordinary pages continue honouring exclusions. This is an explicit developer-only opt-in, separate from analytics=test (which sends nothing).
+A labelled test visit was received in GA4 DebugView, including page_view, ui_click and cta_click. Verified action_id hero_launch_updates/open_faq, debug_mode=1, qa_run=lazo_e2e_20261109, canonical page_location, and campaign qa/debug/ga4_e2e. A Developer Traffic/Exclude filter Lazo developer QA exclusion was set Active before the visit, but new filters can take 24–36 hours to propagate. The test also appeared in unfiltered Realtime (one test user). Do not claim it was globally absent from reports.
+
+Saved comparison Real visitors - exclude Lazo QA excludes Session campaign containing ga4_e2e, for processed reports. Realtime does not support that comparison. No data was deleted. Owner exclusion remains active. The temporary debug bypass has been removed; analytics=debug now excludes all collection, like analytics=test. Do not send another production debug test until filter effectiveness is established; use a separate QA property when immediate isolation is required.
