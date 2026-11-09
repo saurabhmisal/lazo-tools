@@ -1,3 +1,4 @@
+import {LazoMark} from "./LazoMark.jsx";
 import { ArrowLeft, ArrowRight, Link2 } from "lucide-react";
 import { AnalyticsPreferences } from "./AnalyticsPreferences.jsx";
 import { ToolsMenu } from "./ToolsMenu.jsx";
@@ -9,7 +10,7 @@ export function ToolPlaceholder({ tool }) {
       <a className="skip-link" href="#main">Skip to content</a>
       <header className="site-header">
         <a className="nav-brand" href="../" aria-label="Lazo home">
-          <Link2 size={25} strokeWidth={2} aria-hidden="true" /> Lazo
+          <LazoMark base="../" /> Lazo
         </a>
         <nav className="simple-nav" aria-label="Main navigation">
           <ToolsMenu base="../" />
@@ -46,9 +47,10 @@ export function ToolPlaceholder({ tool }) {
         <p>Lazo tools</p>
         <details>
           <summary>Privacy</summary>
-          <p>Google Analytics records visits only after you allow it. You can change your choice above. Browser exclusions apply across Lazo pages.</p>
-          <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">How Google uses data</a>
+          <p>Cookie-free counts of page views and button clicks. No visitor IDs or work content. Use the analytics control to opt out.</p>
+          <a href="https://accounts.lazo.tools/privacy#analytics">Privacy details</a>
         </details>
+        <a href="../terms/">Terms &amp; Conditions</a>
         <small>&copy; {new Date().getFullYear()} Lazo</small>
       </footer>
     </div>

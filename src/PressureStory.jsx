@@ -31,14 +31,14 @@ import {
 const inputs = [
   { label: "Meeting notes", Icon: NotebookPen, tone: "blue" },
   { label: "Feedback", Icon: MessageSquareText, tone: "violet" },
-  { label: "Product ideas", Icon: Lightbulb, tone: "amber" },
+  { label: "Ideas", Icon: Lightbulb, tone: "amber" },
   { label: "Metrics", Icon: ChartNoAxesCombined, tone: "cyan" },
   { label: "Requests", Icon: AppWindow, tone: "rose" },
 ];
 const outputs = [
   { label: "Decisions published", Icon: Send, tone: "blue" },
-  { label: "Stakeholder unblocked", Icon: Handshake, tone: "violet" },
-  { label: "Multiple launches", Icon: Rocket, tone: "cyan" },
+  { label: "People unblocked", Icon: Handshake, tone: "violet" },
+  { label: "Projects launched", Icon: Rocket, tone: "cyan" },
   { label: "Clear strategy", Icon: Compass, tone: "amber" },
   { label: "Aligned teams", Icon: Users, tone: "rose" },
   { label: "Measurable impact", Icon: ChartNoAxesCombined, tone: "mint" },
@@ -61,7 +61,7 @@ export function PressureStory({ onExplore }) {
         ref={ref}
         className="story-canvas"
         role="img"
-        aria-label="Illustrated concept: a PM thinks, then smiles as connected devices turn notes and ideas into proposed outputs. A watch shows voice dictation, a laptop shows code, a tablet holds notes and a phone shows app concepts. The PM reviews the work."
+        aria-label="Illustrated concept: a person thinks, then smiles as connected devices turn notes and ideas into proposed outputs. A watch shows voice dictation, a laptop shows code, a tablet holds notes and a phone shows app concepts. They review the work."
         data-motion={animated ? "full" : "still"}
         data-playback={playback}
         data-static-art={

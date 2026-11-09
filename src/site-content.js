@@ -127,7 +127,7 @@ export const faqs = [
     category: "Product",
     question: "What is Lazo?",
     answer:
-      "Lazo is a family of free tools for thinking and doing: Pencil, Everyday and Power Chords. You set the direction. The tools help with the work.",
+      "Lazo is a family of free tools for thinking and doing: Pencil and Power Chords. You set the direction. The tools help with the work.",
   },
   {
     id: "extension",
@@ -146,7 +146,7 @@ export const faqs = [
   {
     id: "ai",
     category: "Product",
-    question: "Does AI make the product decisions?",
+    question: "Does AI make the decisions?",
     answer:
       "You make the decisions. AI can help prepare the work; you review it. No agents run in this website’s concept workspace.",
   },
@@ -162,14 +162,14 @@ export const faqs = [
     category: "Data",
     question: "What happens to text I enter on this website?",
     answer:
-      "Playbook text stays in this browser session and clears when you close it or reload. Signup uses a separate account service. Optional Google Analytics measures visits and clicks only with consent; form details and playbook text are excluded. Fonts are hosted by Lazo. Use the footer controls to change analytics preferences.",
+      "Playbook text stays in this browser session and clears when you close it or reload. Signup uses a separate account service. Cookie-free analytics counts page views and clicks without visitor IDs; form details and playbook text are excluded. Fonts are hosted by Lazo. Use the footer controls to change analytics preferences.",
   },
   {
     id: "download",
     category: "Release",
     question: "Can I download Lazo now?",
     answer:
-      "Yes. Sign up for a product and verify your email. Available downloads start automatically. Pencil and Everyday are unsigned Apple Silicon previews; Windows is not ready yet.",
+      "Yes. Sign up for a product and verify your email. Available downloads start automatically. Pencil is an unsigned Apple Silicon preview; Windows is not ready yet.",
   },
   {
     id: "free",
@@ -193,5 +193,5 @@ export function createPlaybook(id, question = "", notes = "") {
   const heading =
     question.replace(/\s+/g, " ").trim().slice(0, 280) || selected.question;
   const context = notes.trim().slice(0, 1800);
-  return `# ${selected.title}\n\nLazo / PM playbook\n\n## Product question\n${heading}\n\n## Intent\n${selected.purpose}\n${context ? `\n## Your context\n${context}\n` : ""}\n## Working steps\n${selected.steps.map((step, i) => `\n### ${i + 1}. ${step.title}\n${step.text}\n`).join("")}\n## Take forward\n${selected.outcome}\n\n## Keep in mind\n${selected.guardrail}\n\n---\nA starting template for your research and decisions.\n`;
+  return `# ${selected.title}\n\nLazo / Practical playbook\n\n## Your question\n${heading}\n\n## Intent\n${selected.purpose}\n${context ? `\n## Your context\n${context}\n` : ""}\n## Working steps\n${selected.steps.map((step, i) => `\n### ${i + 1}. ${step.title}\n${step.text}\n`).join("")}\n## Take forward\n${selected.outcome}\n\n## Keep in mind\n${selected.guardrail}\n\n---\nA starting template for your research and decisions.\n`;
 }

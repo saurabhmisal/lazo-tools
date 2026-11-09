@@ -1,202 +1,33 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-import { analyticsPageForPath, createAnalytics } from "../src/analytics.js";
-
-function fixture({ host = "lazo.tools", id = "G-TEST123456", stored = null, excluded = false,
-  automated = false, href = "https://lazo.tools/?email=private@example.com#secret", storageBlocked = false, familyExclusion = false } = {}) {
-  const scripts = [], events = {}, storageEvents = {}, writes = [];
-  let cookies = "_ga=old; _ga_TEST123456=old; unrelated=keep" + (familyExclusion ? "; lazo_analytics_excluded=true" : "");
-  const storage = new Map(stored ? [["lazo.analytics-consent.v1", JSON.stringify(stored)]] : []);
-  if (excluded) storage.set("lazo.analytics-excluded.v1", "true");
-  const win = { location: { protocol: "https:", hostname: host, href, pathname: new URL(href).pathname }, navigator: { webdriver: automated },
-    localStorage: {
-      getItem: k => { if (storageBlocked) throw Error("unavailable"); return storage.get(k); },
-      setItem: (k,v) => { if (storageBlocked) throw Error("unavailable"); storage.set(k,v); },
-    },
-    addEventListener: (k,v) => { storageEvents[k] = v; } };
-  win.history = { replaceState: (_state, _title, url) => { win.location.href = new URL(url, win.location.href).href; } };
-  const doc = { referrer: "https://private.example/secret", createElement: () => ({}),
-    head: { appendChild: s => scripts.push(s) }, addEventListener: (k,v) => { events[k] = v; },
-    get cookie() { return cookies; }, set cookie(v) { writes.push(v); } };
-  const analytics = createAnalytics({ measurementId: id, window: win, document: doc, now: () => 100000000000 });
-  return { analytics, win, doc, scripts, events, storageEvents, writes, storage, calls: () => (win.dataLayer || []).map(x => Array.from(x)) };
+import test from 'node:test';import assert from 'node:assert/strict';import {createAnalytics,analyticsPageForHost,analyticsPageForPath} from '../src/analytics.js';
+function fixture({href='https://lazo.tools/?email=private@example.com#secret',stored,excluded=false,automated=false,signal={},cookie='',blocked=false}={}){
+ const requests=[],writes=[],handlers={},events={},storage=new Map();if(stored)storage.set('lazo.analytics-consent.v1',JSON.stringify(stored));if(excluded)storage.set('lazo.analytics-excluded.v1','true');
+ const url=new URL(href);let cookies=cookie;
+ const win={location:{hostname:url.hostname,protocol:url.protocol,pathname:url.pathname,href},navigator:{webdriver:automated,...signal},fetch:(url,options)=>{requests.push({url,...options,body:JSON.parse(options.body)});return Promise.resolve({status:204});},localStorage:{getItem:key=>{if(blocked)throw Error('blocked');return storage.get(key);},setItem:(key,value)=>{if(blocked)throw Error('blocked');storage.set(key,value);}},addEventListener:(name,fn)=>handlers[name]=fn,history:{replaceState(){}}};
+ const doc={referrer:'https://private.example/secret',get cookie(){return cookies;},set cookie(value){writes.push(value);const[name,raw]=value.split(';')[0].split('=');const map=new Map(cookies.split(';').filter(Boolean).map(x=>x.trim().split('=')));if(value.includes('Max-Age=0'))map.delete(name);else map.set(name,raw);cookies=[...map].map(x=>x.join('=')).join('; ');},addEventListener:(name,fn)=>events[name]=fn};
+ return{analytics:createAnalytics({window:win,document:doc}),requests,writes,storage,handlers,events,win,doc};
 }
+test('default counts have only a canonical page and event, no cookies or visitor identifiers',()=>{
+ const f=fixture();assert.deepEqual(f.requests[0].body,{page:'https://lazo.tools/',event:'page_view'});assert.equal(f.requests[0].credentials,'omit');assert.equal(f.requests[0].referrerPolicy,'no-referrer');assert.equal(f.requests.length,1);assert.equal(f.writes.length,0);assert.equal(f.storage.size,0);assert.equal(f.win.dataLayer,undefined);assert.doesNotMatch(JSON.stringify(f.requests),/private|secret|email=|client_id|session_id|googletagmanager/);
+ f.analytics.setConsent('granted');f.analytics.setConsent('granted');assert.equal(f.requests.length,1);
+});
+test('only selected, fixed button names are accepted',()=>{const f=fixture();assert.equal(f.analytics.trackCta('download'),true);assert.equal(f.analytics.trackCta('person@example.com'),false);assert.equal(f.requests.length,2);assert.deepEqual(Object.keys(f.requests[1].body).sort(),['event','page']);});
+test('owner links, stored exclusions, automation and family exclusions win over grants',()=>{
+ for(const options of [{href:'https://lazo.tools/?analytics=test'},{href:'https://lazo.tools/?analytics=exclude'},{excluded:true},{automated:true},{cookie:'lazo_analytics_excluded=true'}]){
+ const f=fixture({...options,stored:{choice:'granted'}});assert.equal(f.requests.length,0);assert.equal(f.analytics.trackCta('signup'),false);assert.equal(f.analytics.setConsent('granted'),false);}
+});
+test('Do Not Track and Global Privacy Control suppress all counts',()=>{for(const signal of [{doNotTrack:'1'},{globalPrivacyControl:true}]){const f=fixture({signal});assert.equal(f.requests.length,0);assert.equal(f.analytics.setConsent('granted'),false);}});
+test('earlier declines are honoured even after their former cookie-consent expiry',()=>{const f=fixture({stored:{choice:'denied',at:0}});assert.equal(f.requests.length,0);assert.equal(f.analytics.snapshot().choice,'denied');});
+test('opting out stops counts and stores a preference; opting back in never duplicates the view',()=>{const f=fixture();assert.equal(f.analytics.setConsent('denied'),true);assert.equal(f.analytics.trackCta('download'),false);assert.equal(f.requests.length,1);assert.equal(JSON.parse(f.storage.get('lazo.analytics-consent.v1')).choice,'denied');f.analytics.setConsent('granted');assert.equal(f.requests.length,1);});
+test('re-inclusion remains off until deliberately enabled',()=>{const f=fixture({excluded:true});f.analytics.setExcluded(false);assert.equal(f.requests.length,0);assert.equal(f.analytics.snapshot().choice,'denied');f.analytics.setConsent('granted');assert.equal(f.requests.length,1);});
+test('another tab can revoke collection and clearing storage does not silently enable it',()=>{const f=fixture();f.handlers.storage({key:'lazo.analytics-consent.v1',newValue:JSON.stringify({choice:'denied'})});assert.equal(f.analytics.trackCta('download'),false);f.handlers.storage({key:null,newValue:null});assert.equal(f.analytics.trackCta('download'),false);});
+test('a family exclusion stops an already open page on focus',()=>{const f=fixture();f.doc.cookie='lazo_analytics_excluded=true';f.handlers.focus();assert.equal(f.analytics.trackCta('signup'),false);});
+test('test links still exclude when preference storage is blocked',()=>{const f=fixture({href:'https://lazo.tools/?analytics=test',blocked:true});assert.equal(f.requests.length,0);});
+test('unknown sites, local previews and the private admin page never collect',()=>{for(const href of ['http://127.0.0.1:4187/','https://example.com/','https://accounts.lazo.tools/admin']){const f=fixture({href});assert.equal(f.requests.length,0);assert.equal(f.analytics.snapshot().configured,false);}});
+test('canonical family page identities exclude private paths and URL parameters',()=>{assert.equal(analyticsPageForPath('/terms/').page_location,'https://lazo.tools/terms/');assert.equal(analyticsPageForHost('pencil.lazo.tools','/app/').page_location,'https://pencil.lazo.tools/app/');assert.equal(analyticsPageForHost('powerchords.lazo.tools','/capabilities/customer-problem-discovery/').page_location,'https://powerchords.lazo.tools/capabilities/customer-problem-discovery/');const f=fixture({href:'https://accounts.lazo.tools/download?grant=private'});assert.deepEqual(f.requests[0].body,{page:'https://accounts.lazo.tools/download',event:'page_view'});});
+test('network failures never interrupt the page',()=>{const f=fixture({stored:{choice:'denied'}});f.win.fetch=()=>Promise.reject(Error('offline'));assert.doesNotThrow(()=>f.analytics.setConsent('granted'));});
 
-test("absent/invalid IDs and non-production hosts never load or collect", () => {
-  for (const options of [{ id: "" }, { id: "G-bad?email=private" }, { host: "localhost" }, { host: "preview.example" }]) {
-    const f = fixture(options);
-    assert.equal(f.analytics.snapshot().configured, false);
-    assert.equal(f.analytics.setConsent("granted"), false);
-    assert.equal(f.analytics.trackCta("hero_launch_updates"), false);
-    assert.equal(f.scripts.length, 0);
-  }
-});
-test("basic consent: no Google script, dataLayer, or click events before opt-in", () => {
-  const f = fixture();
-  assert.equal(f.scripts.length, 0);
-  assert.equal(f.win.dataLayer, undefined);
-  assert.equal(f.analytics.trackCta("hero_launch_updates"), false);
-  f.analytics.setConsent("denied");
-  assert.equal(f.scripts.length, 0);
-  assert.equal(f.win.dataLayer, undefined);
-});
-test("one page view and one script across repeated consent; fixed sanitized payloads", () => {
-  const f = fixture();
-  f.analytics.setConsent("granted"); f.analytics.setConsent("granted");
-  assert.equal(f.scripts.length, 1);
-  assert.equal(f.scripts[0].referrerPolicy, "no-referrer");
-  assert.equal(f.calls().filter(c => c[0] === "event" && c[1] === "page_view").length, 1);
-  const config = f.calls().find(c => c[0] === "config")[2];
-  assert.equal(config.send_page_view, false);
-  assert.equal(config.allow_google_signals, false);
-  f.events.click({ target: { closest: () => ({ getAttribute: () => "hero_launch_updates" }) } });
-  assert.equal(f.calls().at(-1)[1], "cta_tapped");
-  assert.equal(f.analytics.trackCta("private@example.com"), false);
-  assert.doesNotMatch(JSON.stringify(f.calls()), /private|secret|email=/);
-});
-test("revocation disables collection, expires only GA cookies and survives reload", () => {
-  const f = fixture(); f.analytics.setConsent("granted"); f.analytics.setConsent("denied");
-  assert.equal(f.win["ga-disable-G-TEST123456"], true);
-  assert.equal(f.analytics.trackCta("open_google_form"), false);
-  assert(f.writes.some(x => x.startsWith("_ga=")));
-  assert(f.writes.every(x => !x.includes("unrelated")));
-  assert.equal(fixture({ stored: { choice: "denied", at: 100000000000 } }).scripts.length, 0);
-});
-test("valid stored consent restores; expired and malformed choices default off", () => {
-  assert.equal(fixture({ stored: { choice: "granted", at: 100000000000 } }).scripts.length, 1);
-  for (const at of [0, "yesterday", 100000000001]) {
-    const f = fixture({ stored: { choice: "granted", at } });
-    assert.equal(f.scripts.length, 0);
-    assert.equal(f.analytics.snapshot().choice, null);
-  }
-});
-test("another tab's withdrawal disables this tab and notifies preferences", () => {
-  const f = fixture(); let state;
-  f.analytics.subscribe(value => { state = value; });
-  f.analytics.setConsent("granted");
-  f.storageEvents.storage({ key: "lazo.analytics-consent.v1", newValue: null });
-  assert.equal(f.analytics.trackCta("open_faq"), false);
-  assert.equal(state.choice, "denied");
-});
-
-test("a saved browser exclusion overrides previously granted consent before loading Google", () => {
-  const f = fixture({ excluded: true, stored: { choice: "granted", at: 100000000000 } });
-  assert.equal(f.analytics.snapshot().excluded, true);
-  assert.equal(f.analytics.snapshot().exclusionPersistent, true);
-  assert.equal(f.scripts.length, 0);
-  assert.equal(f.win.dataLayer, undefined);
-  assert.equal(f.analytics.setConsent("granted"), false);
-  assert.equal(f.analytics.trackCta("header_launch_updates"), false);
-  assert.equal(f.win["ga-disable-G-TEST123456"], true);
-});
-
-test("owner and test links persist exclusion before restoring consent", () => {
-  for (const mode of ["exclude", "test"]) {
-    const f = fixture({ href: `https://lazo.tools/?analytics=${mode}`,
-      stored: { choice: "granted", at: 100000000000 } });
-    assert.equal(f.analytics.snapshot().excluded, true);
-    assert.equal(f.scripts.length, 0);
-    assert.equal(f.storage.get("lazo.analytics-excluded.v1"), "true");
-    assert.equal(JSON.parse(f.storage.get("lazo.analytics-consent.v1")).choice, "denied");
-    assert.equal(f.analytics.trackCta("hero_launch_updates"), false);
-  }
-});
-
-test("automated browsers cannot enable production analytics", () => {
-  const f = fixture({ automated: true, stored: { choice: "granted", at: 100000000000 } });
-  assert.equal(f.analytics.snapshot().excluded, true);
-  assert.equal(f.analytics.setExcluded(false), false);
-  assert.equal(f.analytics.setConsent("granted"), false);
-  assert.equal(f.scripts.length, 0);
-});
-
-test("excluding an active browser blocks clicks, persists, and resets consent", () => {
-  const f = fixture();
-  f.analytics.setConsent("granted");
-  assert.equal(f.analytics.setExcluded(true), true);
-  assert.equal(f.analytics.trackCta("hero_launch_updates"), false);
-  assert.equal(f.win["ga-disable-G-TEST123456"], true);
-  assert.equal(f.storage.get("lazo.analytics-excluded.v1"), "true");
-  assert.equal(JSON.parse(f.storage.get("lazo.analytics-consent.v1")).choice, "denied");
-});
-
-test("re-including cleans the exclusion link without opting into collection", () => {
-  const f = fixture({ href: "https://lazo.tools/?analytics=exclude&keep=1#release" });
-  assert.equal(f.analytics.setExcluded(false), true);
-  assert.equal(f.analytics.snapshot().excluded, false);
-  assert.equal(f.analytics.snapshot().choice, "denied");
-  assert.equal(f.storage.get("lazo.analytics-excluded.v1"), "false");
-  assert.equal(f.win.location.href, "https://lazo.tools/?keep=1#release");
-  assert.equal(f.scripts.length, 0);
-  f.analytics.setConsent("granted");
-  assert.equal(f.scripts.length, 1);
-});
-
-test("cross-tab exclusion cannot be overridden by a consent grant from another tab", () => {
-  const f = fixture(); let state;
-  f.analytics.subscribe(value => { state = value; });
-  f.analytics.setConsent("granted");
-  f.storageEvents.storage({ key: "lazo.analytics-excluded.v1", newValue: "true" });
-  f.storageEvents.storage({ key: "lazo.analytics-consent.v1",
-    newValue: JSON.stringify({ choice: "granted", at: 100000000000 }) });
-  assert.equal(state.excluded, true);
-  assert.equal(f.analytics.trackCta("header_launch_updates"), false);
-  assert.equal(f.win["ga-disable-G-TEST123456"], true);
-});
-
-test("test links fail closed when browser storage is unavailable", () => {
-  const f = fixture({ href: "https://lazo.tools/?analytics=test", storageBlocked: true });
-  assert.equal(f.analytics.snapshot().excluded, true);
-  assert.equal(f.analytics.snapshot().exclusionPersistent, false);
-  assert.equal(f.analytics.setConsent("granted"), false);
-  assert.equal(f.scripts.length, 0);
-});
-
-test("clearing preferences in another tab revokes collection", () => {
-  const f = fixture();
-  f.analytics.setConsent("granted");
-  f.storageEvents.storage({ key: null, newValue: null });
-  assert.equal(f.analytics.snapshot().choice, "denied");
-  assert.equal(f.analytics.trackCta("header_launch_updates"), false);
-});
-
-test("tool pages use approved canonical URLs without private URL parameters", () => {
-  for (const [slug, name] of [["everyday", "Everyday"], ["power-chords", "Power Chords"]]) {
-    const f = fixture({ href: `https://lazo.tools/${slug}/?email=private@example.com#secret` });
-    f.analytics.setConsent("granted");
-    const pageView = f.calls().find(c => c[0] === "event" && c[1] === "page_view")[2];
-    assert.equal(pageView.page_location, `https://lazo.tools/${slug}/`);
-    assert.equal(pageView.page_title, `${name} | Lazo`);
-    assert.equal(pageView.page_referrer, "");
-    assert.doesNotMatch(JSON.stringify(f.calls()), /private|secret|email=/);
-    assert.equal(analyticsPageForPath(`/${slug}/index.html`).page_title, `${name} | Lazo`);
-    assert.equal(fixture({ excluded: true, href: `https://lazo.tools/${slug}/` }).scripts.length, 0);
-  }
-  assert.equal(analyticsPageForPath('/unknown/private').page_location, 'https://lazo.tools/');
-});
-
-test("each public family host requires consent and only sends a canonical non-personal page", () => {
-  for (const host of ['everyday.lazo.tools', 'pencil.lazo.tools', 'powerchords.lazo.tools', 'accounts.lazo.tools']) {
-    const f = fixture({host, href:`https://${host}/signup?email=private@example.com&grant=secret#private`});
-    assert.equal(f.analytics.snapshot().configured, true);
-    assert.equal(f.scripts.length, 0);
-    f.analytics.setConsent('granted');
-    assert.equal(f.scripts.length, 1);
-    assert.doesNotMatch(JSON.stringify(f.calls()), /private|secret|email=|grant=/);
-    assert.equal(f.calls().find(c => c[0] === 'event')[2].page_location,
-      `https://${host}${host === 'accounts.lazo.tools' ? '/signup' : '/'}`);
-    f.analytics.setConsent('denied');
-    assert.equal(f.analytics.trackCta('signup'), false);
-  }
-});
-
-test("shared owner exclusion wins across subdomains and private admin pages never track", () => {
-  for (const host of ['everyday.lazo.tools', 'pencil.lazo.tools', 'powerchords.lazo.tools', 'accounts.lazo.tools']) {
-    const f = fixture({host, href:`https://${host}/`, familyExclusion:true, stored:{choice:'granted',at:100000000000}});
-    assert.equal(f.analytics.snapshot().excluded, true);
-    assert.equal(f.scripts.length, 0);
-  }
-  assert.equal(fixture({host:'accounts.lazo.tools',href:'https://accounts.lazo.tools/admin'}).analytics.snapshot().configured,false);
-  const f = fixture(); f.analytics.setExcluded(true);
-  assert(f.writes.some(value => value.startsWith('lazo_analytics_excluded=true;') && value.includes('Domain=lazo.tools')));
+test('explicit footer opt-out applies on other family pages and already-open tabs',()=>{
+ const f=fixture();f.analytics.setConsent('denied');assert.ok(f.writes.some(v=>v.includes('lazo_analytics_optout=true')&&v.includes('Domain=lazo.tools')));
+ const other=fixture({href:'https://pencil.lazo.tools/',cookie:'lazo_analytics_optout=true'});assert.equal(other.requests.length,0);
+ const open=fixture({href:'https://powerchords.lazo.tools/'});open.doc.cookie='lazo_analytics_optout=true';open.handlers.focus();assert.equal(open.analytics.trackCta('signup'),false);
 });

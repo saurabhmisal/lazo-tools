@@ -50,7 +50,7 @@ test("custom questions and context are included without corrupting the heading",
     "  How\n\ncan setup improve?  ",
     " Keep existing components. ",
   );
-  assert.ok(text.includes("## Product question\nHow can setup improve?"));
+  assert.ok(text.includes("## Your question\nHow can setup improve?"));
   assert.ok(text.includes("## Your context\nKeep existing components."));
 });
 test("empty questions use the selected default and empty notes omit the context section", () => {

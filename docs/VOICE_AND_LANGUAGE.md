@@ -16,7 +16,7 @@ The Lazo headline stays exactly **You, but amplified!**
 - Make each sentence add information. Remove repeated promises and decorative slogans.
 - Prefer concrete nouns: notes, drafts, tasks, sources, prototypes, updates.
 - Address people as “you”. Explain Lazo's part without taking away their agency.
-- Keep each product distinct: Pencil connects context; Everyday organizes daily work; Power Chords gives agents reusable workflows.
+- Keep each product distinct: Pencil connects notes, tasks and ideas; Power Chords gives agents practical skills. Everyday is being folded into Pencil; do not imply a merged installer is released until verified.
 - Use consistent actions: sign up, verify email, download; “Try the demo” always opens a labelled demo.
 
 ## Be precise

@@ -13,7 +13,7 @@ test("each Lazo tool has a distinct static entry and placeholder identity", asyn
     optimizeDeps: { noDiscovery: true, include: [] } });
   try {
     const { ToolPlaceholder } = await compiler.ssrLoadModule("/src/ToolPlaceholder.jsx");
-    assert.deepEqual(tools.map(tool => tool.slug), ["pencil", "everyday", "power-chords"]);
+    assert.deepEqual(tools.map(tool => tool.slug), ["pencil", "power-chords"]);
     for (const tool of tools.filter(tool => !tool.externalOnly)) {
       const html = renderToStaticMarkup(createElement(ToolPlaceholder, { tool }));
       assert.match(html, new RegExp(`<h1>${tool.name}</h1>`));
@@ -26,7 +26,7 @@ test("each Lazo tool has a distinct static entry and placeholder identity", asyn
       }
       assert.ok(html.includes(tool.url ? "By Lazo" : "Page coming soon"));
       assert.match(html, /href="\.\.\/">Back to Lazo/);
-      assert.match(html, /href="https:\/\/everyday\.lazo\.tools\/"/);
+      assert.doesNotMatch(html, /href="https:\/\/everyday\.lazo\.tools\/"/);
       assert.match(html, /href="https:\/\/powerchords\.lazo\.tools\/"/);
       assert.doesNotMatch(html, /🤘/);
       if (tool.url) {

@@ -9,6 +9,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL("./index.html", import.meta.url)),
+        terms: fileURLToPath(new URL("./terms/index.html", import.meta.url)),
         everyday: fileURLToPath(new URL("./everyday/index.html", import.meta.url)),
         powerChords: fileURLToPath(new URL("./power-chords/index.html", import.meta.url)),
       },

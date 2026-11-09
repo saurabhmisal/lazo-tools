@@ -1,214 +1,85 @@
-import { tools } from "./tools.js";
-import { POWER_CHORDS_PAGES } from "./analytics-pages.js";
-
-// Only these fixed, non-personal values can become analytics parameters.
-export const CTA_IDS = Object.freeze([
-  "header_launch_updates", "hero_launch_updates", "open_google_form",
-  "open_playbooks", "open_faq", "signup", "download", "product_website",
-]);
-const CONSENT_KEY = "lazo.analytics-consent.v1";
-const EXCLUSION_KEY = "lazo.analytics-excluded.v1";
-const MAX_AGE = 180 * 24 * 60 * 60 * 1000;
-const PAGE = Object.freeze({
-  page_location: "https://lazo.tools/", page_title: "Lazo | You, but amplified!", page_referrer: "",
-});
-
-export function analyticsPageForPath(pathname) {
-  const tool = tools.find(({ slug }) =>
-    [`/${slug}`, `/${slug}/`, `/${slug}/index.html`].includes(pathname));
-  return tool ? Object.freeze({
-    page_location: `https://lazo.tools/${tool.slug}/`,
-    page_title: `${tool.name} | Lazo`,
-    page_referrer: "",
-  }) : PAGE;
+import { POWER_CHORDS_PAGES } from './analytics-pages.js';
+export const CTA_IDS = Object.freeze(['header_launch_updates','hero_launch_updates','open_google_form','open_playbooks','open_faq','signup','download','product_website']);
+export const ANALYTICS_NOTICE = 'Cookie-free page and button counts. No visitor IDs or work content.';
+const CHOICE_KEY='lazo.analytics-consent.v1',EXCLUSION_KEY='lazo.analytics-excluded.v1';
+const ENDPOINT='https://accounts.lazo.tools/api/metrics';
+const FAMILY={'lazo.tools':'Lazo','pencil.lazo.tools':'Pencil','everyday.lazo.tools':'Everyday','powerchords.lazo.tools':'Power Chords','accounts.lazo.tools':'Lazo account'};
+const canonical=(page_location,page_title)=>({page_location,page_title,page_referrer:''});
+export function analyticsPageForPath(pathname){
+ for(const[slug,name]of [['power-chords','Power Chords'],['everyday','Everyday'],['terms','Terms & Conditions']])if([`/${slug}`,`/${slug}/`,`/${slug}/index.html`].includes(pathname))return canonical(`https://lazo.tools/${slug}/`,`${name} | Lazo`);
+ return canonical('https://lazo.tools/','Lazo | You, but amplified!');
 }
-
-export const ANALYTICS_NOTICE = "Allow analytics to measure visits and button clicks? We do not send form details or playbook text. Analytics cookies are optional.";
-const FAMILY = Object.freeze({
-  "lazo.tools": "Lazo", "everyday.lazo.tools": "Everyday", "pencil.lazo.tools": "Pencil",
-  "powerchords.lazo.tools": "Power Chords", "accounts.lazo.tools": "Lazo account",
-});
-export function analyticsPageForHost(host, path) {
-  if (host === "lazo.tools") return analyticsPageForPath(path);
-  if (!FAMILY[host]) return null;
-  if (host === "powerchords.lazo.tools") {
-    for (const [slug, title] of Object.entries(POWER_CHORDS_PAGES)) {
-      if ([`/capabilities/${slug}/`, `/capabilities/${slug}/index.html`].includes(path)) {
-        return { page_location:`https://${host}/capabilities/${slug}/`, page_title:`${title} | Power Chords`, page_referrer:"" };
-      }
-    }
-    if (["/workspace.html", "/verification.html", "/third-party-notices.html"].includes(path)) {
-      return { page_location:`https://${host}${path}`, page_title:"Power Chords | Lazo", page_referrer:"" };
-    }
-  }
-  if (host === "pencil.lazo.tools" && ["/app/", "/app/index.html"].includes(path)) {
-    return { page_location:`https://${host}/app/`, page_title:"Pencil workspace | Lazo", page_referrer:"" };
-  }
-  const accountPath = host === "accounts.lazo.tools" && ["/signup", "/login", "/download", "/privacy"].includes(path) ? path : "/";
-  return { page_location: `https://${host}${accountPath}`, page_title: `${FAMILY[host]} | Lazo`, page_referrer: "" };
+export function analyticsPageForHost(host,path){
+ if(host==='www.lazo.tools')host='lazo.tools';
+ if(!FAMILY[host])return null;
+ if(host==='lazo.tools')return analyticsPageForPath(path);
+ if(host==='powerchords.lazo.tools'){
+  for(const[slug,title]of Object.entries(POWER_CHORDS_PAGES))if([`/capabilities/${slug}/`,`/capabilities/${slug}/index.html`].includes(path))return canonical(`https://${host}/capabilities/${slug}/`,`${title} | Power Chords`);
+  if(['/workspace.html','/verification.html','/third-party-notices.html'].includes(path))return canonical(`https://${host}${path}`,'Power Chords | Lazo');
+ }
+ if(host==='pencil.lazo.tools'&&['/app/','/app/index.html'].includes(path))return canonical(`https://${host}/app/`,'Pencil workspace | Lazo');
+ if(host==='accounts.lazo.tools'){
+  if(!['/','/signup','/login','/download','/privacy','/terms'].includes(path))return null;
+  return canonical(`https://${host}${path}`,'Lazo account | Lazo');
+ }
+ return canonical(`https://${host}/`,`${FAMILY[host]} | Lazo`);
 }
-
-export function createAnalytics({ measurementId, window: win, document: doc, now = Date.now }) {
-  const page = analyticsPageForHost(win?.location?.hostname, win?.location?.pathname);
-  const configured = /^G-[A-Z0-9]{6,20}$/.test(measurementId || "")
-    && win?.location?.protocol === "https:" && Boolean(page) && !(win.location.hostname === "accounts.lazo.tools" && win.location.pathname === "/admin");
-  let choice = null;
-  const automated = win?.navigator?.webdriver === true;
-  let excluded = automated;
-  let exclusionPersistent = false;
-  let started = false;
-  let pageSent = false;
-  const listeners = new Set();
-  const familyExcluded = () => (doc.cookie || "").split(";").some(value => value.trim() === "lazo_analytics_excluded=true");
-  function persistExclusion(value) {
-    doc.cookie = `lazo_analytics_excluded=${value}; Max-Age=${MAX_AGE / 1000}; Path=/; Domain=lazo.tools; SameSite=Lax; Secure`;
+// Fixed public page identities and action names only. No Google tag, IDs,
+// cookies, referrers, queries, document content or form values are transmitted.
+export function createAnalytics({window:win,document:doc,now=Date.now}){
+ const page=analyticsPageForHost(win?.location?.hostname,win?.location?.pathname);
+ const configured=win?.location?.protocol==='https:'&&Boolean(page);
+ const automated=win?.navigator?.webdriver===true;
+ const privacySignal=win?.navigator?.globalPrivacyControl===true||win?.navigator?.doNotTrack==='1';
+ let choice=privacySignal?'denied':'granted',excluded=automated,exclusionPersistent=false,pageSent=false;
+ const listeners=new Set();
+ const cookieExcluded=()=>String(doc?.cookie||'').split(';').some(v=>v.trim()==='lazo_analytics_excluded=true');
+ const cookieOptout=()=>String(doc?.cookie||'').split(';').some(v=>v.trim()==='lazo_analytics_optout=true');
+ if(cookieOptout())choice='denied';
+ try{exclusionPersistent=win.localStorage.getItem(EXCLUSION_KEY)==='true'||cookieExcluded();excluded||=exclusionPersistent;}catch{excluded||=cookieExcluded();}
+ try{const saved=JSON.parse(win.localStorage.getItem(CHOICE_KEY));if(saved?.choice==='denied')choice='denied';}catch{}
+ function rememberExclusion(value){
+  try{win.localStorage.setItem(EXCLUSION_KEY,String(value));exclusionPersistent=value;}catch{}
+  doc.cookie=`lazo_analytics_excluded=${value}; Max-Age=15552000; Path=/; Domain=lazo.tools; SameSite=Lax; Secure`;
+ }
+ if(configured){
+  try{if(['exclude','test'].includes(new URL(win.location.href).searchParams.get('analytics'))){excluded=true;rememberExclusion(true);}}catch{}
+  for(const entry of String(doc.cookie||'').split(';')){
+   const key=entry.trim().split('=')[0];
+   if(key==='_ga'||key.startsWith('_ga_'))for(const domain of ['','; Domain=lazo.tools','; Domain=.lazo.tools'])doc.cookie=`${key}=; Max-Age=0; Path=/${domain}; SameSite=Lax; Secure`;
   }
-  if (configured) {
-    try {
-      exclusionPersistent = win.localStorage.getItem(EXCLUSION_KEY) === "true" || familyExcluded();
-      excluded ||= exclusionPersistent;
-    } catch {}
-    excluded ||= familyExcluded();
-    if (excluded && !automated) persistExclusion(true);
-    // Resolve owner/test exclusion before restoring any saved consent.
-    try {
-      const mode = new URL(win.location.href).searchParams.get("analytics");
-      if (mode === "exclude" || mode === "test") {
-        excluded = true;
-        persistExclusion(true);
-        try {
-          win.localStorage.setItem(EXCLUSION_KEY, "true");
-          exclusionPersistent = true;
-        } catch {}
-      }
-    } catch {}
-    try {
-      const saved = JSON.parse(win.localStorage.getItem(CONSENT_KEY));
-      if (["granted", "denied"].includes(saved?.choice) && Number.isFinite(saved.at)
-          && saved.at <= now() && now() - saved.at < MAX_AGE) choice = saved.choice;
-    } catch { /* Storage can be unavailable; default remains no collection. */ }
-  }
-  const snapshot = () => ({ configured, choice, excluded, exclusionPersistent, automated });
-  const gtag = (...args) => win.gtag(...args);
-  function activate() {
-    if (!configured || excluded || choice !== "granted") return;
-    win[`ga-disable-${measurementId}`] = false;
-    if (!started) {
-      started = true;
-      win.dataLayer = win.dataLayer || [];
-      win.gtag = function () { win.dataLayer.push(arguments); };
-      gtag("consent", "default", {
-        analytics_storage: "granted", ad_storage: "denied",
-        ad_user_data: "denied", ad_personalization: "denied",
-      });
-      gtag("js", new Date(now()));
-      gtag("config", measurementId, {
-        send_page_view: false, allow_google_signals: false,
-        allow_ad_personalization_signals: false, ignore_referrer: true,
-        cookie_flags: "SameSite=Lax;Secure", cookie_expires: MAX_AGE / 1000,
-        ...page,
-      });
-      const script = doc.createElement("script");
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-      script.referrerPolicy = "no-referrer";
-      doc.head.appendChild(script);
-    } else gtag("consent", "update", { analytics_storage: "granted" });
-    if (!pageSent) {
-      pageSent = true;
-      gtag("event", "page_view", { ...page, send_to: measurementId });
-    }
-  }
-  function clearCookies() {
-    for (const entry of doc.cookie.split(";")) {
-      const name = entry.trim().split("=")[0];
-      if (name !== "_ga" && !name.startsWith("_ga_")) continue;
-      for (const domain of ["", "; Domain=lazo.tools", "; Domain=.lazo.tools"]) {
-        doc.cookie = `${name}=; Max-Age=0; Path=/${domain}; SameSite=Lax; Secure`;
-      }
-    }
-  }
-  function apply(next, persist) {
-    choice = next;
-    if (persist) {
-      try { win.localStorage.setItem(CONSENT_KEY, JSON.stringify({ choice, at: now() })); } catch {}
-    }
-    if (choice === "granted" && !excluded) activate();
-    else if (configured) {
-      win[`ga-disable-${measurementId}`] = true;
-      if (started) gtag("consent", "update", { analytics_storage: "denied" });
-      clearCookies();
-    }
-    for (const listener of listeners) listener(snapshot());
-  }
-  function trackCta(id) {
-    if (!configured || excluded || choice !== "granted" || !CTA_IDS.includes(id)) return false;
-    gtag("event", "cta_tapped", { cta_id: id, ...page, send_to: measurementId });
-    return true;
-  }
-  // Event payloads never contain form text, URLs from the browser, or referrers.
-  if (configured) {
-    doc.addEventListener("click", event => {
-      const id = event.target?.closest?.("[data-analytics-cta]")?.getAttribute("data-analytics-cta");
-      trackCta(id);
-    });
-    // An owner exclusion set on another Lazo subdomain must stop an open page too.
-    win.addEventListener("focus", () => {
-      if (familyExcluded() && !excluded) {
-        excluded = true; exclusionPersistent = true; apply("denied", true);
-      }
-    });
-    win.addEventListener("storage", event => {
-      if (event.key === EXCLUSION_KEY || event.key === null) {
-        exclusionPersistent = event.newValue === "true";
-        excluded = automated || exclusionPersistent;
-        apply("denied", false);
-        return;
-      }
-      if (event.key !== CONSENT_KEY) return;
-      let saved;
-      try { saved = JSON.parse(event.newValue); } catch {}
-      const valid = Number.isFinite(saved?.at) && saved.at <= now() && now() - saved.at < MAX_AGE;
-      apply(valid && saved.choice === "granted" ? "granted" : "denied", false);
-    });
-    // Also revoke consent in older open tabs that predate browser exclusions.
-    apply(excluded ? "denied" : choice, excluded);
-  }
-  return Object.freeze({
-    snapshot,
-    subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
-    setConsent(next) {
-      if (!configured || excluded || !["granted", "denied"].includes(next)) return false;
-      apply(next, true); return true;
-    },
-    setExcluded(next) {
-      if (!configured || automated || typeof next !== "boolean") return false;
-      excluded = next;
-      persistExclusion(next);
-      exclusionPersistent = false;
-      try {
-        win.localStorage.setItem(EXCLUSION_KEY, String(next));
-        exclusionPersistent = next;
-      } catch {}
-      if (!next) {
-        try {
-          const url = new URL(win.location.href);
-          if (["exclude", "test"].includes(url.searchParams.get("analytics"))) {
-            url.searchParams.delete("analytics");
-            win.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
-          }
-        } catch {}
-      }
-      // Re-including a browser never opts it back into analytics automatically.
-      apply("denied", true);
-      return true;
-    },
-    trackCta,
+ }
+ const snapshot=()=>({configured,choice,excluded,exclusionPersistent,automated,privacySignal});
+ function send(event){
+  if(!configured||excluded||privacySignal||choice!=='granted'||typeof win.fetch!=='function')return false;
+  try{Promise.resolve(win.fetch(ENDPOINT,{method:'POST',mode:'cors',credentials:'omit',referrerPolicy:'no-referrer',headers:{'Content-Type':'application/json'},body:JSON.stringify({page:page.page_location,event}),keepalive:true})).catch(()=>{});return true;}catch{return false;}
+ }
+ function notify(){for(const listener of listeners)listener(snapshot());}
+ function activate(){if(!pageSent&&send('page_view'))pageSent=true;}
+ function setConsent(next){
+  if(!configured||excluded||privacySignal||!['granted','denied'].includes(next))return false;
+  choice=next;try{win.localStorage.setItem(CHOICE_KEY,JSON.stringify({choice,at:now()}));}catch{}
+  doc.cookie=`lazo_analytics_optout=${choice==='denied'}; Max-Age=15552000; Path=/; Domain=lazo.tools; SameSite=Lax; Secure`;
+  activate();notify();return true;
+ }
+ function trackCta(id){return CTA_IDS.includes(id)&&send(id);}
+ if(configured){
+  doc.addEventListener('click',event=>trackCta(event.target?.closest?.('[data-analytics-cta]')?.getAttribute('data-analytics-cta')));
+  win.addEventListener('focus',()=>{if(cookieExcluded()){excluded=true;exclusionPersistent=true;}if(cookieOptout())choice='denied';notify();});
+  win.addEventListener('storage',event=>{
+   if(event.key===null)choice='denied';
+   if(event.key===EXCLUSION_KEY||event.key===null){excluded=automated||event.newValue==='true'||cookieExcluded();exclusionPersistent=excluded&&!automated;}
+   if(event.key===CHOICE_KEY){try{choice=JSON.parse(event.newValue)?.choice==='granted'?'granted':'denied';}catch{choice='denied';}}
+   activate();notify();
   });
+  activate();
+ }
+ return Object.freeze({snapshot,subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener);},setConsent,trackCta,setExcluded(next){
+  if(!configured||automated||typeof next!=='boolean')return false;
+  excluded=next;rememberExclusion(next);choice='denied';
+  try{win.localStorage.setItem(CHOICE_KEY,JSON.stringify({choice,at:now()}));if(!next){const url=new URL(win.location.href);url.searchParams.delete('analytics');win.history?.replaceState(null,'',`${url.pathname}${url.search}${url.hash}`);}}catch{}
+  notify();return true;
+ }});
 }
-
 let instance;
-export function getAnalytics() {
-  if (typeof window === "undefined") return null;
-  return instance ||= createAnalytics({ measurementId: import.meta.env.VITE_GA_MEASUREMENT_ID, window, document });
-}
+export function getAnalytics(){return instance||=createAnalytics({window,document});}

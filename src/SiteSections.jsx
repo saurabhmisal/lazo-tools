@@ -1,3 +1,4 @@
+import {LazoMark} from "./LazoMark.jsx";
 import { useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -147,7 +148,7 @@ export function PlaybookSection() {
     >
       <SectionRule
         number="03"
-        title="PM PLAYBOOKS"
+        title="PRACTICAL PLAYBOOKS"
         note="A SMALL START. REAL MOMENTUM."
       />
       <div className="section-intro">
@@ -163,7 +164,7 @@ export function PlaybookSection() {
           explore a question, and bring your team along.
         </p>
       </div>
-      <div className="playbook-picker" role="tablist" aria-label="PM playbooks">
+      <div className="playbook-picker" role="tablist" aria-label="Playbooks">
         {playbooks.map((item, i) => {
           const Icon = playbookIcons[item.id];
           return (
@@ -354,7 +355,7 @@ export function ReleaseSection() {
       <div className="release-layout">
         <div>
           <h2 id="release-title">Start with a thought</h2>
-          <p>One account. Three tools to help you act.</p>
+          <p>One account. Pencil and Power Chords.</p>
           <p className="release-cost">Free forever. External AI services may charge separately.</p>
         </div>
         <div className="signup-invitation">
@@ -373,12 +374,14 @@ export function SiteFooter({ onAbout, onPlaybooks, onFAQ }) {
   return (
     <footer className="simple-footer">
       <a className="footer-brand" href="#" aria-label="Lazo home">
-        <Link2 size={21} aria-hidden="true" /> Lazo
+        <LazoMark size={21} /> Lazo
       </a>
       <nav aria-label="More about Lazo">
         <button data-analytics-cta="open_faq" onClick={onFAQ}>FAQ</button>
-        <button data-analytics-cta="open_playbooks" onClick={onPlaybooks}>PM playbooks</button>
-        <button onClick={onAbout}>About & privacy</button>
+        <button data-analytics-cta="open_playbooks" onClick={onPlaybooks}>Playbooks</button>
+        <button onClick={onAbout}>About Lazo</button>
+        <a href="https://accounts.lazo.tools/privacy">Privacy</a>
+        <a href="./terms/">Terms &amp; Conditions</a>
       </nav>
       <small>© {new Date().getFullYear()} Lazo</small>
     </footer>

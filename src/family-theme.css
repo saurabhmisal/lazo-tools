@@ -126,3 +126,18 @@ body small,body .rules li span { color:var(--brand-muted); }
 @media(min-width:701px) { .simple-site .site-header { padding-inline:max(32px,calc((100% - 1216px)/2)); } }
 
 body .private { color:var(--brand-muted); font-size:14px; }
+
+/* A quiet footer preference, never a consent banner or blocking prompt. */
+.analytics-preferences { display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; width:100%; padding:16px max(20px,calc((100vw - 1216px)/2)); border-top:1px solid var(--brand-line); font-size:14px; }
+body .analytics-preferences button { min-height:44px; padding:8px 0; border:0; border-radius:0; text-decoration:underline; text-underline-offset:4px; background:transparent; font-size:14px; }
+.analytics-preferences>a { margin:0; color:var(--brand-muted); }
+footer .analytics-preferences { padding:8px 0 0; flex-basis:100%; border:0; }
+.legal-page { width:min(100% - 40px,760px); margin:56px auto 80px; }
+.legal-page h1 { margin:20px 0; font-size:clamp(36px,6vw,58px); line-height:1.12; }
+.legal-page h2 { margin:32px 0 10px; font-size:23px; }
+.legal-page p { font-size:17px; line-height:1.7; }
+.legal-summary { padding:20px 0; border-block:1px solid var(--brand-line); }
+.legal-page a { text-decoration:underline; text-underline-offset:4px; }
+.simple-footer nav { flex-wrap:wrap; }
+
+.lazo-mark{display:inline-block;flex-shrink:0;vertical-align:middle;object-fit:contain;}

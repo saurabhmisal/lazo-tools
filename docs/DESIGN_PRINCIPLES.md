@@ -8,7 +8,7 @@ Approved direction — 7 November 2026. Apply this standard to every Lazo landin
 | --- | --- |
 | Lazo | Navy wordmark and navigation, generous ivory/neutral space, restrained green primary actions. |
 | Pencil | Ivory writing canvas, navy reading text, green actions. Keep notes, sources and writing prominent. |
-| Everyday | Deep ink/charcoal surfaces, ivory text, light green actions. Character illustrations provide warmth. |
+| Everyday (retired) | Preserve the retirement route and point people to Pencil. Keep existing installations and local data untouched. |
 | Power Chords | Prominent existing PC loop mark, navy and ivory interface, green selected and interactive details. Keep identity in typography and composition. |
 | Shared account pages | Calm ivory and navy, readable forms and the same green actions. |
 
@@ -52,4 +52,8 @@ Review shared page templates and representative detailed pages, dialogs, forms, 
 
 ## Shared source and reuse
 
-The Lazo website repository owns `src/brand-type.css` and `src/family-theme.css`. Run `npm run build:family` to export the shared styles, reading font/license, analytics consent script and this guide. All product sites use these same exported files, with `data-brand="everyday"` selecting the ink theme. Do not independently invent another palette or font in a product site.
+The Lazo website repository owns `src/brand-type.css` and `src/family-theme.css`. Run `npm run build:family` to export the shared styles, reading font/license, aggregate analytics script and this guide. All product sites use these same exported files. The retired Everyday route uses the Lazo parent identity. Do not independently invent another palette or font in a product site.
+
+## Lazo identity and legal links
+
+Use the homepage linked Lazo mark for Lazo navigation, the account service and supporting pages. Generate all Lazo favicons from that same mark with build:brand. Preserve the distinct Pencil and Power Chords product logos. Public footers link to the canonical Terms & Conditions and Privacy pages. Website analytics uses fixed, cookie-free aggregate page/action counts, with a quiet footer opt-out and no visitor IDs.

@@ -1,28 +1,11 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import vm from 'node:vm';
-import { build } from 'esbuild';
-
-const { outputFiles } = await build({ entryPoints:['src/family-analytics.js'], bundle:true, write:false, format:'iife', define:{'import.meta.env.VITE_GA_MEASUREMENT_ID':'"G-B3WTD82CQ0"'} });
-function fixture() {
-  const scripts=[], store=new Map();
-  function node(tag) { return { tag, children:[], handlers:{}, textContent:'', append(...children){this.children.push(...children);}, appendChild(child){this.append(child);}, replaceChildren(){this.children=[];}, setAttribute(){}, addEventListener(event,fn){this.handlers[event]=fn;} }; }
-  const document={ body:node('body'), head:{appendChild:value=>scripts.push(value)}, cookie:'', createElement:node, addEventListener(){} };
-  const window={location:{hostname:'everyday.lazo.tools',protocol:'https:',pathname:'/',href:'https://everyday.lazo.tools/'},navigator:{},localStorage:{getItem:key=>store.get(key),setItem:(key,value)=>store.set(key,value)},addEventListener(){}};
-  vm.runInNewContext(outputFiles[0].text, {window,document,URL,Date,Set,Object,JSON,Number});
-  const flatten=(node)=>[node,...node.children.flatMap(flatten)];
-  const button=label=>flatten(document.body).find(item=>item.tag==='button'&&item.textContent===label);
-  return {document,scripts,button,all:()=>flatten(document.body)};
-}
-test('shared notice offers keyboard-native allow, decline and change controls without an early Google request',()=>{
- const f=fixture(); assert.equal(f.scripts.length,0);
- assert(f.button('Allow analytics')); assert(f.button('Decline analytics'));
- assert(f.all().some(n=>n.textContent.startsWith('Allow analytics to measure')));
- assert(!f.all().some(n=>n.textContent.includes('Allow Google Analytics')));
- assert(f.all().some(n=>n.tag==='a'&&n.href==='https://accounts.lazo.tools/privacy'&&n.textContent==='Privacy details'));
- f.button('Decline analytics').handlers.click(); assert.equal(f.scripts.length,0);
- f.button('Analytics: off · Change').handlers.click();
- f.button('Allow analytics').handlers.click(); assert.equal(f.scripts.length,1);
- f.button('Analytics: on · Change').handlers.click();
- f.button('Decline analytics').handlers.click(); assert(f.button('Analytics: off · Change'));
+import test from 'node:test';import assert from 'node:assert/strict';import vm from 'node:vm';import {build} from 'esbuild';
+const{outputFiles}=await build({entryPoints:['src/family-analytics.js'],bundle:true,write:false,format:'iife'});
+test('shared analytics is a quiet footer opt-out with no banner or Google tag',()=>{
+ const requests=[],storage=new Map();function node(tag){return{tag,children:[],handlers:{},textContent:'',append(...children){this.children.push(...children);},replaceChildren(){this.children=[];},setAttribute(){},addEventListener(name,fn){this.handlers[name]=fn;}}}
+ const footer=node('footer'),document={body:node('body'),cookie:'',createElement:node,querySelector:()=>footer,addEventListener(){}};
+ const window={location:{hostname:'pencil.lazo.tools',protocol:'https:',pathname:'/',href:'https://pencil.lazo.tools/'},navigator:{},fetch:(url,options)=>{requests.push({url,options});return Promise.resolve({});},localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>storage.set(k,v)},addEventListener(){}};
+ vm.runInNewContext(outputFiles[0].text,{window,document,URL,Date,Set,Object,JSON,Number,Promise});
+ const all=()=>{const flatten=n=>[n,...n.children.flatMap(flatten)];return flatten(footer);};const button=text=>all().find(n=>n.tag==='button'&&n.textContent===text);
+ assert.equal(requests.length,1);assert(button('Analytics: on · Turn off'));assert(!all().some(n=>/Allow analytics|Decline analytics/.test(n.textContent)));assert(!requests.some(r=>/google/.test(r.url)));
+ button('Analytics: on · Turn off').handlers.click();assert(button('Analytics: off · Turn on'));assert.equal(requests.length,1);assert.equal(JSON.parse(storage.get('lazo.analytics-consent.v1')).choice,'denied');
 });

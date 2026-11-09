@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ToolsMenu } from "./ToolsMenu.jsx";
+import { LazoMark } from "./LazoMark.jsx";
 import { ToolLogo } from "./ToolLogo.jsx";
 import { tools } from "./tools.js";
 import { AnalyticsPreferences } from "./AnalyticsPreferences.jsx";
@@ -83,7 +84,7 @@ const examples = {
       "Group observations by theme and retain supporting excerpts.",
       "Distinguish direct evidence from interpretation.",
     ],
-    note: "The PM reviews the synthesis and decides what happens next. No agent runs from this website.",
+    note: "You review the synthesis and decide what happens next. No agent runs from this website.",
   },
   "Analyze user feedback": {
     tag: "AGENT / REVIEW BEFORE ACTION",
@@ -687,7 +688,7 @@ export function App() {
       </a>
       <header className="site-header">
         <a className="nav-brand" href="#" aria-label="Lazo home">
-          <Link2 size={25} strokeWidth={2} aria-hidden="true" /> Lazo
+          <LazoMark /> Lazo
         </a>
         <nav className="simple-nav" aria-label="Main navigation">
           <ToolsMenu />
@@ -716,12 +717,9 @@ export function App() {
               </h1>
             </div>
             <div className="hero-invitation">
-              <p className="hero-promise">
-                Your thinking, put to work.
-              </p>
               <p className="hero-description" id="hero-description">
-                Lazo helps turn your ideas into drafts, prototypes and next steps.
-                You set the direction and make the calls.
+                A head full of ideas deserves somewhere to go. Lazo connects
+                your notes, thinking and next steps so you can make something of them.
               </p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#release" data-analytics-cta="hero_launch_updates">
@@ -751,10 +749,11 @@ export function App() {
               More room to think
             </h2>
             <p>
-              Scattered notes, repeated updates and follow-ups eat into thinking time.
+              Ideas arrive scattered: notes, conversations, half-finished plans.
+              Lazo helps keep the thread while you move the work forward.
             </p>
             <p className="mission-ambition">
-              <strong>Our belief:</strong> You think and direct. Lazo is your extension for the work.
+              <strong>Our belief:</strong> Your ideas should not stop at what you can carry alone.
             </p>
           </div>
           <div className="mission-capabilities">
@@ -772,12 +771,12 @@ export function App() {
                 ],
                 [
                   "Make it tangible",
-                  "Shape briefs, prototypes and MVP scope.",
+                  "Shape a draft, a prototype brief or a plan.",
                   Layers3,
                 ],
                 [
                   "Bring people with you",
-                  "Prepare updates, decisions and clear asks.",
+                  "Share the context, the decision and the ask.",
                   UsersRound,
                 ],
                 [
@@ -802,7 +801,7 @@ export function App() {
               <strong><FileText size={16} aria-hidden="true" /> Planned workflow</strong>
               Meeting notes + ideas{" "}
               <ArrowRight size={14} role="img" aria-label="become" />{" "}
-              prototype, MVP scope and stakeholder update.
+              a prototype brief, MVP scope and a project update.
               <span>You review the work.</span>
             </p>
           </div>
@@ -852,7 +851,7 @@ export function App() {
       )}
       {detail === "playbooks" && (
         <Dialog
-          title="PM PLAYBOOKS"
+          title="PRACTICAL PLAYBOOKS"
           className="support-dialog"
           onClose={() => setDetail(null)}
         >
@@ -954,18 +953,15 @@ export function App() {
               Signup uses a separate account service. It collects your name, email, optional phone and system, then verifies your email for downloads.
             </p>
             <p>
-              Where enabled, Google Analytics measures visits and selected button
-              clicks only after you allow analytics. It uses cookies, and does not
-              receive your form details or playbook text from this site. Change
-              your choice using the Analytics control near the footer. Declining
-              analytics does not affect signup. Google also processes
-              connection and device information.{" "}
+              We count page views and selected button clicks without analytics
+              cookies or visitor IDs. Form details, notes and playbook text are
+              excluded. The footer lets you opt out.{" "}
               <a
-                href="https://policies.google.com/technologies/partner-sites"
+                href="https://accounts.lazo.tools/privacy#analytics"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                How Google uses data
+                Privacy details
               </a>.
             </p>
             <p>
