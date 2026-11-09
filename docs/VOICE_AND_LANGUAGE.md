@@ -16,6 +16,7 @@ The Lazo headline stays exactly **You, but amplified!**
 - Make each sentence add information. Remove repeated promises and decorative slogans.
 - Prefer concrete nouns: notes, drafts, tasks, sources, prototypes, updates.
 - Address people as “you”. Explain Lazo's part without taking away their agency.
+- Credit the product as Lazo. Do not add founder names or personal “built by” attributions to public website copy. Preserve required third-party licence notices.
 - Keep each product distinct: Pencil connects notes, tasks and ideas; Power Chords gives agents practical skills. Everyday is being folded into Pencil; do not imply a merged installer is released until verified.
 - Use consistent actions: sign up, verify email, download; “Try the demo” always opens a labelled demo.
 
