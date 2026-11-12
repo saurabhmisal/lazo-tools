@@ -1,8 +1,24 @@
 # Lazo
 
-Imagination, executed!
+**Imagination, executed.**
 
-Lazo is being built as an extension of the product manager: carrying supporting legwork while people keep direction and final say. Free forever, running on your own system. This repository contains the static launch website, not the upcoming product itself.
+Lazo is a family of practical AI tools for people who turn complex problems into shipped products. The focus is on source-linked knowledge, clear decisions, useful automation and human control.
+
+## Explore the products
+
+| Product | Purpose | Explore |
+| --- | --- | --- |
+| **Pencil** | A local-first workspace for notes, projects, source-linked knowledge and decisions. Its desktop and browser experiences are evolving toward a more capable agent harness. | [Website and demo](https://pencil.lazo.tools/) · [Public site repository](https://github.com/saurabhmisal/pencil-site) |
+| **Power Chords** | Independent, open-source agent capabilities and repeatable workflows that help builders move from evidence to useful output. | [Website](https://powerchords.lazo.tools/) · [Source and installation](https://github.com/saurabhmisal/power-chords) |
+
+## How we build
+
+- **Evidence first.** Keep sources, decisions and their context traceable.
+- **People stay in control.** Scope permissions and ask before consequential actions.
+- **Small and composable.** Prefer clear capabilities over a bloated all-in-one experience.
+- **Useful over impressive.** Make the working path obvious, measurable and maintainable.
+
+This repository contains the **Lazo launch website**, not the private Pencil desktop source or the independently maintained Power Chords codebase. Current product capabilities and download requirements are documented in their respective repositories.
 
 ## Develop
 
